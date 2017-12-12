@@ -6,7 +6,7 @@ function [max_power,m_dot] = findMaxPower(p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode
 m_dot=[0.5, 2, 3.5];
 err=1;
 %use quadratic approximation method to find max w_dot 
-while err>0.001
+while err>0.01
     for i=1:length(m_dot)
         [net_power(i),~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] = BraytonCycle(m_dot(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode);
     end

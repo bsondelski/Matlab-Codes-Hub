@@ -1,4 +1,4 @@
-function [q_rad,T_out] = Radiator(m_dot,A_panel,T_amb,T_in,p_in,p_out,fluid,mode)
+function [q_rad,T_out,A_panel] = Radiator(m_dot,A_panel,T_amb,T_in,p_in,p_out,fluid,mode)
 %Radiator model
 %inputs:
 %m_dot: mass flow through radiator

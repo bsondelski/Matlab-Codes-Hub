@@ -1,24 +1,36 @@
+%first paper
 %LT
-T_H_in=191.95+273.15;   %K
-T_C_in=68.2+273.15;     %K
-T_H_out=78.55+273.15;   %K
-p_H_in=100*86.89;       %kPa
-p_H_out=100*85.37;      %kPa
-p_C_in=100*238.69;      %kPa
-p_C_out=100*238.51;     %kPa
-m_dot_H=100.17;         %kg/s
-m_dot_C=64.51;          %kg/s
+% T_H_in=191.95+273.15;   %K
+% T_C_in=68.2+273.15;     %K
+% T_H_out=78.55+273.15;   %K
+% p_H_in=100*86.89;       %kPa
+% p_H_out=100*85.37;      %kPa
+% p_C_in=100*238.69;      %kPa
+% p_C_out=100*238.51;     %kPa
+% m_dot_H=100.17;         %kg/s
+% m_dot_C=64.51;          %kg/s
 
 %HT
 % T_H_in=578.15+273.15;   %K
-% T_C_in=181.95+273.15;     %K
-% T_H_out=191.95+273.15;   %K
+% T_C_in=181.95+273.15;   %K
+% T_H_out=191.95+273.15;  %K
 % p_H_in=100*89.62;       %kPa
 % p_H_out=100*86.87;      %kPa
 % p_C_in=100*237.48;      %kPa
 % p_C_out=100*237.48;     %kPa
 % m_dot_H=100.17;         %kg/s
-% m_dot_C=100.17;          %kg/s
+% m_dot_C=100.17;         %kg/s
+
+%Creare
+T_H_in=989;             %K
+T_C_in=376;             %K
+T_H_out=418;            %K
+p_H_in=205;             %kPa
+p_H_out=203;            %kPa
+p_C_in=326;             %kPa
+p_C_out=323;            %kPa
+m_dot_H=0.0323;         %kg/s
+m_dot_C=0.0323;         %kg/s
 
 
 fluid_C='CO2';
@@ -26,7 +38,7 @@ fluid_H='CO2';
 mode=2;
 
 %discretize HEX
-N=1;                   %number of sub HEX's
+N=20;                   %number of sub HEX's
 
 
 %%%%%%%%%%%%%%calculate pressures for points along HEX 
@@ -109,7 +121,7 @@ else
             NTU(inds)=epsilon(inds)./(1-epsilon(inds));         %NTU of sub HEXs where C_R is 1
             %conductance comparison
             UA_each=NTU.*C_dot_min;     %conductance in sub HEX
-            UA_total=sum(UA_each);       %UA calculated with temp guess
+            UA_total=sum(UA_each)       %UA calculated with temp guess
         end
     end
 end

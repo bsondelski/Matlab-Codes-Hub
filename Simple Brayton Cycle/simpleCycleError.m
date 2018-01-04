@@ -20,7 +20,7 @@ function [T1Error] = simpleCycleError(T1guess,m_dot,p1,T4,UA,A_panel,T_amb,fluid
 
 
 %solve for state after turbine
-[p5,T5,~,~,~,~] = Turbine(m_dot,T4,p4,p5,fluid,mode,N);
+[p5,T5,~,~,~,~,~] = Turbine(m_dot,T4,p4,p5,fluid,mode,N);
 
 if T2>=T5
     T1Error=NaN;
@@ -29,7 +29,7 @@ else
     [T6, ~,~] = HEX_bettersolve(T5,T2,p5,p6,p2,p3,m_dot,m_dot,UA,fluid,fluid,mode,2);
     
     %solve for state after reactor
-    [~,T1] = Radiator(m_dot,A_panel,T_amb,T6,p6,p1,fluid,mode);
+    [~,T1,~] = Radiator(m_dot,A_panel,T_amb,T6,p6,p1,fluid,mode);
         
     T1Error=T1guess-T1;
 end

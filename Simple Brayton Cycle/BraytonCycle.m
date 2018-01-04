@@ -1,4 +1,4 @@
-function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,q_rad,T1,Power_T,Power_c,HEXeffect,energy,p1,T2,p2,T3,p3,T4,p4,T5,p5,T6,p6] = BraytonCycle(m_dot,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode)
+function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,q_rad,T1,Power_T,Power_c,HEXeffect,energy,p1,T2,p2,T3,p3,T4,p4,T5,p5,T6,p6,A_panel,Vratio] = BraytonCycle(m_dot,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode)
 %entire Brayton Cycle
 %Inputs:
 %m_dot: the mass flow in the cycle [kg/s]
@@ -72,13 +72,13 @@ else
     [p2,T2,D_c,N,Power_c,Ma_c,h2] = Compressor(m_dot,T1,p1,p2,fluid,mode);
     
     %solve for state after turbine
-    [p5,T5,D_T,Power_T,Ma_T,Anozzle,h5] = Turbine(m_dot,T4,p4,p5,fluid,mode,N);
+    [p5,T5,D_T,Power_T,Ma_T,Anozzle,h5,Vratio] = Turbine(m_dot,T4,p4,p5,fluid,mode,N);
     
     %solve for recuperator outlets
     [T6, T3,~,h3] = HEX_bettersolve(T5,T2,p5,p6,p2,p3,m_dot,m_dot,UA,fluid,fluid,mode,2);
     
     %solve for state after reactor
-    [q_rad,~]=Radiator(m_dot,A_panel,T_amb,T6,p6,p1,fluid,mode);
+    [q_rad,~,A_panel]=Radiator(m_dot,A_panel,T_amb,T6,p6,p1,fluid,mode);
     
     [~,~,h4]=getPropsTP(T4,p4,fluid,mode,1);
     [~,~,h3]=getPropsTP(T3,p3,fluid,mode,1);

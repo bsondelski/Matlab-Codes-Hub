@@ -1,4 +1,4 @@
-function [p_out,T_out,D,Power,Ma,Anozzle,h2a] = Turbine(m_dot,T_in,p_in,p_out,fluid,mode,N)
+function [p_out,T_out,D,Power,Ma,Anozzle,h2a,Vratio] = Turbine(m_dot,T_in,p_in,p_out,fluid,mode,N)
 %Computes the outlet conditions of the turbine and other performance
 %quantities
 %Inputs:

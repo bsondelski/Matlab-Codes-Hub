@@ -2,7 +2,7 @@ tic
 p1 = 9000;
 T4 = 1100;
 PR_c = 2;
-A_panel = 40:10:120;
+A_panel = 70;%:10:120;
 T_amb = 100;
 fluid = 'CO2';
 mode = 2;
@@ -15,29 +15,29 @@ parfor i = 1:length(A_panel)
 % [~,m_dot(i)] = findMaxPower(p1,T4,PR_c,UA(i),A_panel(i),T_amb,fluid,mode);
 end
 
-parfor i = 1:length(UA)
-[~,cyc_efficiency(i),~,~,~,~,~,q_reactor(i),q_rad(i),T1(i),~,~,~,~,~,T2(i),p2(i),T3(i),p3(i),T4_out(i),p4(i),T5(i),p5(i),T6(i),p6(i),A_panel(i),~] = BraytonCycle(m_dot(i),p1,T4,PR_c,UA(i),A_panel(i),T_amb,fluid,mode);
-end
-
-% recup_mass = 0.3051*UA_new+863.05;
-recup_mass = 0.0131*UA; %convert to kW/K
-
-Rad_mass = 5.8684*A_panel;
-
-total_mass = Rad_mass+recup_mass;
-plot(UA,total_mass)
-hold on
-plot(UA,Rad_mass)
-plot(UA,recup_mass)
-xlabel('UA [W/K]')
-ylabel('Mass [kg]')
-legend('Total Mass','Radiator Mass','Recuperator Mass')
-toc
-
-figure
-plot(A_panel,UA)
-xlabel('Panel Area [m^3]')
-ylabel('UA [W/K]')
+% parfor i = 1:length(UA)
+% [~,cyc_efficiency(i),~,~,~,~,~,q_reactor(i),q_rad(i),T1(i),~,~,~,~,~,T2(i),p2(i),T3(i),p3(i),T4_out(i),p4(i),T5(i),p5(i),T6(i),p6(i),A_panel(i),~] = BraytonCycle(m_dot(i),p1,T4,PR_c,UA(i),A_panel(i),T_amb,fluid,mode);
+% end
+% 
+% % recup_mass = 0.3051*UA_new+863.05;
+% recup_mass = 0.0131*UA; %convert to kW/K
+% 
+% Rad_mass = 5.8684*A_panel;
+% 
+% total_mass = Rad_mass+recup_mass;
+% plot(UA,total_mass)
+% hold on
+% plot(UA,Rad_mass)
+% plot(UA,recup_mass)
+% xlabel('UA [W/K]')
+% ylabel('Mass [kg]')
+% legend('Total Mass','Radiator Mass','Recuperator Mass')
+% toc
+% 
+% figure
+% plot(A_panel,UA)
+% xlabel('Panel Area [m^3]')
+% ylabel('UA [W/K]')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plotting various parameters

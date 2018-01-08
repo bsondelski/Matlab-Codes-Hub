@@ -16,7 +16,7 @@ function [T1Error] = simpleCycleError(T1guess,m_dot,p1,T4,UA,A_panel,T_amb,fluid
 %T1Error: error between guessed and actual T1 values
 
 %solve for state after compressor
-[p2,T2,~,N,~,~] = Compressor(m_dot,T1guess,p1,p2,fluid,mode);
+[T2,~,N,~,~] = Compressor(m_dot,T1guess,p1,p2,fluid,mode);
 
 
 %solve for state after turbine

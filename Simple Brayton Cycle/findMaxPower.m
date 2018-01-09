@@ -19,6 +19,10 @@ while err > 0.01
     p = polyfit(m_dot,net_power,2);
     d = [2*p(1), p(2)];                   %derivative of polynomial
     m_middle = -d(2)/d(1);                %set derivative = 0
+    if m_middle < 0
+        m_middle = 0.05;
+    end
+    
     [net_power_middle,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] = BraytonCycle(m_middle,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode);
     m_dot_new = [m_dot, m_middle];                    %m_dot vector including new point
     net_power_new = [net_power, net_power_middle];    %net power vector including new point

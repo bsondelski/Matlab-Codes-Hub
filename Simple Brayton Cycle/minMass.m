@@ -1,6 +1,5 @@
-function [ minimumMass ] = minMass( p1,T4,PR_c,T_amb,fluid,mode,desiredPower )
+function [ minimumMass,Apanel_min ] = minMass( p1,T4,PR_c,T_amb,fluid,mode,desiredPower,A_panel )
 
-A_panel = 40:10:120;
 
 for j=1:2
     
@@ -42,7 +41,7 @@ for j=1:2
         A_panel=linspace(A_pan_min,A_pan_max,10);
     else
     end
-    
+    Apanel_min=A_panel(inde);
 end
 
 end

@@ -8,7 +8,7 @@ T_amb=100;
 fluid='CO2';
 mode=2;
 UA=5000;
-m_dot=0.5:0.25:3.75;
+m_dot=0.05:0.25:3.75;
 
 figure
 hold on

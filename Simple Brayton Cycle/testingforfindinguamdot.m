@@ -1,8 +1,8 @@
 tic
 p1 = 9000;
 T4 = 1100;
-PR_c = 2;
-A_panel = 70;%:10:120;
+PR_c = 3;
+A_panel = 100;%:10:120;
 T_amb = 100;
 fluid = 'CO2';
 mode = 2;

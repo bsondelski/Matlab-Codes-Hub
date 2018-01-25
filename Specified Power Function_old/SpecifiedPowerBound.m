@@ -2,9 +2,9 @@ function [ m_dotmin,m_dotmax ] = SpecifiedPowerBound(power,p1,T4,PR_c,UA,A_panel
 %UNTITLED4 Summary of this function goes here
 %Detailed explanation goes here
 
-m_dotmin=0.4;
-m_dotmax=5;
-errorP=zeros(1,16);     %allocate a vector
+m_dotmin = 0.6;
+m_dotmax = 2;
+errorP = zeros(1,16);
 
 interval=(m_dotmax-m_dotmin)/60;
 m_dot=m_dotmin:interval:m_dotmax;

@@ -108,14 +108,15 @@ else
         pvector = [p1, p2, fliplr(p_C), p3, p_reactmid, p4, p5, p_H, p6, p_radmid, p1];
         
         [ ~ ] = TSDiagram( Tvector,pvector,fluid,mode );
-        title(['A_p_a_n_e_l = ', num2str(A_panel)])
+        %         title(['A_p_a_n_e_l = ', num2str(A_panel)])
+        title(['UA = ', num2str(UA),' [W/K]'])
         
-%         chan = ddeinit('EES','DDE');
-%         rc = ddeexec(chan,'[Open EES_MATLab.ees]');
-%         save MatLabInput.txt T1 T2 T3 T4 T5 T6 p1 p2 p3 p4 p5 p6 -ascii
-%         %     save MatLabInput.txt Tvector pvector -ascii
-%         rc = ddeexec(chan,'[Solve]');
-%         ddeterm(chan)
+        %         chan = ddeinit('EES','DDE');
+        %         rc = ddeexec(chan,'[Open EES_MATLab.ees]');
+        %         save MatLabInput.txt T1 T2 T3 T4 T5 T6 p1 p2 p3 p4 p5 p6 -ascii
+        %         %     save MatLabInput.txt Tvector pvector -ascii
+        %         rc = ddeexec(chan,'[Solve]');
+        %         ddeterm(chan)
     else
     end
     

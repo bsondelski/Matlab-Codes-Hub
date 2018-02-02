@@ -1,5 +1,5 @@
 function [ err ] = maxPowerError( UA,desiredPower,p1,T4,PR_c,A_panel,...
-    T_amb,fluid,mode )
+    T_amb,fluid,mode,options )
 % error between max power of guessed UA and desired power
 
 % Inputs: 
@@ -17,7 +17,7 @@ function [ err ] = maxPowerError( UA,desiredPower,p1,T4,PR_c,A_panel,...
 % err: error between max power of guessed UA and desired power
 
 
-[max_power,~] = findMaxPower(p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode);
+[max_power,~] = findMaxPower2(p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,options);
 err = max_power-desiredPower;
 
 end

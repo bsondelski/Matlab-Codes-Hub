@@ -1,6 +1,6 @@
 function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,q_reactor,...
     q_rad,T1,m_dotcycle,T3,p3,T4,p4] =...
-    SpecifiedPower2(power,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,m_dotlast)
+    SpecifiedPower2(power,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,m_dotlast,options)
 
 % finding the mass flow rate required for the specified power output of the
 % system
@@ -42,13 +42,20 @@ function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,q_reactor,...
 a = 1;
 i = 1;
 m_dot(i) = m_dotlast;
+
 [net_power(i),~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] = ...
     BraytonCycle(m_dot(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0);
+
+net_power(i) = round(net_power(i),8);
+if net_power(1) == power
+    m_dotcycle = m_dotlast;
+    a = 2;
+end
 
 % find range of m_dot where desired power is given by stepping down m_dot
 while a == 1
     i = i+1;
-    m_dot(i) = m_dot(i-1)-0.025;
+    m_dot(i) = m_dot(i-1)-0.5;
     [net_power(i),~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] =...
         BraytonCycle(m_dot(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0);
     
@@ -63,13 +70,12 @@ end
 
 % find exact m_dot and all quantities resulting for desired power
 if a == 0
-    m_dotcycle = fzero(@specifiedPowerError,[m_dotmin,m_dotmax],[],...
+    m_dotcycle = fzero(@specifiedPowerError,[m_dotmin,m_dotmax],options,...
         power,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode);
-    
+end
     [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,~,q_reactor,...
         q_rad,T1,~,~,~,~,~,~,~,T3,p3,T4,p4,...
         ~,~,~,~,~,~] = BraytonCycle(m_dotcycle,p1,T4,...
         PR_c,UA,A_panel,T_amb,fluid,mode,0);
-end
 end
 

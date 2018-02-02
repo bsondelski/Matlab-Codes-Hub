@@ -5,7 +5,7 @@ clear
 p1 = 9000;
 T4 = 1100;
 PR_c = 2;
-A_panel = 50; % 40:2:120;
+A_panel = 100; % 40:2:120;
 T_amb = 100;
 fluid = 'CO2';
 mode = 2;
@@ -17,7 +17,8 @@ desiredPower = 40000; % [W]
 [ UA_min,m_dotcycle(1) ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
     T_amb,fluid,mode);
 
-UA = [UA_min, UA_min+10000, UA_min+20000];
+% UA = [UA_min, UA_min+10000, UA_min+20000];
+UA = UA_min:100:25000;
 
 % preallocate space
 net_power = zeros(1,length(UA));
@@ -73,7 +74,7 @@ mass_total = mass_reactor+mass_recuperator+mass_radiator;
 
 
 
-
+figure
 plot(UA/1000,net_power/1000)
 xlabel('UA [kW/K]')
 ylabel('Net power output [W]')
@@ -85,6 +86,7 @@ figure
 plot(UA/1000,q_reactor/1000)
 xlabel('UA [kW/K]')
 ylabel('Reactor heat output [kW]')
+grid on
 figure
 plot(UA/1000,m_dotcycle)
 xlabel('UA [kW/K]')

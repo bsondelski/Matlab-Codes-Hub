@@ -36,7 +36,7 @@ function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,...
 % A_panel: area of radiator panel [m2]
 % Vratio: velocity ratio of turbine
 
-[p2,p3,p4,p6,p5,PR_T] = findPressures(p1,PR_c);
+[p2,p3,p4,p6,p5,~] = findPressures(p1,PR_c);
 
 if  p1 < 7390 || p2 < 7390 || p3 < 7390 || p4 < 7390 || p5 < 7390 || p6 < 7390
     net_power = NaN;
@@ -83,7 +83,7 @@ else
     [p5,T5,D_T,Power_T,Ma_T,Anozzle,h5,Vratio] = Turbine(m_dot,T4,p4,p5,fluid,mode,N);
     
     % solve for recuperator outlets
-    [T6, T3,~,h3,p_H,p_C,T_H,T_C] = HEX_bettersolve(T5,T2,p5,p6,p2,p3,m_dot,m_dot,UA,fluid,fluid,mode,1);
+    [T6, T3,~,~,p_H,p_C,T_H,T_C] = HEX_bettersolve(T5,T2,p5,p6,p2,p3,m_dot,m_dot,UA,fluid,fluid,mode,1);
     
     % solve for state after reactor
     [q_rad,~,A_panel] = Radiator(m_dot,A_panel,T_amb,T6,p6,p1,fluid,mode);

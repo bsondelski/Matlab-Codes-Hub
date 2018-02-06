@@ -87,7 +87,7 @@ else
         % preallocate space
         h_H = zeros(1,(N+1));
         h_C = zeros(1,(N+1));
-        x = 1:(N+1);
+%         x = 1:(N+1);
         
         % initial enthalpy values for inlet of first sub HEX
         h_H(1) = h_H_in;              % hot side inlet enthalpy

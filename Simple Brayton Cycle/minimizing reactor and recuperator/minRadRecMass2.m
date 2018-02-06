@@ -1,4 +1,4 @@
-function [ minMass ] = minRadRecMass2( A_panel,desiredPower,p1,T4,PR_c,T_amb,fluid,mode )
+function [ minMass, UA,t ] = minRadRecMass2( A_panel,desiredPower,p1,T4,PR_c,T_amb,fluid,mode )
 % gives minimum system mass for a cycle with a specified radiator area
 % and power output
 
@@ -16,6 +16,8 @@ function [ minMass ] = minRadRecMass2( A_panel,desiredPower,p1,T4,PR_c,T_amb,flu
 % minMass: lowest possible total system mass for system with desired
 % power output and radiator area
 
+tic
+
 % find minimum UA which gives desired power output
 [ UA_min,m_dotcycle_max ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
     T_amb,fluid,mode);
@@ -26,7 +28,7 @@ function [ minMass ] = minRadRecMass2( A_panel,desiredPower,p1,T4,PR_c,T_amb,flu
 
 % find bounds for mass minimization
 UA_max = UA_min + 10000;
-options1 = optimset('TolX',1e-3);
+options1 = optimset('TolX',10);
 a = 1;
 while a ==1
     UA = linspace(UA_min,UA_max,5);
@@ -68,8 +70,10 @@ end
 
 
 % find recuperator conductance for cycle with minimum mass
-options2=[];
-[UA,minMass] = fminbnd(@totalMass,UA_min,UA_max,[],desiredPower,p1,T4,PR_c,A_panel,...
+options2 = [];
+options3 = optimset('TolX',1e-2); 
+[UA,minMass] = fminbnd(@totalMass,UA_min,UA_max,options3,desiredPower,p1,T4,PR_c,A_panel,...
     T_amb,fluid,mode,m_dotcycle_max,options2);
+t = toc;
 end
 

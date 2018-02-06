@@ -19,7 +19,8 @@ function [ UA,m_dot ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
 % m_dot: mass flow rate at ideal power [kg/s]
 
 [UA_min,UA_max] = maxPowerBoundFind( desiredPower,p1,T4,PR_c,A_panel,T_amb,fluid,mode );
-options = [];
+
+options = [];% optimset('TolX',eps); % 
 UA = fzero(@maxPowerError,[UA_min,UA_max],[],desiredPower,p1,T4,PR_c,A_panel,T_amb,fluid,mode,options);
 
 [~,m_dot] = findMaxPower2(p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,options);

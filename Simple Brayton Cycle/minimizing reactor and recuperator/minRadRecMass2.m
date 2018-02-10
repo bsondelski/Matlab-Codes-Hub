@@ -1,4 +1,4 @@
-function [ minMass, UA,t ] = minRadRecMass2( A_panel,desiredPower,p1,T4,PR_c,T_amb,fluid,mode )
+function [minMass,UA,UA_min,mass_reactor,mass_recuperator,mass_radiator,m_dot] = minRadRecMass2( A_panel,desiredPower,p1,T4,PR_c,T_amb,fluid,mode,check )
 % gives minimum system mass for a cycle with a specified radiator area
 % and power output
 
@@ -16,7 +16,6 @@ function [ minMass, UA,t ] = minRadRecMass2( A_panel,desiredPower,p1,T4,PR_c,T_a
 % minMass: lowest possible total system mass for system with desired
 % power output and radiator area
 
-tic
 
 % find minimum UA which gives desired power output
 [ UA_min,m_dotcycle_max ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
@@ -37,7 +36,7 @@ while a ==1
     mass_total = zeros(1,length(UA));
     
     for i = 1:length(UA)
-        [ mass_total(i) ] = totalMass( UA(i),desiredPower,p1,T4,PR_c,A_panel,...
+        [ mass_total(i),~,~,~,~ ] = totalMass( UA(i),desiredPower,p1,T4,PR_c,A_panel,...
             T_amb,fluid,mode,m_dotcycle_max,options1);
     end
     
@@ -74,6 +73,16 @@ options2 = [];
 options3 = optimset('TolX',1e-2); 
 [UA,minMass] = fminbnd(@totalMass,UA_min,UA_max,options3,desiredPower,p1,T4,PR_c,A_panel,...
     T_amb,fluid,mode,m_dotcycle_max,options2);
-t = toc;
+
+if check == 2
+    [ ~,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = totalMass( UA,desiredPower,p1,T4,PR_c,A_panel,...
+    T_amb,fluid,mode,m_dotcycle_max,options2);
+else
+    mass_reactor = inf;
+    mass_recuperator = inf;
+    mass_radiator = inf;
+    m_dot = inf;
+end
+
 end
 

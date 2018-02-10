@@ -1,4 +1,4 @@
-function [T_H_out, T_C_out, elaptime,h_C_out,p_H,p_C,T_H,T_C] = HEX_bettersolve(T_H_in,T_C_in,p_H_in,p_H_out,p_C_in,p_C_out,m_dot_H,m_dot_C,UA,fluid_C,fluid_H,mode,plot)
+function [T_H_out, T_C_out,h_C_out,p_H,p_C,T_H,T_C] = HEX_bettersolve(T_H_in,T_C_in,p_H_in,p_H_out,p_C_in,p_C_out,m_dot_H,m_dot_C,UA,fluid_C,fluid_H,mode,plot)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % description: discretized e-NTU method with HEX's in series
 % development notes: John Dyerby's thesis and Nellis and Klein
@@ -28,7 +28,6 @@ function [T_H_out, T_C_out, elaptime,h_C_out,p_H,p_C,T_H,T_C] = HEX_bettersolve(
 % T_H: hotside temperature vector
 % T_C: cold side temperature vector
 
-tic
 % discretize HEX
 N = 20;                   % number of sub HEX's
 
@@ -109,5 +108,5 @@ else
     end
     
 end
-elaptime = toc;
+
 end

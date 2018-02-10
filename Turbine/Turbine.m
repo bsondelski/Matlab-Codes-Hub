@@ -23,7 +23,7 @@ function [p_out,T_out,D,Power,Ma,Anozzle,h2a,Vratio] = Turbine(m_dot,T_in,p_in,p
 
 
 % find properties at turbine inlet
-[s1, ~, h1] = getPropsTP(T_in,p_in,fluid,mode,2);
+[s1, rho1, h1] = getPropsTP(T_in,p_in,fluid,mode,2);
 % returns entropy [J/kg-K], enthalpy [J/kg]
 
 % find the isentropic outlet entropy
@@ -33,7 +33,8 @@ function [p_out,T_out,D,Power,Ma,Anozzle,h2a,Vratio] = Turbine(m_dot,T_in,p_in,p
 % solve for enthalpies and power
 h_12s = h1-h2s;           % isentropic enthaply change [J/kg]
 % use fzero to get V [m^3/s]
-V_dot = fzero(@turbineVdotError,5,[],N,h_12s,m_dot,h1,p_out,fluid,mode);
+V_dotguess = m_dot/rho1*p_in/p_out;
+V_dot = fzero(@turbineVdotError,V_dotguess,[],N,h_12s,m_dot,h1,p_out,fluid,mode);
 
 n_s = N*sqrt(V_dot)/h_12s^(3/4);      % specific speed
 % efficiency and specific diameter

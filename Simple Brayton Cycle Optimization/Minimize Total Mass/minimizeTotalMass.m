@@ -16,10 +16,10 @@ function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_rad
 
 A_panel_min = 40;
 A_panel_max = 120;
-[A_panel,TotalMinMass] = fminbnd(@minRadRecMass2,A_panel_min,A_panel_max,[],desiredPower,p1,T4,PR_c,...
+[A_panel,TotalMinMass] = fminbnd(@minRadRecMass,A_panel_min,A_panel_max,[],desiredPower,p1,T4,PR_c,...
     T_amb,fluid,mode,1);
 
-[ ~,UA,UA_min,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = minRadRecMass2( A_panel,desiredPower,p1,T4,PR_c,T_amb,fluid,mode,2 );
+[ ~,UA,UA_min,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = minRadRecMass( A_panel,desiredPower,p1,T4,PR_c,T_amb,fluid,mode,2 );
 
 
 [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,...

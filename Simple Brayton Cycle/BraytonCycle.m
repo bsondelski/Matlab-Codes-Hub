@@ -80,7 +80,6 @@ else
     [T2,D_c,N,Power_c,Ma_c,h2] = Compressor(m_dot,T1,p1,p2,fluid,mode);
     
     % solve for state after turbine
-    
     [p5,T5,D_T,Power_T,Ma_T,Anozzle,h5,Vratio] = Turbine(m_dot,T4,p4,p5,fluid,mode,N);
     
     % solve for recuperator outlets

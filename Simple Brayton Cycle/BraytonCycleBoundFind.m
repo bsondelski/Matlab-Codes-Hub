@@ -31,12 +31,7 @@ while stop == 0
     
     % generate an array of error values given the temperature increments
     for i = 1:length(T)
-        try
-            err(i) = simpleCycleError(T(i),m_dot,p1,T4,UA,A_panel,T_amb,fluid,mode,p2,p3,p4,p6,p5);
-        catch
-            err(i) = NaN;     % if an error is found in simpleCycleError, it is likely due
-                              % to T_C_in>T_H_in
-        end
+        err(i) = simpleCycleError(T(i),m_dot,p1,T4,UA,A_panel,T_amb,fluid,mode,p2,p3,p4,p6,p5);
     end
     [~,I] = min(abs(err));    % find the value in the error array with the smallest magnitude
     

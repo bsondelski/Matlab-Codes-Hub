@@ -55,7 +55,7 @@ end
 % find range of m_dot where desired power is given by stepping down m_dot
 while a == 1
     i = i+1;
-    m_dot(i) = m_dot(i-1)-0.5;
+    m_dot(i) = m_dot(i-1)-0.25;
     [net_power(i),~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] =...
         BraytonCycle(m_dot(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0);
     

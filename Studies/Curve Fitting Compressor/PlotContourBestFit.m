@@ -143,8 +143,8 @@ end
 
 v=[0.5, 0.6, 0.7, 0.75, 0.8, 0.85];
 contour(ns,ds,efficiency,v)
-xlabel('n_s')
-ylabel('d_s')
+xlabel('Specific Speed')
+ylabel('Specific Diameter')
 colorbar
 set(gca, 'YScale', 'log')
 set(gca, 'XScale', 'log')

@@ -109,7 +109,8 @@ else
         
         [ ~ ] = TSDiagram( Tvector,pvector,fluid,mode );
         %         title(['A_p_a_n_e_l = ', num2str(A_panel)])
-        title(['UA = ', num2str(UA),' [W/K]'])
+        %         title(['UA = ', num2str(UA),' [W/K]'])
+        title(['Reactor Heat Output = ', num2str(q_reactor/1000),' [kW]'])
         
         %         chan = ddeinit('EES','DDE');
         %         rc = ddeexec(chan,'[Open EES_MATLab.ees]');

@@ -143,14 +143,16 @@ end
 
 figure
 v=[0.5, 0.6, 0.7, 0.75, 0.8, 0.85];
-contour(ns,ds,efficiency,v)
+contour(ns,ds,efficiency,v,'LineWidth',1.5)
+% contour(ns,ds,efficiency,v,'LineWidth',1.5,'LineStyle','none')
 xlim([0.1 30]);
 ylim([0.1 20]);
-xlabel('n_s')
-ylabel('d_s')
+xlabel('Specific Speed')
+ylabel('Specific Diameter')
 colorbar
 set(gca, 'YScale', 'log') 
 set(gca, 'XScale', 'log')
+grid on
 
 %%%%%% plot centerline %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 hold on
@@ -172,9 +174,9 @@ hold on
 %         
 %     end
 % end
-
+pause
 
 actualMiddle=10.^middle;
-plot(ns,actualMiddle)
-xlabel('n_s')
-ylabel('curve center')
+plot(ns,actualMiddle,'LineWidth',2)
+xlabel('Specific Speed')
+ylabel('Specific Diameter')

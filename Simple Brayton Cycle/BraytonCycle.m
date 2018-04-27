@@ -36,6 +36,10 @@ function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,...
 % A_panel: area of radiator panel [m2]
 % Vratio: velocity ratio of turbine
 
+% m_dot
+% UA
+% A_panel
+
 [p2,p3,p4,p6,p5,~] = findPressures(p1,PR_c);
 
 if  p1 < 7390 || p2 < 7390 || p3 < 7390 || p4 < 7390 || p5 < 7390 || p6 < 7390
@@ -66,8 +70,29 @@ if  p1 < 7390 || p2 < 7390 || p3 < 7390 || p4 < 7390 || p5 < 7390 || p6 < 7390
     p6 = NaN;
 else
     % set lower bound for boundFind function according to fluid properties
-    if fluid == 'CO2'
+    tf = strcmp('CO2',fluid);
+    if tf == 1
         TLowerBound = 240;
+    elseif tf == 0
+        tf = strcmp('HELIUM',fluid);
+        if tf == 1
+            TLowerBound = 5;
+        elseif tf == 0
+            tf = strcmp('CO',fluid);
+            if tf == 1
+                TLowerBound = 133;
+            elseif tf == 0
+                tf = strcmp('OXYGEN',fluid);
+                if tf == 1
+                    TLowerBound = 154.581;
+                elseif tf == 0
+                    tf = strcmp('WATER',fluid);
+                    if tf == 1
+                        TLowerBound = 273.16;
+                    end                  
+                end
+            end
+        end
     end
     
     % find bounds for fzero

@@ -251,8 +251,15 @@ for j = 1:length(i)
     xlim([50 480])
     ylim([725 1300])
     grid on
-%     legendinfo{k}=(['A_p_a_n_e_l= ' num2str(A_panel(1,i)) 'm^2']);
-    text(q_reactor(1,i(j))/1000+1,mass_total_estimated(1,i(j))+5,[ num2str(A_panel(1,i(j))) ' m^2'])
+    %     legendinfo{k}=(['A_p_a_n_e_l= ' num2str(A_panel(1,i)) 'm^2']);
+    if j ==7
+        text(q_reactor(1,i(j))/1000+1,mass_total_estimated(1,i(j))-5,[ num2str(A_panel(1,i(j))) ' m^2'])
+    elseif j == 8
+        text(q_reactor(1,i(j))/1000+1,mass_total_estimated(1,i(j))+5,[ num2str(A_panel(1,i(j))) ' m^2'])
+    else
+        text(q_reactor(1,i(j))/1000+1,mass_total_estimated(1,i(j))+5,[ num2str(A_panel(1,i(j))) ' m^2'])
+    end
+    
     k = k+1;
     hold on
     pause

@@ -1,6 +1,6 @@
 
 
-[T_H_out, T_C_out, elaptime,h_C_out] = HEX_bettersolve(1.1127e+03,261.2987,3076.4,3030.3,6000,5968.8,0.3,0.3,5000,'CO2','CO2',2,2)
+[T_H_out, T_C_out, elaptime,h_C_out] = HEX_bettersolve(1.1127e+03,261.2987,3076.4,3030.3,6000,5968.8,0.3,0.3,5000,'CO2','CO2',2,1)
 
 [err] = errorGen(267.9632352595330,1112.7,261.2987,p_H,p_C,0.3,0.3,5000,'CO2','CO2',2,20)
 
@@ -11,6 +11,13 @@
 %%%%%%%%%values given to Alex%%%%%%%%%%%%%%%%%%%%%%%%%
 [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,q_rad,T1,Power_T,Power_c,HEXeffect,energy,p1,T2,p2,T3,p3,T4,p4,T5,p5,T6,p6] = BraytonCycle(0.75,9000,1100,2,10000,100,100,'CO2',2,0)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%optimum cycle
+[net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,q_rad,T1,Power_T,Power_c,HEXeffect,energy,p1,T2,p2,T3,p3,T4,p4,T5,p5,T6,p6] = BraytonCycle(0.7922,9000,1100,2,1.1406e4,54.0266,100,'CO2',2,0)
+% optimum mass is 746.3827
+
+
 
 [minMass,UA,UA_min,mass_reactor,mass_recuperator,mass_radiator,m_dot] = minRadRecMass( 100,40000,9000,1100,2,100,'CO2',2,1 )
 

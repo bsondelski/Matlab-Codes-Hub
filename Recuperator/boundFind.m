@@ -37,7 +37,6 @@ while stop == 0
         err(i) = errorGen(TH(i),T_H_in,T_C_in,p_H,p_C,m_dot_H,m_dot_C,UA,fluid_C,fluid_H,mode,N);
     end
     [~,I] = min(abs(err));        % find the value in the error array with the smallest magnitude
-    
     % Temp value for smallest value in error array
     B = TH(I);
     % sign of the smallest magnitute error

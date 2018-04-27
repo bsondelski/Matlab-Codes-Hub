@@ -1,4 +1,4 @@
-function [err] = errorGen(T_H_out,T_H_in,T_C_in,p_H,p_C,m_dot_H,m_dot_C,UA,fluid_C,fluid_H,mode,N)
+function [err,UA_each] = errorGen(T_H_out,T_H_in,T_C_in,p_H,p_C,m_dot_H,m_dot_C,UA,fluid_C,fluid_H,mode,N)
 % Description: finds the difference between given conductance and the conductnace
 % of the heat exchanger defined by the given inlet and outlet conditions
 %

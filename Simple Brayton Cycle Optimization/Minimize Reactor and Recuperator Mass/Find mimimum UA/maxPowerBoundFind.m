@@ -22,7 +22,7 @@ UA_max = 50000;
 steps = 10;
 
 % low tolerance because rough estimate
-options = optimset('TolX',1);
+% options = optimset('TolX',0.1);
 % options = [];
 
 % preallocate space
@@ -35,11 +35,19 @@ j = 0;  % counter
 while a == 1 || j < 3
     UA_testvals = linspace(UA_min,UA_max,steps);
     
+    if j ==1
+        options = optimset('TolX',1);
+    elseif j == 2
+        options = optimset('TolX',0.01);
+    else
+        options = [];
+    end
     
     for i = 1:length(UA_testvals)
         [err(i)] = maxPowerError( UA_testvals(i),desiredPower,p1,T4,...
             PR_c,A_panel,T_amb,fluid,mode,options );
     end
+
     [~,inde] = min(abs(err));
     
     if inde == 1

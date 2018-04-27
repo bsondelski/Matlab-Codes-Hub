@@ -14,7 +14,20 @@ figure
 
 % plot isobars
 p = [6000,9000,12000,15000,18000,21000];
-T = linspace(240,1100,1000);
+
+tf = strcmp('CO2',fluid);
+if tf == 1
+    Tmin = 240;
+elseif tf == 0
+    tf = strcmp('OXYGEN',fluid);
+    if tf == 1
+        Tmin = 60;
+    else
+    end
+end
+    
+T = linspace(Tmin,1100,1000);
+
 for i = 1:length(p)
     [s,~,~] = getPropsTP(T,p(i),fluid,mode,2);
     s = s/1000;    
@@ -24,14 +37,32 @@ for i = 1:length(p)
     hold on
 end
 
+Tcrit = refpropm('T','C',0,' ',0,fluid);
+Tcrit = floor(Tcrit);
 % plot vapor dome
-T_q = linspace(304.1,240);
+T_q = linspace(Tcrit,Tmin);
 q = 1;
-s_q = CO2_TQ(T_q,q,'entr');
+if mode == 2
+    s_q = CO2_TQ(T_q,q,'entr');
+elseif mode ==3
+    s_q = zeros(1,length(T_q));
+    for i = 1:length(T_q)
+        s_q(i) = refpropm('S','T',T_q(i),'Q',q,fluid);
+    end
+    s_q = s_q/1000;
+end
 
-T_q2 = linspace(240,304.1);
+T_q2 = linspace(Tmin,Tcrit);
 q2 = 0;
-s_q2 = CO2_TQ(T_q2,q2,'entr');
+if mode == 2
+    s_q2 = CO2_TQ(T_q2,q2,'entr');
+elseif mode == 3
+    s_q2 = zeros(1,length(T_q2));
+    for i = 1:length(T_q2)
+        s_q2(i) = refpropm('S','T',T_q2(i),'Q',q2,fluid);
+    end
+    s_q2 = s_q2/1000;
+end
 
 s_qtot = [s_q2, s_q];
 T_qtot = [T_q2,T_q];

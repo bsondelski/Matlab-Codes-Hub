@@ -16,11 +16,11 @@ m_dot=0.35:0.05:3;
 
 figure
 
-for j=1:length(UA)
+for j=1:1%length(UA)
     UA(j)
     parfor i=1:length(m_dot)
         m_dot(i)
-        [net_power(i),~,~,~,~,~,~,q_reactor(i),~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] = BraytonCycle(m_dot(i),p1,T4,PR_c,UA(j),A_panel,T_amb,fluid,mode,0);
+        [net_power(i),cyc_efficiency(i),~,~,~,~,~,q_reactor(i),q_rad(i),T1(i),Power_T(i),Power_c(i),HEXeffect(i),~,~,~,~,~,~,~,~,~,~,~,~] = BraytonCycle(m_dot(i),p1,T4,PR_c,UA(j),A_panel,T_amb,fluid,mode,0);
         %         [net_power(i),~,~,~,~,~,~,~,~,~,power_T(i),power_C(i),~,~,~,~,~,~,~,~,~,~,~,~,~] = BraytonCycle(m_dot(i),p1,T4,PR_c,UA(j),A_panel,T_amb,fluid,mode);
     end
     options = [];
@@ -42,6 +42,26 @@ for j=1:length(UA)
     net_power(inds) = [];        
     else
     end
+    figure
+    plot(q_reactor/1000,Power_T)
+    title('Power_T')
+    hold on
+    plot(q_reactor/1000,Power_c)
+    title('Power_c')
+    figure
+    plot(q_reactor/1000,cyc_efficiency)
+    title('efficiency')
+        figure
+    plot(q_reactor/1000,T1)
+    title('T1')
+    figure
+    plot(q_reactor/1000,abs(q_rad))
+    title('q_r_a_d')
+    figure
+    plot(q_reactor/1000,HEXeffect)
+    title('heseffect')
+    figure
+    
     
     plot(q_reactor/1000,net_power/1000)
     %     figure

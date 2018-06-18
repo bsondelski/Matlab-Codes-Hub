@@ -20,10 +20,15 @@ function [ UA,m_dot ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
 
 [UA_min,UA_max] = maxPowerBoundFind( desiredPower,p1,T4,PR_c,A_panel,T_amb,fluid,mode );
 
-options = [];
-UA = fzero(@maxPowerError,[UA_min,UA_max],[],desiredPower,p1,T4,PR_c,A_panel,T_amb,fluid,mode,options);
-
-[~,m_dot] = findMaxPower2(p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,options);
+if UA_max > 60000 || UA_min < 100
+    UA = Inf;
+    m_dot = Inf;
+else
+    options = [];
+    UA = fzero(@maxPowerError,[UA_min,UA_max],[],desiredPower,p1,T4,PR_c,A_panel,T_amb,fluid,mode,options);
+    
+    [~,m_dot] = findMaxPower2(p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,options);
+end
 
 end
 

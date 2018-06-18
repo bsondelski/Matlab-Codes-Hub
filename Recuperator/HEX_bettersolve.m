@@ -1,5 +1,6 @@
 function [T_H_out, T_C_out,h_C_out,p_H,p_C,T_H,T_C] = HEX_bettersolve(T_H_in,T_C_in,p_H_in,p_H_out,p_C_in,p_C_out,m_dot_H,m_dot_C,UA,fluid_C,fluid_H,mode,ploton)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % description: discretized e-NTU method with HEX's in series
 % development notes: John Dyerby's thesis and Nellis and Klein
 % section 8.6.3 extension
@@ -17,7 +18,7 @@ function [T_H_out, T_C_out,h_C_out,p_H,p_C,T_H,T_C] = HEX_bettersolve(T_H_in,T_C
 % fluid_C: cold side fluid
 % fluid_H: hot side fluid
 % Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
-% plot: 1(plot on),2(plot off)
+% ploton: 1(keep info for other part of script),2(plot temp points)
 
 % Outputs:
 % T_H_out: outlet temperature at hot side of HEX [K]

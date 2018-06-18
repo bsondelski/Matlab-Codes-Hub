@@ -21,12 +21,17 @@ if check == 1
         pref = 100;         % Reference Pressure [kPa]
         T = Tref*exp((s+R*log(p/pref))/c_p);    % find temp [K]
         h = c_p*T;          % find enthalpy with h0 at 0K
-    elseif mode == 2        
+    elseif mode == 2
         s = s/1000;         % convert entropy to [kJ/kg-K]
         h = CO2_PS(p,s,'enth');     % enthlapy [kJ/kg]
         h = h*1000;         % convert enthalpy to [J/kg]
     elseif mode == 3        % use of REFPROP
-        h = refpropm('H','P',p,'S',s,substance); % returns enthalpy [J/kg]
+        tf = iscell(substance(1));
+        if tf == 1
+            h = refpropm('H','P',p,'S',s,substance{1},substance{2},substance{3}); % returns enthalpy [J/kg]
+        else
+            h = refpropm('H','P',p,'S',s,substance); % returns enthalpy [J/kg]
+        end
     end
     T=inf;
     
@@ -38,8 +43,15 @@ elseif check ==2
         T = CO2_PS(p,s,'temp');
     elseif mode == 3
         T = zeros(1,length(s));
-        for i = 1:length(s)
-            T(i) = refpropm('T','P',p(i),'S',s(i),fluid);
+        tf = iscell(substance(1));
+        if tf == 1
+            for i = 1:length(s)
+                T(i) = refpropm('T','P',p(i),'S',s(i),substance{1},substance{2},substance{3});
+            end
+        else
+            for i = 1:length(s)
+                T(i) = refpropm('T','P',p(i),'S',s(i),substance);
+            end
         end
     end
     h=inf;

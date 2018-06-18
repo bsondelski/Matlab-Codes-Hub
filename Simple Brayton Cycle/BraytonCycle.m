@@ -4,6 +4,11 @@ function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,...
     A_panel,T_amb,fluid,mode,plot)
 % entire Brayton Cycle
 
+A_panel
+UA
+m_dot
+c = clock
+
 % Inputs:
 % m_dot: the mass flow in the cycle [kg/s]
 % p1: flow pressure at inlet of the compressor [kPa] 
@@ -70,30 +75,41 @@ if  p1 < 7390 || p2 < 7390 || p3 < 7390 || p4 < 7390 || p5 < 7390 || p6 < 7390
     p6 = NaN;
 else
     % set lower bound for boundFind function according to fluid properties
-    tf = strcmp('CO2',fluid);
-    if tf == 1
-        TLowerBound = 240;
-    elseif tf == 0
-        tf = strcmp('HELIUM',fluid);
-        if tf == 1
-            TLowerBound = 5;
-        elseif tf == 0
-            tf = strcmp('CO',fluid);
-            if tf == 1
-                TLowerBound = 133;
-            elseif tf == 0
-                tf = strcmp('OXYGEN',fluid);
-                if tf == 1
-                    TLowerBound = 154.581;
-                elseif tf == 0
-                    tf = strcmp('WATER',fluid);
-                    if tf == 1
-                        TLowerBound = 273.16;
-                    end                  
-                end
-            end
-        end
-    end
+    % - Tmin
+%     tf = strcmp('CO2',fluid);
+%     if tf == 1
+%         TLowerBound = 240;
+%     elseif tf == 0
+%         tf = strcmp('HELIUM',fluid);
+%         if tf == 1
+%             TLowerBound = 5;
+%         elseif tf == 0
+%             tf = strcmp('CO',fluid);
+%             if tf == 1
+%                 TLowerBound = 133;
+%             elseif tf == 0
+%                 tf = strcmp('OXYGEN',fluid);
+%                 if tf == 1
+%                     TLowerBound = 154.581;
+%                 elseif tf == 0
+%                     tf = strcmp('WATER',fluid);
+%                     if tf == 1
+%                         TLowerBound = 273.16;
+%                     end                  
+%                 end
+%             end
+%         end
+%     end
+tf = iscell(fluid(1));
+if tf == 1
+    TLowerBound = 308;
+else
+    names = ["CO2", "HELIUM", "CO", "OXYGEN", "WATER", "H2S"];
+    minT = [240, 2.18, 68.2, 54.4, 273.16, 200];
+    TLowerBound = minT(names == fluid);
+end
+
+%     TLowerBound = refpropm('T','C',0,' ',0,fluid);
     
     % find bounds for fzero
     [Tmin,Tmax] = BraytonCycleBoundFind(m_dot,p1,T4,TLowerBound,UA,A_panel,T_amb,fluid,mode,p2,p3,p4,p6,p5);
@@ -132,10 +148,11 @@ else
         Tvector = [T1, T2, fliplr(T_C), T3, T_reactmid, T4, T5, T_H, T6, T_radmid, T1];
         pvector = [p1, p2, fliplr(p_C), p3, p_reactmid, p4, p5, p_H, p6, p_radmid, p1];
         
-        [ ~ ] = TSDiagram( Tvector,pvector,fluid,mode );
+        [ ~ ] = TSDiagram( Tvector,pvector,fluid,mode,TLowerBound );
         %         title(['A_p_a_n_e_l = ', num2str(A_panel)])
         %         title(['UA = ', num2str(UA),' [W/K]'])
         title(['Reactor Heat Output = ', num2str(q_reactor/1000),' [kW]'])
+        ylim([TLowerBound, T4])
         
         %         chan = ddeinit('EES','DDE');
         %         rc = ddeexec(chan,'[Open EES_MATLab.ees]');

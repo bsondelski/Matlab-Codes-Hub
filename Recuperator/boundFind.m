@@ -23,12 +23,18 @@ function [ Tmin, Tmax ] = boundFind( T_H_in,T_C_in,p_H,p_C,m_dot_H,m_dot_C,UA,fl
 Tmax = T_H_in-0.001*(T_H_in-T_C_in);     % max outlet hot temp as 0.1% of temp difference
 Tmin = T_C_in;%+0.001*(T_H_in-T_C_in);   % min outlet hot temp as cold temp
 stop = 0;                                % set stop value to run while loop
+nstep = 10;
 
 % while loop runs with temp range getting smaller until realistic answer is found
 while stop == 0
-% for p=1:6
+% for p=1:20
     % set interval for for loop with 10 increments in temp range
-    Q = (Tmax-Tmin)/10;
+%     if tempstep == 1
+        Q = (Tmax-Tmin)/nstep;
+%     elseif tempstep == 2
+%         nstep = nstep + 5;
+%         Q = (Tmax-Tmin)/nstep;
+%     end
     TH = Tmin:Q:Tmax;         % create an array for temps to check
     err = zeros(1, length(TH));   % preallocate space
     
@@ -36,6 +42,10 @@ while stop == 0
     for i = 1:length(TH)
         err(i) = errorGen(TH(i),T_H_in,T_C_in,p_H,p_C,m_dot_H,m_dot_C,UA,fluid_C,fluid_H,mode,N);
     end
+%     T_H_in
+%     T_C_in
+%     TH
+%     err
     [~,I] = min(abs(err));        % find the value in the error array with the smallest magnitude
     % Temp value for smallest value in error array
     B = TH(I);
@@ -138,6 +148,10 @@ while stop == 0
             Tmin = B;
             Tmax = C;
             stop = 0;
+%         elseif Asign == Bsign && Bsign == Csign
+%             % find smallest negative number 
+%             tempstep = 2;
+%             stop = 0;
         end
     end
 end

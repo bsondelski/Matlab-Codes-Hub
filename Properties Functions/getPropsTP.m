@@ -1,6 +1,6 @@
 function [s, rho, h] = getPropsTP(T,p,substance,mode,check)
-% find entropy, enthalpy, and density of fluids
 
+% find entropy, enthalpy, and density of fluids
 % Inputs: 
 % T:Temperature[K]
 % p: pressure[kPa]
@@ -11,6 +11,8 @@ function [s, rho, h] = getPropsTP(T,p,substance,mode,check)
 % s: entropy[J/kg-K]
 % rho: density[kg/m^3]
 % h: enthalpy[J/kg]
+% T
+% p
 
 if check == 1
     % find enthalpy
@@ -18,14 +20,23 @@ if check == 1
     if mode == 1
         c_p = 1000;         % cp value estimation [J/kg-K]
         h = c_p*T;          % find enthalpy with h0 at 0K
-    elseif mode == 2           
+    elseif mode == 2
         h = CO2_TP(T,p,'enth');     % returns enthlapy [kJ/kg]
         h = h*1000;                 % convert enthalpy to [J/kg]
-    elseif mode == 3  
+    elseif mode == 3
         h = zeros(1,length(T));
-        for i = 1:length(T)
-            p = ones(1,length(T)).*p;
-            h(i) = refpropm('H','T',T(i),'P',p(i),substance); % returns enthalpy [J/kg]
+        p = ones(1,length(T)).*p;
+        tf = iscell(substance(1));
+        if tf == 1
+            for i = 1:length(T)
+                %             p = ones(1,length(T)).*p
+                h(i) = refpropm('H','T',T(i),'P',p(i),substance{1},substance{2},substance{3}); % returns enthalpy [J/kg]
+            end
+        else
+            for i = 1:length(T)
+                %             p = ones(1,length(T)).*p
+                h(i) = refpropm('H','T',T(i),'P',p(i),substance); % returns enthalpy [J/kg]
+            end
         end
     end
     s = NaN;
@@ -47,15 +58,26 @@ elseif check == 2
         % returns entropy [kJ/kg-K], density [kg/m3], enthlapy [kJ/kg]
         s = s*1000;           % convert entropy to [J/kg-K]
         h = h*1000;           % convert enthalpy to [J/kg]
-    elseif mode == 3    
+    elseif mode == 3
         s = zeros(1,length(T));
         rho = zeros(1,length(T));
         h = zeros(1,length(T));
         p = ones(1,length(T)).*p;
-        for i = 1:length(s)
-            s(i) = refpropm('S','T',T(i),'P',p(i),substance); % returns entropy [J/kg-K]
-            rho(i) = refpropm('D','T',T(i),'P',p(i),substance);% returns density [kg/m^3]
-            h(i) = refpropm('H','T',T(i),'P',p(i),substance); % returns enthalpy [J/kg]
+        tf = iscell(substance(1));
+        if tf == 1
+            for i = 1:length(s)
+                [s(i), rho(i), h(i)] = refpropm('SDH','T',T(i),'P',p(i),substance{1},substance{2},substance{3});
+%                 s(i) = refpropm('S','T',T(i),'P',p(i),substance{1},substance{2},substance{3}); % returns entropy [J/kg-K]
+%                 rho(i) = refpropm('D','T',T(i),'P',p(i),substance{1},substance{2},substance{3});% returns density [kg/m^3]
+%                 h(i) = refpropm('H','T',T(i),'P',p(i),substance{1},substance{2},substance{3}); % returns enthalpy [J/kg]
+            end
+        else
+            for i = 1:length(s)
+                [s(i), rho(i), h(i)] = refpropm('SDH','T',T(i),'P',p(i),substance);                
+%                 s(i) = refpropm('S','T',T(i),'P',p(i),substance); % returns entropy [J/kg-K]
+%                 rho(i) = refpropm('D','T',T(i),'P',p(i),substance);% returns density [kg/m^3]
+%                 h(i) = refpropm('H','T',T(i),'P',p(i),substance); % returns enthalpy [J/kg]
+            end
         end
     end
     

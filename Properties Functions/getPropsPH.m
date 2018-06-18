@@ -25,8 +25,15 @@ if check == 1
         T = CO2_PH(p,h_fit,'temp');
     elseif mode == 3
         T = zeros(1,leng);
-        for i = 1:leng
-            T(i) = refpropm('T','H',h(i),'P',p(i),fluid);
+        tf = iscell(fluid(1));
+        if tf == 1
+            for i = 1:leng
+                T(i) = refpropm('T','H',h(i),'P',p(i),fluid{1},fluid{2},fluid{3});
+            end
+        else
+            for i = 1:leng
+                T(i) = refpropm('T','H',h(i),'P',p(i),fluid);
+            end
         end
     end
     a = zeros(1,leng);
@@ -46,9 +53,19 @@ elseif check == 2
     elseif mode == 3
         T = zeros(1,leng);
         a = zeros(1,leng);
-        for i = 1:leng
-            T(i) = refpropm('T','H',h(i),'P',p(i),fluid);
-            a(i) = refpropm('A','H',h(i),'P',p(i),fluid);
+        tf = iscell(fluid(1));
+        if tf == 1
+            for i = 1:leng
+%                 [T(i), a(i)] = refpropm('AT','H',h(i),'P',p(i),fluid{1},fluid{2},fluid{3});
+                T(i) = refpropm('T','H',h(i),'P',p(i),fluid{1},fluid{2},fluid{3});
+                a(i) = refpropm('A','H',h(i),'P',p(i),fluid{1},fluid{2},fluid{3});
+            end
+        else
+            for i = 1:leng
+%                 [T(i), a(i)] = refpropm('TA','H',h(i),'P',p(i),fluid);
+                T(i) = refpropm('T','H',h(i),'P',p(i),fluid);
+                a(i) = refpropm('A','H',h(i),'P',p(i),fluid);
+            end
         end
     end
     rho = zeros(1,leng);
@@ -65,16 +82,28 @@ elseif check == 3
         rho = p/(R*T);      % Ideal gas law
     elseif mode == 2
         h_fit = h/1000;     % convert to [kJ/kg]
-        [T, a, rho] = CO2_PH(p,h_fit,'temp','ssnd','dens');   
+        [T, a, rho] = CO2_PH(p,h_fit,'temp','ssnd','dens');
     elseif mode == 3
         T = zeros(1,leng);
         a = zeros(1,leng);
         rho = zeros(1,leng);
-        for i = 1:leng                
-            T(i) = refpropm('T','H',h(i),'P',p(i),fluid);    
-            rho(i) = refpropm('D','T',T(i),'P',p(i),fluid); 
-            a(i) = refpropm('A','H',h(i),'P',p(i),fluid);   
+        tf = iscell(fluid(1));
+        if tf == 1
+            for i = 1:leng
+%                 [T(i), rho(i), a(i)] = refpropm('TDA','H',h(i),'P',p(i),fluid{1},fluid{2},fluid{3});
+                T(i) = refpropm('T','H',h(i),'P',p(i),fluid{1},fluid{2},fluid{3});
+                rho(i) = refpropm('D','T',T(i),'P',p(i),fluid{1},fluid{2},fluid{3});
+                a(i) = refpropm('A','T',T(i),'P',p(i),fluid{1},fluid{2},fluid{3});
+            end
+        else
+            for i = 1:leng
+%                 [T(i), rho(i), a(i)] = refpropm('TDA','H',h(i),'P',p(i),fluid);
+                T(i) = refpropm('T','H',h(i),'P',p(i),fluid);
+                rho(i) = refpropm('D','T',T(i),'P',p(i),fluid);
+                a(i) = refpropm('A','T',T(i),'P',p(i),fluid);
+            end
         end
+        
     end
 end
 end

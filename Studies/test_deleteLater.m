@@ -1,0 +1,1 @@
+[ result ] = propertiesInterp( 'h','T',427,18000,props18 )

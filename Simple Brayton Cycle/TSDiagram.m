@@ -1,4 +1,4 @@
-function [ s_cycle ] = TSDiagram( Tvector,pvector,fluid,mode )
+function [ s_cycle ] = TSDiagram( Tvector,pvector,fluid,mode,Tmin )
 % plots a TS diagram 
 
 % Inputs: 
@@ -15,29 +15,33 @@ figure
 % plot isobars
 p = [6000,9000,12000,15000,18000,21000];
 
-tf = strcmp('CO2',fluid);
-if tf == 1
-    Tmin = 240;
-elseif tf == 0
-    tf = strcmp('OXYGEN',fluid);
-    if tf == 1
-        Tmin = 60;
-    else
-    end
-end
-    
+% tf = strcmp('CO2',fluid);
+% if tf == 1
+%     Tmin = 240;
+% elseif tf == 0
+%     tf = strcmp('OXYGEN',fluid);
+%     if tf == 1
+%         Tmin = 60;
+%     else
+%     end
+% end
+
 T = linspace(Tmin,1100,1000);
 
 for i = 1:length(p)
     [s,~,~] = getPropsTP(T,p(i),fluid,mode,2);
-    s = s/1000;    
+    s = s/1000;
     plot(s,T)
     xlabel('s[kJ/kg-K]')
     ylabel('T[K]')
     hold on
 end
-
-Tcrit = refpropm('T','C',0,' ',0,fluid);
+tf = iscell(fluid(1));
+if tf == 1
+    Tcrit = refpropm('T','C',0,' ',0,fluid{1},fluid{2},fluid{3});
+else
+    Tcrit = refpropm('T','C',0,' ',0,fluid);
+end
 Tcrit = floor(Tcrit);
 % plot vapor dome
 T_q = linspace(Tcrit,Tmin);
@@ -46,8 +50,15 @@ if mode == 2
     s_q = CO2_TQ(T_q,q,'entr');
 elseif mode ==3
     s_q = zeros(1,length(T_q));
-    for i = 1:length(T_q)
-        s_q(i) = refpropm('S','T',T_q(i),'Q',q,fluid);
+    tf = iscell(fluid(1));
+    if tf == 1
+        for i = 1:length(T_q)
+            s_q(i) = refpropm('S','T',T_q(i),'Q',q,fluid{1},fluid{2},fluid{3});
+        end
+    else
+        for i = 1:length(T_q)
+            s_q(i) = refpropm('S','T',T_q(i),'Q',q,fluid);
+        end
     end
     s_q = s_q/1000;
 end
@@ -58,8 +69,15 @@ if mode == 2
     s_q2 = CO2_TQ(T_q2,q2,'entr');
 elseif mode == 3
     s_q2 = zeros(1,length(T_q2));
-    for i = 1:length(T_q2)
-        s_q2(i) = refpropm('S','T',T_q2(i),'Q',q2,fluid);
+    tf = iscell(fluid(1));
+    if tf == 1
+        for i = 1:length(T_q2)
+            s_q2(i) = refpropm('S','T',T_q2(i),'Q',q2,fluid{1},fluid{2},fluid{3});
+        end
+    else
+        for i = 1:length(T_q2)
+            s_q2(i) = refpropm('S','T',T_q2(i),'Q',q2,fluid);
+        end
     end
     s_q2 = s_q2/1000;
 end

@@ -18,7 +18,7 @@ function [ UA_min,UA_max ] = maxPowerBoundFind( desiredPower,p1,T4,PR_c,...
 
 % arbitrary starting values
 UA_min = 100;
-UA_max = 50000;
+UA_max = 20000;
 steps = 10;
 
 % low tolerance because rough estimate
@@ -43,7 +43,7 @@ while a == 1 || j < 3
         options = [];
     end
     
-    for i = 1:length(UA_testvals)
+    parfor i = 1:length(UA_testvals)
         [err(i)] = maxPowerError( UA_testvals(i),desiredPower,p1,T4,...
             PR_c,A_panel,T_amb,fluid,mode,options );
     end
@@ -77,6 +77,9 @@ while a == 1 || j < 3
     end
     
     j = j + 1;
+    if UA_max > 60000 || UA_min < 100
+        break
+    end
 end
 
 

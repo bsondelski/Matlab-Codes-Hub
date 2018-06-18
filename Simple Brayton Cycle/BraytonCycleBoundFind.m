@@ -22,17 +22,21 @@ Tmax = T4;                % T1 must be lower than T4
 Tmin = TLowerBound;       % min T1 is lowest programmed into FIT or REFPROP
 stop = 0;                 % set stop value to run while loop
 err = zeros(1, 11);    % preallocate space
+tempstep = 10;
     
 % while loop runs with temp range getting smaller until realistic answer is found
 while stop == 0
     % set interval for for loop with 10 increments in temp range
-    Q = (Tmax-Tmin)/10;
-    T = Tmin:Q:Tmax;              % create an array for temps to check
+    Q = (Tmax-Tmin)/tempstep;
+    T = Tmin:Q:Tmax;
+%     T = linspace(Tmin,Tmax,11);              % create an array for temps to check
     
     % generate an array of error values given the temperature increments
     for i = 1:length(T)
         err(i) = simpleCycleError(T(i),m_dot,p1,T4,UA,A_panel,T_amb,fluid,mode,p2,p3,p4,p6,p5);
     end
+
+%     err
     [~,I] = min(abs(err));    % find the value in the error array with the smallest magnitude
     
     % Temp value for smallest value in error array
@@ -56,10 +60,12 @@ while stop == 0
             stop = 0;
         elseif Bsign == Csign        % if no sign change between B and C
             % set A and B as Tmin and Tmax and end loop
-            fprintf(2, 'This cyc is not supported \n');
-            Tmin = NaN;
-            Tmax = NaN;
-            stop = 1;
+%             fprintf(2, 'This cyc is not supported \n');
+%             Tmin = NaN;
+%             Tmax = NaN;
+%             stop = 1;
+            tempstep = tempstep + 5;
+            stop = 0;
         end
     elseif I == length(err)       % if minimum value is at end of array, C value will not exist
         % temp value to left of the one with the smallest value error
@@ -78,10 +84,12 @@ while stop == 0
             stop = 0;
         elseif Bsign == Asign        % if sign change between A and B
             % set A and B as Tmin and Tmax and end loop
-            fprintf(2, 'This cyc is not supported \n');
-            Tmin = NaN;
-            Tmax = NaN;
-            stop = 1;
+%             fprintf(2, 'This cyc is not supported \n');
+%             Tmin = NaN;
+%             Tmax = NaN;
+%             stop = 1;
+            tempstep = tempstep + 5;
+            stop = 0;
         end
     else
         % temp values to right and left of the one with the smallest value error
@@ -114,6 +122,10 @@ while stop == 0
             % set B and C as Tmin and Tmax and restart loop
             Tmin = B;
             Tmax = C;
+            stop = 0;
+        elseif Asign == Bsign && Bsign == Csign
+            % find smallest negative number
+            tempstep = tempstep + 5;
             stop = 0;
         end
     end

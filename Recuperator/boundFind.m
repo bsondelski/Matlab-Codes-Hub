@@ -110,11 +110,17 @@ while stop == 0
         Asign = sign(err(I-1));
         Csign = sign(err(I+1));
         if -Bsign == Asign        % if sign change between A and B
-            % set A and B as Tmin and Tmax and end loop
-            Tmin = A;
-            Tmax = B;
-            stop = 1;
-%             a = 9
+            if isinf(err(I-1))
+                Tmin = A;
+                Tmax = B;
+                stop = 0;
+            else
+                % set A and B as Tmin and Tmax and end loop
+                Tmin = A;
+                Tmax = B;
+                stop = 1;
+                %             a = 9
+            end
         elseif -Bsign == Csign    % if sign change between B and C
             % set B and C as Tmin and Tmax and end loop
             Tmin = B;

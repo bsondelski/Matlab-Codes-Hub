@@ -13,6 +13,7 @@ function [s, rho, h] = getPropsTP(T,p,substance,mode,check)
 % h: enthalpy[J/kg]
 % T
 % p
+modesize = size(mode);
 
 if check == 1
     % find enthalpy
@@ -38,6 +39,13 @@ if check == 1
                 h(i) = refpropm('H','T',T(i),'P',p(i),substance); % returns enthalpy [J/kg]
             end
         end
+    elseif modesize(1) > 1
+%         h = zeros(1,length(T));
+%         p = ones(1,length(T)).*p;
+%         for i = 1:length(T)
+%             h(i) = propertiesInterp('h','T',T(i),p(i));
+%         end
+        h = propertiesInterp('h','T',T,p,mode);
     end
     s = NaN;
     rho = NaN;
@@ -79,6 +87,19 @@ elseif check == 2
 %                 h(i) = refpropm('H','T',T(i),'P',p(i),substance); % returns enthalpy [J/kg]
             end
         end
+    elseif modesize(1) > 1
+%         s = zeros(1,length(T));
+%         rho = zeros(1,length(T));
+%         h = zeros(1,length(T));
+%         p = ones(1,length(T)).*p;
+%         for i = 1:length(T)
+%             h(i) = propertiesInterp('h','T',T(i),p(i));
+%             rho(i) = propertiesInterp('d','T',T(i),p(i));
+%             s(i) = propertiesInterp('s','T',T(i),p(i));
+%         end
+        h = propertiesInterp('h','T',T,p,mode);
+            rho = propertiesInterp('d','T',T,p,mode);
+            s = propertiesInterp('s','T',T,p,mode);
     end
     
 end

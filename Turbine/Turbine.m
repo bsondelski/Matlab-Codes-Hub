@@ -21,7 +21,6 @@ function [p_out,T_out,D,Power,Ma,Anozzle,h2a,Vratio] = Turbine(m_dot,T_in,p_in,p
 % h2a: actual outlet enthalpy
 % Vradio: velocity ratio [J/kg]
 
-
 % find properties at turbine inlet
 [s1, rho1, h1] = getPropsTP(T_in,p_in,fluid,mode,2);
 % returns entropy [J/kg-K], enthalpy [J/kg]

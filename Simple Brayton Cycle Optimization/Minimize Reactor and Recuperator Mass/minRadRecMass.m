@@ -18,7 +18,6 @@ A_panel
 % minMass: lowest possible total system mass for system with desired
 % power output and radiator area
 
-
 % find minimum UA which gives desired power output
 [ UA_min,m_dotcycle_max ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
     T_amb,fluid,mode);

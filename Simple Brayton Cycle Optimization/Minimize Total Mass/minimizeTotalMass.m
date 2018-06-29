@@ -43,7 +43,7 @@ function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_rad
 %     end
 % end
 
-% [ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower,p1,T4,PR_c,T_amb,fluid,mode)
+[ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower,p1,T4,PR_c,T_amb,fluid,mode)
 
 
 % if max(size(gcp)) == 0 % parallel pool needed
@@ -54,8 +54,8 @@ function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_rad
 % [A_panel,TotalMinMass] = fmincon(@minRadRecMass,A_panel_guess,[],[],[],[],A_panel_min,A_panel_max,[],options,desiredPower,p1,T4,PR_c,...
 %     T_amb,fluid,mode,1,1);
 
-A_panel_min = 45;
-A_panel_max = 54;
+% A_panel_min = 35;
+% A_panel_max = 46;
 
 
 [A_panel,TotalMinMass] = fminbnd(@minRadRecMass,A_panel_min,A_panel_max,[],desiredPower,p1,T4,PR_c,...
@@ -67,7 +67,7 @@ m_dot
 [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,...
     q_rad,T1,Power_T,Power_c,HEXeffect,energy,p1,T2,p2,T3,p3,T4,p4,T5,...
     p5,T6,p6,A_panel,Vratio] = BraytonCycle(m_dot,p1,T4,PR_c,UA,...
-    A_panel,T_amb,fluid,mode,1)
+    A_panel,T_amb,fluid,mode,0)
 
 end
 

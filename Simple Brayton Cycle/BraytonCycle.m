@@ -102,13 +102,12 @@ else
 %     end
 tf = iscell(fluid(1));
 if tf == 1
-    TLowerBound = 308;
+    TLowerBound = 380;
 else
     names = ["CO2", "HELIUM", "CO", "OXYGEN", "WATER", "H2S"];
     minT = [240, 2.18, 68.2, 54.4, 273.16, 200];
     TLowerBound = minT(names == fluid);
 end
-
 %     TLowerBound = refpropm('T','C',0,' ',0,fluid);
     
     % find bounds for fzero

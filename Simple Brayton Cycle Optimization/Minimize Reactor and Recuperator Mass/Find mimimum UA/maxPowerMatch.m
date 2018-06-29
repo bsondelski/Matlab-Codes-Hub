@@ -20,7 +20,7 @@ function [ UA,m_dot ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
 
 [UA_min,UA_max] = maxPowerBoundFind( desiredPower,p1,T4,PR_c,A_panel,T_amb,fluid,mode );
 
-if UA_max > 60000 || UA_min < 100
+if UA_max > 60000 || UA_min < 5
     UA = Inf;
     m_dot = Inf;
 else

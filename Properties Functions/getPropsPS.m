@@ -11,6 +11,8 @@ function [h,T] = getPropsPS(s,p,substance,mode,check)
 % h: enthalpy[J/kg]
 % T: temperature[K]
 
+modesize = size(mode);
+
 if check == 1
     % find enthalpy
     
@@ -32,6 +34,8 @@ if check == 1
         else
             h = refpropm('H','P',p,'S',s,substance); % returns enthalpy [J/kg]
         end
+    elseif modesize(1) > 1
+        h = propertiesInterp('h','s',s,p,mode);
     end
     T=inf;
     
@@ -53,6 +57,12 @@ elseif check ==2
                 T(i) = refpropm('T','P',p(i),'S',s(i),substance);
             end
         end
+    elseif modesize(1) > 1
+%         T = zeros(1,length(s));
+%         for i = 1:length(s)
+%             T(i) = propertiesInterp('T','s',s(i),p(i));
+%         end
+        T = propertiesInterp('T','s',s,p,mode);
     end
     h=inf;
     

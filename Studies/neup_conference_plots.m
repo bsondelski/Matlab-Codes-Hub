@@ -2,8 +2,12 @@
 
 
 scatter(g(:,1),g(:,5),'k');
+hold on
+scatter(h(:,1),h(:,5),'k*');
+scatter(i(:,1),i(:,5),'ks');
 ylabel('Mass of optimized cycle [kg]')
 xlabel('Percent of water in mixture')
+legend('p_1 = 9 MPa', 'p_1 = 13.5 MPa','p_1 = 18 MPa')
 box on
 
 figure

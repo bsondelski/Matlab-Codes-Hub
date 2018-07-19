@@ -54,8 +54,8 @@ function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_rad
 % [A_panel,TotalMinMass] = fmincon(@minRadRecMass,A_panel_guess,[],[],[],[],A_panel_min,A_panel_max,[],options,desiredPower,p1,T4,PR_c,...
 %     T_amb,fluid,mode,1,1);
 
-% A_panel_min = 35;
-% A_panel_max = 46;
+% A_panel_min = 17;
+% A_panel_max = 30;
 
 
 [A_panel,TotalMinMass] = fminbnd(@minRadRecMass,A_panel_min,A_panel_max,[],desiredPower,p1,T4,PR_c,...

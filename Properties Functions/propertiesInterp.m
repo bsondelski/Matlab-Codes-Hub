@@ -77,9 +77,9 @@ function [ result ] = propertiesInterp( out,in,val,p,mode )
 
 
 
-if p == 9000
+if p == 25000
     props = mode(:,1:44);
-elseif p == 18000
+elseif p == 50000
     props = mode(:,45:88);
 end
 

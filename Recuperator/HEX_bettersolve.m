@@ -29,6 +29,19 @@ function [T_H_out, T_C_out,h_C_out,p_H,p_C,T_H,T_C] = HEX_bettersolve(T_H_in,T_C
 % T_H: hotside temperature vector
 % T_C: cold side temperature vector
 
+% T_H_in
+% T_C_in
+% p_H_in
+% p_H_out
+% p_C_in
+% p_C_out
+% m_dot_H
+% m_dot_C
+% UA
+% fluid_C
+% fluid_H
+% ploton
+
 % discretize HEX
 N = 20;                   % number of sub HEX's
 

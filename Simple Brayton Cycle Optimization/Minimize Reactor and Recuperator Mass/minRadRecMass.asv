@@ -20,7 +20,7 @@ A_panel
 
 % find minimum UA which gives desired power output
 [ UA_min,m_dotcycle_max ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
-    T_amb,fluid,mode);
+    T_amb,fluid,mode)
 
 
 if UA_min == Inf || m_dotcycle_max == Inf
@@ -36,7 +36,6 @@ else
     
     % find bounds for mass minimization
     UA_max = UA_min*2;
-    UA_min = UA_min + 1e-7;
     options1 = optimset('TolX',10);
     a = 1;
     while a ==1

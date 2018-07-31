@@ -19,7 +19,7 @@ function [max_power,m_dot] = findMaxPower2(p1,T4,PR_c,UA,A_panel,T_amb,fluid,mod
 
 %%%%%%%%%%%%%%%%%%%%%%%%%% bound finding %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-m_dot_min = 0.4;
+m_dot_min = 0.7;
 m_dot_max = 3.5;
 steps = 10;
 

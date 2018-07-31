@@ -162,3 +162,5 @@ grid on
 react = mass_reactor(end)
 recup = mass_recuperator(end)
 tot = mass_total(end)
+
+uamax =UA(end)

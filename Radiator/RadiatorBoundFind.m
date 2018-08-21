@@ -1,4 +1,4 @@
-function [h_outmin,h_outmax] = RadiatorBoundFind(m_dot,A_panel,T_amb,fluid,mode,eps,T12_pp,sigma,h_in,p_out)
+function [h_outmin,h_outmax] = RadiatorBoundFind(m_dot,A_panel,T_amb,fluid,mode,epsilon,T12_pp,sigma,h_in,p_out,TFluidMin)
 % find bounds for radiator model
 
 % inputs:
@@ -19,21 +19,28 @@ function [h_outmin,h_outmax] = RadiatorBoundFind(m_dot,A_panel,T_amb,fluid,mode,
 stop = 0;             % set stop value to run while loop
 h_outmax = h_in;      % set max outlet enthalpy
 h_outmin = 0;         % set min outlet enthalpy
+loopcount = 1;
 
 while stop == 0
     Q = (h_outmax-h_outmin)/10;   % set interval for for loop with 10 increments in enthalpy range
     h_outarray = h_outmin:Q:h_outmax;         % create array for enthalpy values to check
     h_error = zeros(1,length(h_outarray));    % preallocate space
-
+    
     % generate an array of error values given the enthalpy increments
     for i = 1:length(h_outarray)
-        try
-            h_error(i) = radiatorError(h_outarray(i),h_in,m_dot,eps,T12_pp,p_out,sigma,A_panel,T_amb,fluid,mode);
-        catch
-            % errors typically occur if T_C_in>=T_H_in
-            h_error(i) = NaN;
+        %         try
+        h_error(i) = radiatorError(h_outarray(i),h_in,m_dot,epsilon,T12_pp,p_out,sigma,A_panel,T_amb,fluid,mode,TFluidMin);
+        %         catch
+        %             h_error(i) = NaN;
+        %         end
+        if i > 1 && abs(h_error(i)) > abs(h_error(i-1))
+            % if error is getting farther from zero, the solution has
+            % already been passed -no need to calculate the other values
+            h_error(i+1:end) = [];
+            break
         end
     end
+    
     [~,I] = min(abs(h_error));        % find the value in the error array with the smallest magnitude
     
     % Temp value for smallest value in error array
@@ -112,12 +119,32 @@ while stop == 0
             h_outmax = B;
             stop = 0;
         elseif isnan(Csign)     % if answer is between B and C but C is NaN
-            % set B and C as Tmin and Tmax and restart loop
-            h_outmin = B;
-            h_outmax = C;
-            stop = 0;
+            if loopcount > 10
+                % if cannot find an answer it likely means that this cycle
+                % wants the temperature below the Tmin and therefore is
+                % invalid
+                
+                %fprintf(2, 'Radiator: likely issue - T1 wishes to go below TFluidMin \n');
+                h_outmin = NaN;
+                h_outmax = NaN;
+                stop = 1;
+            else
+                % set B and C as Tmin and Tmax and restart loop
+                h_outmin = B;
+                h_outmax = C;
+                stop = 0;
+            end
         end
     end
+    
+    % check if stuck in the loop
+    if loopcount > 100 && stop == 0
+        fprintf(2, 'RadiatorBoundFind: unable to find boundaries \n');
+        h_outmin = NaN;
+        h_outmax = NaN;
+        break
+    end
+    loopcount = loopcount + 1;
 end
 end
 

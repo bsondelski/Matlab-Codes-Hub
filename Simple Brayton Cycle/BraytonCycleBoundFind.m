@@ -21,8 +21,8 @@ function [Tmin,Tmax] = BraytonCycleBoundFind(m_dot,p1,T4,TLowerBound,UA,A_panel,
 Tmax = T4;                % T1 must be lower than T4
 Tmin = TLowerBound;       % min T1 is lowest programmed into FIT or REFPROP
 stop = 0;                 % set stop value to run while loop
-err = zeros(1, 11);    % preallocate space
 tempstep = 10;
+loopcount = 1;
     
 % while loop runs with temp range getting smaller until realistic answer is found
 while stop == 0
@@ -32,10 +32,17 @@ while stop == 0
 %     T = linspace(Tmin,Tmax,11);              % create an array for temps to check
     
     % generate an array of error values given the temperature increments
+    err = zeros(1,length(T));                   % preallocate space
     for i = 1:length(T)
-        err(i) = simpleCycleError(T(i),m_dot,p1,T4,UA,A_panel,T_amb,fluid,mode,p2,p3,p4,p6,p5);
+        err(i) = simpleCycleError(T(i),m_dot,p1,T4,UA,A_panel,T_amb,fluid,mode,p2,p3,p4,p6,p5,TLowerBound);
+        if i > 1 && abs(err(i)) > abs(err(i-1))
+            % if error is getting farther from zero, the solution has
+            % already been passed -no need to calculate the other values 
+            err(i+1:end) = [];
+            break
+        end
     end
-
+%     T
 %     err
     [~,I] = min(abs(err));    % find the value in the error array with the smallest magnitude
     
@@ -59,6 +66,15 @@ while stop == 0
             Tmax = C;
             stop = 0;
         elseif Bsign == Csign        % if no sign change between B and C
+            if loopcount > 10
+                % if the cycle has been run over 10 times, break the loop,
+                % Tmin is not low enough 
+                fprintf(2, 'BraytonCycle: cycle temperature is lower than Tmin \n');
+            Tmin = NaN;
+            Tmax = NaN;
+            stop = 1;
+            else
+                
             % set A and B as Tmin and Tmax and end loop
 %             fprintf(2, 'This cyc is not supported \n');
 %             Tmin = NaN;
@@ -66,6 +82,7 @@ while stop == 0
 %             stop = 1;
             tempstep = tempstep + 5;
             stop = 0;
+            end
         end
     elseif I == length(err)       % if minimum value is at end of array, C value will not exist
         % temp value to left of the one with the smallest value error
@@ -130,15 +147,15 @@ while stop == 0
         end
     end
     
-    % check if the Tmin and Tmax are the same number - if they are, it means
-    % the answer is out of the range and not solvable 
-    Tmn = round(Tmin,2);
-    Tmx = round(Tmax,2);
-    if Tmn == Tmx
+    % check if stuck in the loop
+    if loopcount > 25 && stop ==0 || isnan(err(I))
+        fprintf(2, 'BraytonCycleBoundFind unable to find boundaries \n \n');
         Tmin = NaN;
         Tmax = NaN;
-        stop = 1;
+        break
     end
+    
+    loopcount = loopcount + 1;
 end
 end
 

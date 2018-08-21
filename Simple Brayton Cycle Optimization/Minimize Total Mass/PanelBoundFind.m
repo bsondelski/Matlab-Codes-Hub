@@ -10,27 +10,45 @@ function [ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower
 % Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
 
 % guesses may need to change if decide on a new power level
-A_panel_min = 35;
-A_panel_max = 57;
+A_panel_min = 30;
+A_panel_max = 60;
 steps = 4;
 
-% preallocate space
-minMass = zeros(1,steps);
+
 stop = 0;
+loopcount = 1;
 
 while stop == 0
     A_panel_testvals = linspace(A_panel_min,A_panel_max,steps);
+    % preallocate space
+    minMass = zeros(1,steps);
     
     parfor i = 1:length(A_panel_testvals)
-        try
+%         try
             [minMass(i),~,~,~,~,~,~] = minRadRecMass( A_panel_testvals(i),desiredPower,p1,T4,PR_c,T_amb,fluid,mode,1,2 );
-        catch
-            minMass(i) = NaN;
-        end
+%         catch
+%             minMass(i) = NaN;
+%         end
+%         if i > 1 && minMass(i) > minMass(i-1)
+%             % if mass is getting larger with larger Apanel, the solution has
+%             % already been passed -no need to calculate the other values 
+%             minMass(i+1:end) = [];
+%             break
+%         end
 %         filename='C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\minmassexcel';
 %         A = [A_panel_testvals; minMass];
 %         xlswrite(filename,A)
     end
+    
+    if isnan(minMass)
+        % no cycles worked
+        fprintf(2, 'PanelBoundFind: all panel test values returned an error change search range and rerun \n');
+        A_panel_min = NaN;
+        A_panel_max = NaN;
+        A_panel_guess = NaN;
+        break
+    end
+    
     [~,inde] = min(minMass);
     
     if inde == 1
@@ -59,7 +77,16 @@ while stop == 0
         end
     end
     
+    % check if stuck in the loop
+    if loopcount > 10 && stop == 0
+        fprintf(2, 'PanelBoundFind: unable to find boundaries \n \n');
+        A_panel_min = NaN;
+        A_panel_max = NaN;
+        A_panel_guess = NaN;
+        break
+    end
     
+    loopcount = loopcount + 1;
     
 end
 

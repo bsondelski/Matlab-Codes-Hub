@@ -1,5 +1,6 @@
 function [ DataOut ] = createTables( DataIn )
 
+% Tsat = DataIn(:,end);
 Data = DataIn(1:end-1,:);
 
 T = Data(:,1);
@@ -63,10 +64,12 @@ HAhigh(length(HAhigh)+1:length(H),1) = NaN;
 Asplinehigh(length(Asplinehigh)+1:length(H),1) = NaN;
 coefsHAhigh(length(coefsHAhigh)+1:length(H),1) = NaN;
 
+% Tsat = Tsat(1:length(T));
+
 DataOut = [T, D, coefsTD, H, coefsTH, S, coefsTS, S, H, coefsSH, T,...
     coefsST, HA, Aspline, coefsHA, H, D, coefsHD, T, coefsHT, Thigh, Dhigh,...
      coefsTDhigh,Hhigh, coefsTHhigh, Shigh, coefsTShigh, Shigh, Hhigh,...
      coefsSHhigh, Thigh,coefsSThigh, HAhigh, Asplinehigh, coefsHAhigh, Hhigh, Dhigh,...
-     coefsHDhigh, Thigh, coefsHThigh];
+     coefsHDhigh, Thigh, coefsHThigh];%,Tsat];
 end
 

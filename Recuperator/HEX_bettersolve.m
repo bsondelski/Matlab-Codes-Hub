@@ -73,6 +73,10 @@ if isnan(Tmin) || isnan(Tmax)
     T_H_out = NaN;
     T_C_out = NaN;
     h_C_out = NaN;
+    p_H = NaN;
+    p_C = NaN;
+    T_H = NaN;
+    T_C = NaN;
 else
     % find zero to obtain T_H_out
     options = optimset('TolX',1E-8);              % set tolerancing on solver step size

@@ -24,6 +24,7 @@ Tmax = T_H_in-0.001*(T_H_in-T_C_in);     % max outlet hot temp as 0.1% of temp d
 Tmin = T_C_in;%+0.001*(T_H_in-T_C_in);   % min outlet hot temp as cold temp
 stop = 0;                                % set stop value to run while loop
 nstep = 10;
+loopcount = 1;
 
 % while loop runs with temp range getting smaller until realistic answer is found
 while stop == 0
@@ -41,6 +42,12 @@ while stop == 0
     % generate an array of error values given the temperature increments
     for i = 1:length(TH)
         err(i) = errorGen(TH(i),T_H_in,T_C_in,p_H,p_C,m_dot_H,m_dot_C,UA,fluid_C,fluid_H,mode,N);
+        if i > 1 && abs(err(i)) > abs(err(i-1))
+            % if error is getting farther from zero, the solution has
+            % already been passed -no need to calculate the other values 
+            err(i+1:end) = [];
+            break
+        end
     end
 %     T_H_in
 %     T_C_in
@@ -71,7 +78,7 @@ while stop == 0
             stop = 0;
         elseif Bsign == Csign        % if no sign change between B and C
             % set A and B as Tmin and Tmax and end loop
-            fprintf(2, 'This HEX is not supported \n');
+            fprintf(2, 'HEX_bettersolve boundFind: T_H,out wants to be lower than T_C,in - invalid HEX \n');
             Tmin = NaN;
             Tmax = NaN;
             stop = 1;
@@ -160,6 +167,16 @@ while stop == 0
 %             stop = 0;
         end
     end
+    
+    % check if stuck in the loop
+    Tdiff = Tmax - Tmin;
+    if Tdiff < 1e-7 && stop == 0
+        fprintf(2, 'Recuperator boundFind unable to find boundaries \n \n');
+        Tmin = NaN;
+        Tmax = NaN;
+        break
+    end
+    loopcount = loopcount + 1;
 end
 end
 

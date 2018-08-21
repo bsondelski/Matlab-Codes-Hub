@@ -20,7 +20,7 @@ A_panel
 
 % find minimum UA which gives desired power output
 [ UA_min,m_dotcycle_max ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
-    T_amb,fluid,mode);
+    T_amb,fluid,mode)
 
 
 if UA_min == Inf || m_dotcycle_max == Inf
@@ -36,11 +36,13 @@ else
     
     % find bounds for mass minimization
     UA_max = UA_min*2;
-    UA_min = UA_min + 1e-7;
+    UA_min = UA_min + 1e-10;
     options1 = optimset('TolX',10);
     a = 1;
+    loopcount = 1; 
+    
     while a ==1
-        UA = linspace(UA_min,UA_max,5);
+        UA = linspace(UA_min,UA_max,5)
         
         % preallocate space
         mass_total = zeros(1,length(UA));
@@ -48,7 +50,16 @@ else
         parfor i = 1:length(UA)
             [ mass_total(i),~,~,~,~ ] = totalMass( UA(i),desiredPower,p1,T4,PR_c,A_panel,...
                 T_amb,fluid,mode,m_dotcycle_max,options1);
+%             if i > 1 && mass_total(i) > mass_total(i-1)
+%                 % mass is getting larger, the solution has
+%                 % already been passed -no need to calculate the other
+%                 % values (starting with the minimum UA, the total mass
+%                 % should start large, reach a minimum, and then go up again
+%                 mass_total(i+1:end) = [];
+%                 break
+%             end
         end
+        mass_total
         
         [~,inde] = min(mass_total);
         
@@ -71,6 +82,14 @@ else
         %         a = 0;
         %     end
         
+        if loopcount > 50 && a ==1
+            fprintf(2, 'minRadRecMass: unable to find UA boundaries \n \n');
+            UA_max = NaN;
+            UA_min = NaN;
+            break
+        end
+        
+        loopcount = loopcount + 1;
     end
     
     

@@ -43,7 +43,7 @@ function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_rad
 %     end
 % end
 
-% [ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower,p1,T4,PR_c,T_amb,fluid,mode)
+[ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower,p1,T4,PR_c,T_amb,fluid,mode)
 
 
 % if max(size(gcp)) == 0 % parallel pool needed
@@ -54,8 +54,8 @@ function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_rad
 % [A_panel,TotalMinMass] = fmincon(@minRadRecMass,A_panel_guess,[],[],[],[],A_panel_min,A_panel_max,[],options,desiredPower,p1,T4,PR_c,...
 %     T_amb,fluid,mode,1,1);
 
-A_panel_min = 34;
-A_panel_max = 40;
+% A_panel_min = 34;
+% A_panel_max = 60;
 
 
 [A_panel,TotalMinMass] = fminbnd(@minRadRecMass,A_panel_min,A_panel_max,[],desiredPower,p1,T4,PR_c,...

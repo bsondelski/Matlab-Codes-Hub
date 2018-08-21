@@ -23,6 +23,9 @@ function [ UA,m_dot ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
 if UA_max > 60000 || UA_min < 5
     UA = Inf;
     m_dot = Inf;
+elseif isnan(UA_min)
+    UA = NaN;
+    m_dot = NaN;
 else
     options = [];
     UA = fzero(@maxPowerError,[UA_min,UA_max],[],desiredPower,p1,T4,PR_c,A_panel,T_amb,fluid,mode,options);

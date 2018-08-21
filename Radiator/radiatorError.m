@@ -1,4 +1,4 @@
-function [h_error] = radiatorError(h_outguess,h_in,m_dot,eps,T12_pp,p_out,sigma,A_panel,T_amb,fluid,mode)
+function [h_error] = radiatorError(h_outguess,h_in,m_dot,epsilon,T12_pp,p_out,sigma,A_panel,T_amb,fluid,mode,TFluidMin)
 % find error between guessed enthalpy and the calculated enthalpy
 % (calculated using the guessed enthalpy
 
@@ -21,9 +21,14 @@ function [h_error] = radiatorError(h_outguess,h_in,m_dot,eps,T12_pp,p_out,sigma,
 
 
 q_rad = m_dot*(h_in-h_outguess);                        % heat transfer due to energy change[J/s]
-T_panel = nthroot(q_rad/(A_panel*eps*sigma)+T_amb^4,4);	% radiative heat transfer equation
+T_panel = nthroot(q_rad/(A_panel*epsilon*sigma)+T_amb^4,4);	% radiative heat transfer equation
 T_out = T_panel+T12_pp;                                 % outlet temperature of fluid[K]
-[~,~,h_out] = getPropsTP(T_out,p_out,fluid,mode,1);     % outlet enthalpy from outlet temp[J/kg]
-h_error = h_out-h_outguess;                             % error in enthalpy from guessed enthalpy[J/kg] 
+if T_out < TFluidMin
+    h_error = NaN;
+else
+    [~,~,h_out] = getPropsTP(T_out,p_out,fluid,mode,1);     % outlet enthalpy from outlet temp[J/kg]
+    h_error = h_out-h_outguess;                             % error in enthalpy from guessed enthalpy[J/kg]
+end
+
 end
 

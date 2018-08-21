@@ -1,4 +1,4 @@
-function [q_rad,T_out,A_panel] = Radiator(m_dot,A_panel,T_amb,T_in,p_in,p_out,fluid,mode)
+function [q_rad,T_out,A_panel] = Radiator(m_dot,A_panel,T_amb,T_in,TFluidMin,p_in,p_out,fluid,mode)
 % Radiator model
 
 % inputs:
@@ -25,17 +25,28 @@ sigma = 5.670367E-8;  % Stefan-Boltzmann constant [W/m2-K4]
 
 % find bounds for fzero
 [h_outmin,h_outmax] = RadiatorBoundFind(m_dot,A_panel,T_amb,fluid,mode,...
-    eps,T12_pp,sigma,h_in,p_out);
+    eps,T12_pp,sigma,h_in,p_out,TFluidMin);
 
-% use fzero to find actual enthalpy at outlet of radiator [J/kg]
-h_out = fzero(@radiatorError,[h_outmin,h_outmax],[],h_in,m_dot,eps,...
-    T12_pp,p_out,sigma,A_panel,T_amb,fluid,mode);
+if isnan(h_outmin) && isnan(h_outmax)
+    % T1 wants to go below Tmin
+    
+    q_rad = NaN;
+    T_out = NaN;
+    A_panel = NaN;
+else
+    % normal results for working cycle
+    
+    % use fzero to find actual enthalpy at outlet of radiator [J/kg]
+    h_out = fzero(@radiatorError,[h_outmin,h_outmax],[],h_in,m_dot,eps,...
+        T12_pp,p_out,sigma,A_panel,T_amb,fluid,mode,TFluidMin);
+    
+    % heat transfer due to energy change[J/s]
+    q_rad = m_dot*(h_out-h_in);
+    % radiative heat transfer equation
+    T_panel = nthroot(-q_rad/(A_panel*eps*sigma)+T_amb^4,4);
+    % outlet temperature of fluid [K]
+    T_out = T_panel+T12_pp;
+end
 
-% heat transfer due to energy change[J/s]
-q_rad = m_dot*(h_out-h_in);
-% radiative heat transfer equation
-T_panel = nthroot(-q_rad/(A_panel*eps*sigma)+T_amb^4,4);
-% outlet temperature of fluid [K]
-T_out = T_panel+T12_pp;
 end
 

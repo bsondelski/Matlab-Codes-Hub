@@ -43,39 +43,85 @@ a = 1;
 i = 1;
 m_dot(i) = m_dotlast;
 
+
 [net_power(i),~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] = ...
-    BraytonCycle(m_dot(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0);
+    BraytonCycle(m_dot(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0)
 
 net_power(i) = round(net_power(i),8);
 if net_power(1) == power
     m_dotcycle = m_dotlast;
     a = 2;
+    
+    [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,~,q_reactor,...
+        q_rad,T1,~,~,~,~,~,~,~,T3,p3,T4,p4,...
+        ~,~,~,~,~,~] = BraytonCycle(m_dotcycle,p1,T4,...
+        PR_c,UA,A_panel,T_amb,fluid,mode,0);
+else
+    m_dot(i) = m_dotlast + 0.5;
 end
 
 % find range of m_dot where desired power is given by stepping down m_dot
+%%%% m_dot bound find %%%
+d_m_dot = 0.1;
 while a == 1
     i = i+1;
-    m_dot(i) = m_dot(i-1)-0.1;
+    m_dot(i) = m_dot(i-1)-d_m_dot
     [net_power(i),~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] =...
-        BraytonCycle(m_dot(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0);
-    
-    if net_power(i) < power
-        m_dotmax = m_dot(i-1);
-        m_dotmin = m_dot(i);
-        a = 0;
+        BraytonCycle(m_dot(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0)
+    if isnan(net_power(i))
+        % the m_dot decrease was too large, cut it in half
+        d_m_dot = d_m_dot/2;
+        fprintf(2, 'SpecifiedPower2: dmdot changing!! \n');
+        i = i-1; % reset count to start the loop over at the last working m_dot value
     else
+        if net_power(i) < power
+            m_dotmax = m_dot(i-1);
+            m_dotmin = m_dot(i);
+            a = 0;
+        else
+        end
     end
     
+    if a == 1 && d_m_dot < 1e-8
+        % if UA is too high that you can't find a working m_dot, this
+        % likely means that the cycle that would be the solution would have 
+        % too low of T1
+        fprintf(2, 'SpecifiedPower2: issue with m_dot finding \n');
+        m_dotmin = NaN;
+        m_dotmax = NaN;
+        break
+    end
+   
 end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % find exact m_dot and all quantities resulting for desired power
 if a == 0
     m_dotcycle = fzero(@specifiedPowerError,[m_dotmin,m_dotmax],options,...
         power,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode);
-end
+    
     [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,~,q_reactor,...
         q_rad,T1,~,~,~,~,~,~,~,T3,p3,T4,p4,...
         ~,~,~,~,~,~] = BraytonCycle(m_dotcycle,p1,T4,...
         PR_c,UA,A_panel,T_amb,fluid,mode,0);
+end
+    
+if a == 1
+    m_dotcycle = NaN;
+    net_power = NaN;
+    cyc_efficiency = NaN;
+    D_T = NaN;
+    D_c = NaN;
+    Ma_T = NaN;
+    Ma_c = NaN;
+    q_reactor = NaN;
+    q_rad = NaN;
+    T1 = NaN;
+    T3 = NaN;
+    p3 = NaN;
+    T4 = NaN;
+    p4 = NaN;
+end
+    
 end
 

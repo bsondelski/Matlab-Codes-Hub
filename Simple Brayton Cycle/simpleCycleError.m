@@ -1,5 +1,5 @@
 function [T1Error] = simpleCycleError(T1guess,m_dot,p1,T4,UA,A_panel,...
-    T_amb,fluid,mode,p2,p3,p4,p6,p5)
+    T_amb,fluid,mode,p2,p3,p4,p6,p5,TFluidMin)
 % Find error between guessed and actual temperature for compressor inlet in
 % cycle 
 
@@ -42,10 +42,22 @@ else
     % solve for recuperator outlets
     [T6, ~,~,~,~,~,~] = HEX_bettersolve(T5,T2,p5,p6,p2,p3,m_dot,m_dot,UA,fluid,fluid,mode,0);
     
-    % solve for state after reactor
-    [~,T1,~] = Radiator(m_dot,A_panel,T_amb,T6,p6,p1,fluid,mode);
+    if isnan(T6)
+        % this cycle solution has an invalid HEX with T_H,out < T_C,in
+        T1Error = NaN;
+    else
         
-    T1Error = T1guess-T1;
+        % solve for state after reactor
+        [~,T1,~] = Radiator(m_dot,A_panel,T_amb,T6,TFluidMin,p6,p1,fluid,mode);
+        
+        if isnan(T1)
+            % this cycle's solution causes T1 to be below the minimum fluid
+            % temperature
+            T1Error = NaN;
+        else
+            T1Error = T1guess-T1;
+        end
+    end
 end
 end
 

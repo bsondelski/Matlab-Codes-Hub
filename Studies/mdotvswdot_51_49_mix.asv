@@ -7,7 +7,7 @@ PR_c=2;
 A_panel=30;
 T_amb=100;
 fluid={'CO2','WATER',[0.51,0.49]};
-UA=[3000:2000:20000, 6442.6]; % was 2022.3
+UA=[3000:2000:20000]; % was 2022.3
 % UA = 6000;
 % UA = [6000, 7000:1000:10000];
 % UA=[6000, 7000:1000:10000, 1000, 3000:1000:5000, 2000]
@@ -51,9 +51,9 @@ for j=1:length(UA)
 %     figure
 %     plot(q_reactor/1000,cyc_efficiency)
 %     title('efficiency')
-%         figure(1)
-%     plot(m_dot,T1)
-%     title('T1')
+        figure(1)
+    plot(m_dot,T1)
+    title('T1')
 %     figure
 %     plot(q_reactor/1000,abs(q_rad))
 %     title('q_r_a_d')
@@ -65,7 +65,7 @@ hold on
     figure(2)
     
     
-    plot(q_reactor/1000,net_power/1000)
+    plot(m_dot,net_power/1000)
     %     figure
     %     plot(m_dot,power_T,m_dot,power_C)
 %     text(q_reactor(end)/1000+10,net_power(end)/1000,[num2str(UA(j)/1000) ' kW/K'])

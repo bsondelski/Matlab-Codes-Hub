@@ -42,12 +42,12 @@ else
     loopcount = 1; 
     
     while a ==1
-        UA = linspace(UA_min,UA_max,5)
+        UA = linspace(UA_min,UA_max,5);
         
         % preallocate space
         mass_total = zeros(1,length(UA));
         
-        parfor i = 1:length(UA)
+        for i = 1:length(UA)
             [ mass_total(i),~,~,~,~ ] = totalMass( UA(i),desiredPower,p1,T4,PR_c,A_panel,...
                 T_amb,fluid,mode,m_dotcycle_max,options1);
 %             if i > 1 && mass_total(i) > mass_total(i-1)
@@ -59,7 +59,6 @@ else
 %                 break
 %             end
         end
-        mass_total
         
         [~,inde] = min(mass_total);
         

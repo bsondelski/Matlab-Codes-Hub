@@ -4,10 +4,10 @@ function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,...
     A_panel,T_amb,fluid,mode,plot)
 % entire Brayton Cycle
 % 
-A_panel
-UA
-m_dot
-c = clock
+% A_panel
+% UA
+% m_dot
+% c = clock
 
 % Inputs:
 % m_dot: the mass flow in the cycle [kg/s]

@@ -45,7 +45,7 @@ m_dot(i) = m_dotlast;
 
 
 [net_power(i),~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] = ...
-    BraytonCycle(m_dot(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0)
+    BraytonCycle(m_dot(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0);
 
 net_power(i) = round(net_power(i),8);
 if net_power(1) == power
@@ -57,7 +57,7 @@ if net_power(1) == power
         ~,~,~,~,~,~] = BraytonCycle(m_dotcycle,p1,T4,...
         PR_c,UA,A_panel,T_amb,fluid,mode,0);
 else
-    m_dot(i) = m_dotlast + 0.5;
+    
 end
 
 % find range of m_dot where desired power is given by stepping down m_dot
@@ -65,9 +65,9 @@ end
 d_m_dot = 0.1;
 while a == 1
     i = i+1;
-    m_dot(i) = m_dot(i-1)-d_m_dot
+    m_dot(i) = m_dot(i-1)-d_m_dot;
     [net_power(i),~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] =...
-        BraytonCycle(m_dot(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0)
+        BraytonCycle(m_dot(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0);
     if isnan(net_power(i))
         % the m_dot decrease was too large, cut it in half
         d_m_dot = d_m_dot/2;

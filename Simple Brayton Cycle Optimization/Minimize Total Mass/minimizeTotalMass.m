@@ -43,7 +43,7 @@ function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_rad
 %     end
 % end
 
-[ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower,p1,T4,PR_c,T_amb,fluid,mode)
+[ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower,p1,T4,PR_c,T_amb,fluid,mode);
 
 
 % if max(size(gcp)) == 0 % parallel pool needed

@@ -20,7 +20,7 @@ A_panel
 
 % find minimum UA which gives desired power output
 [ UA_min,m_dotcycle_max ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
-    T_amb,fluid,mode)
+    T_amb,fluid,mode);
 
 
 if UA_min == Inf || m_dotcycle_max == Inf

@@ -22,7 +22,6 @@ function [ mass_total,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = tota
 % recuperator conductance
 
 % find heat output for reactor for specified recuperator
-UA
 [~,~,~,~,~,~,q_reactor,~,T1,m_dot,~,~,~,~] = SpecifiedPower2(desiredPower,...
     p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,m_dotcycle_max,options);
 

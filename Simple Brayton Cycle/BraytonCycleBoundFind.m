@@ -35,12 +35,14 @@ while stop == 0
     err = zeros(1,length(T));                   % preallocate space
     for i = 1:length(T)
         err(i) = simpleCycleError(T(i),m_dot,p1,T4,UA,A_panel,T_amb,fluid,mode,p2,p3,p4,p6,p5,TLowerBound);
-%         if i > 1 && abs(err(i)) > abs(err(i-1))
-%             % if error is getting farther from zero, the solution has
-%             % already been passed -no need to calculate the other values 
-%             err(i+1:end) = [];
-%             break
-%         end
+        if i > 1 && err(i) > 0
+            % if error is going positive, the solution has
+            % already been passed because too low temps have negative 
+            % error and too high temps have positive error -no need to 
+            % calculate the other values 
+            err(i+1:end) = [];
+            break
+        end
     end
 %     T
 %     err

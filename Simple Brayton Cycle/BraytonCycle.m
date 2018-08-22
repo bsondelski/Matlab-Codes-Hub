@@ -4,10 +4,10 @@ function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,...
     A_panel,T_amb,fluid,mode,plot)
 % entire Brayton Cycle
 % 
-% A_panel
-% UA
-% m_dot
-% c = clock
+A_panel
+UA
+m_dot
+c = clock
 
 % Inputs:
 % m_dot: the mass flow in the cycle [kg/s]
@@ -107,7 +107,7 @@ if tf == 1
     TLowerBound = 607.03;
 else
     names = ["CO2", "HELIUM", "CO", "OXYGEN", "WATER", "H2S"];
-    minT = [240, 2.18, 68.2, 54.4, 273.16, 200];
+    minT = [304.25, 2.18, 68.2, 54.4, 273.16, 200];
     TLowerBound = minT(names == fluid);
 end
 %     TLowerBound = refpropm('T','C',0,' ',0,fluid);

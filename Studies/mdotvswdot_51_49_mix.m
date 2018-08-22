@@ -4,10 +4,11 @@ p1=9000;
 T4=1100;
 PR_c=2;
 % UA=10000;
-A_panel=30;
+A_panel=40;
 T_amb=100;
-fluid={'CO2','WATER',[0.51,0.49]};
-UA=[3000:2000:20000, 6442.6]; % was 2022.3
+% fluid={'CO2','WATER',[0.51,0.49]};
+fluid = 'CO2';
+UA=[3000:2000:20000, 6150.8]; % was 2022.3
 % UA = 6000;
 % UA = [6000, 7000:1000:10000];
 % UA=[6000, 7000:1000:10000, 1000, 3000:1000:5000, 2000]
@@ -18,14 +19,14 @@ for j=1:length(UA)
      m_dot=0.5:0.05:2.5;
     for i=1:length(m_dot)
         mval = m_dot(i)
-        [net_power(i),~,~,~,~,~,~,q_reactor(i),q_rad(i),T1(i),Power_T(i),Power_c(i),HEXeffect(i),~,~,~,~,~,~,~,~,~,~,~,~,~,~] = BraytonCycle(m_dot(i),p1,T4,PR_c,UA(j),A_panel,T_amb,{'CO2','WATER',[0.51,0.49]},mode,0);
+        [net_power(i),~,~,~,~,~,~,q_reactor(i),q_rad(i),T1(i),Power_T(i),Power_c(i),HEXeffect(i),~,~,~,~,~,~,~,~,~,~,~,~,~,~] = BraytonCycle(m_dot(i),p1,T4,PR_c,UA(j),A_panel,T_amb,fluid,mode,0);
         %         [net_power(i),~,~,~,~,~,~,~,~,~,power_T(i),power_C(i),~,~,~,~,~,~,~,~,~,~,~,~,~] = BraytonCycle(m_dot(i),p1,T4,PR_c,UA(j),A_panel,T_amb,fluid,mode);
     end
 %     m_dot(isnan(net_power)) = [];
 %     net_power(isnan(net_power)) = [];
     options = [];
     [max_power(j),m_dotmax(j)] = findMaxPower2(p1,T4,PR_c,UA(j),A_panel,T_amb,fluid,mode,options);
-    [~,~,~,~,~,~,~,q_reactormax(j),~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] = BraytonCycle(m_dotmax(j),p1,T4,PR_c,UA(j),A_panel,T_amb,{'CO2','WATER',[0.51,0.49]},mode,0);
+    [~,~,~,~,~,~,~,q_reactormax(j),~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] = BraytonCycle(m_dotmax(j),p1,T4,PR_c,UA(j),A_panel,T_amb,fluid,mode,0);
     %     plot(m_dot,net_power/1000)
     
 %     if j == length(UA) || UA(j) == 2000
@@ -51,9 +52,9 @@ for j=1:length(UA)
 %     figure
 %     plot(q_reactor/1000,cyc_efficiency)
 %     title('efficiency')
-%         figure(1)
-%     plot(m_dot,T1)
-%     title('T1')
+        figure(1)
+    plot(q_reactor/1000,T1)
+    title('T1')
 %     figure
 %     plot(q_reactor/1000,abs(q_rad))
 %     title('q_r_a_d')

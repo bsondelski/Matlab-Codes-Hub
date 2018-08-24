@@ -36,8 +36,8 @@ else
     
     % find bounds for mass minimization
     UA_max = UA_min*2;
-    UA_min = UA_min + 1e-10;
-    options1 = optimset('TolX',10);
+    UA_min = UA_min + 1e-8;
+    options1 = optimset('TolX',1e-5);
     a = 1;
     loopcount = 1; 
     
@@ -50,14 +50,14 @@ else
         for i = 1:length(UA)
             [ mass_total(i),~,~,~,~ ] = totalMass( UA(i),desiredPower,p1,T4,PR_c,A_panel,...
                 T_amb,fluid,mode,m_dotcycle_max,options1);
-%             if i > 1 && mass_total(i) > mass_total(i-1)
-%                 % mass is getting larger, the solution has
-%                 % already been passed -no need to calculate the other
-%                 % values (starting with the minimum UA, the total mass
-%                 % should start large, reach a minimum, and then go up again
-%                 mass_total(i+1:end) = [];
-%                 break
-%             end
+            if i > 1 && mass_total(i) > mass_total(i-1)
+                % mass is getting larger, the solution has
+                % already been passed -no need to calculate the other
+                % values (starting with the minimum UA, the total mass
+                % should start large, reach a minimum, and then go up again
+                mass_total(i+1:end) = [];
+                break
+            end
         end
         
         [~,inde] = min(mass_total);

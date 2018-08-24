@@ -104,7 +104,7 @@ else
 %     end
 tf = iscell(fluid(1));
 if tf == 1
-    TLowerBound = 607.03;
+    TLowerBound = 390;
 else
     names = ["CO2", "HELIUM", "CO", "OXYGEN", "WATER", "H2S"];
     minT = [304.25, 2.18, 68.2, 54.4, 273.16, 200];

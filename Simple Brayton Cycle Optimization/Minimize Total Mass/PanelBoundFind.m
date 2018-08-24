@@ -23,7 +23,7 @@ while stop == 0
     % preallocate space
     minMass = zeros(1,steps);
     
-    parfor i = 1:length(A_panel_testvals)
+    for i = 1:length(A_panel_testvals)
 %         try
             [minMass(i),~,~,~,~,~,~] = minRadRecMass( A_panel_testvals(i),desiredPower,p1,T4,PR_c,T_amb,fluid,mode,1,2 );
 %         catch

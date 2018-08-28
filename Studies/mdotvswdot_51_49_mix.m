@@ -4,20 +4,21 @@ p1=25000;
 T4=1100;
 PR_c=2;
 % UA=10000;
-A_panel=60;
+A_panel=20;
 T_amb=100;
 fluid={'CO2','WATER',[0.51,0.49]};
 % fluid = 'CO2';
-UA=[3.245e3,4.0563e3,4.8676e3,5.6788e3,6.4901e3]; % was 2022.3
+% UA=[3.245e3,4.0563e3,4.8676e3,5.6788e3,6.4901e3]; % was 2022.3
 % UA = 6000;
 % UA = [6000, 7000:1000:10000];
 % UA=[6000, 7000:1000:10000, 1000, 3000:1000:5000, 2000]
+UA = linspace(100,100000,10)
 
 
 for j=1:length(UA)
     clear T1 net_power m_dot
      UVAL = UA(j)
-     m_dot=0.25:0.05:2.5;
+     m_dot=0.1:0.05:1.5;
     for i=1:length(m_dot)
         mval = m_dot(i)
         [net_power(i),~,~,~,~,~,~,q_reactor(i),q_rad(i),T1(i),Power_T(i),Power_c(i),HEXeffect(i),~,~,~,~,~,~,~,~,~,~,~,~,~,~] = BraytonCycle(m_dot(i),p1,T4,PR_c,UA(j),A_panel,T_amb,fluid,mode,0);

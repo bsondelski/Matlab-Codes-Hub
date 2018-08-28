@@ -104,7 +104,7 @@ else
 %     end
 tf = iscell(fluid(1));
 if tf == 1
-    TLowerBound = 390;
+    TLowerBound = 511;
 else
     names = ["CO2", "HELIUM", "CO", "OXYGEN", "WATER", "H2S"];
     minT = [304.25, 2.18, 68.2, 54.4, 273.16, 200];
@@ -157,42 +157,75 @@ end
         % solve for recuperator outlets
         [T6, T3,~,p_H,p_C,T_H,T_C] = HEX_bettersolve(T5,T2,p5,p6,p2,p3,m_dot,m_dot,UA,fluid,fluid,mode,1);
         
-        % solve for state after reactor
-        [q_rad,~,A_panel] = Radiator(m_dot,A_panel,T_amb,T6,TLowerBound,p6,p1,fluid,mode);
-        
-        [~,~,h4] = getPropsTP(T4,p4,fluid,mode,1);
-        [~,~,h3] = getPropsTP(T3,p3,fluid,mode,1);
-        q_reactor = m_dot*(h4-h3);
-        
-        net_power = Power_T-Power_c;
-        cyc_efficiency(1) = net_power/q_reactor;
-        cyc_efficiency(2) = cyc_efficiency(1)/(1-(T1/T4));
-        HEXeffect = (h3-h2)/(h5-h2);
-        energy = Power_T+Power_c+q_reactor+q_rad;
-        
-        if plot == 1
-            % extra points for reactor and radiator
-            T_reactmid = (T3 + T4)/2;
-            T_radmid = (T6 + T1)/2;
-            p_reactmid = (p3 + p4)/2;
-            p_radmid = (p6 + p1)/2;
-            
-            Tvector = [T1, T2, fliplr(T_C), T3, T_reactmid, T4, T5, T_H, T6, T_radmid, T1];
-            pvector = [p1, p2, fliplr(p_C), p3, p_reactmid, p4, p5, p_H, p6, p_radmid, p1];
-            
-            [ ~ ] = TSDiagram( Tvector,pvector,fluid,mode,TLowerBound );
-            %         title(['A_p_a_n_e_l = ', num2str(A_panel)])
-            %         title(['UA = ', num2str(UA),' [W/K]'])
-            title(['Reactor Heat Output = ', num2str(q_reactor/1000),' [kW]'])
-            ylim([TLowerBound, T4])
-            
-            %         chan = ddeinit('EES','DDE');
-            %         rc = ddeexec(chan,'[Open EES_MATLab.ees]');
-            %         save MatLabInput.txt T1 T2 T3 T4 T5 T6 p1 p2 p3 p4 p5 p6 -ascii
-            %         %     save MatLabInput.txt Tvector pvector -ascii
-            %         rc = ddeexec(chan,'[Solve]');
-            %         ddeterm(chan)
+        if isnan(T6)
+            % The recuperator is too small
+            net_power = NaN;
+            cyc_efficiency = NaN;
+            D_T = NaN;
+            D_c = NaN;
+            Ma_T = NaN;
+            Ma_c = NaN;
+            Anozzle = NaN;
+            q_reactor = NaN;
+            q_rad = NaN;
+            T1 = NaN;
+            Power_T = NaN;
+            Power_c = NaN;
+            HEXeffect = NaN;
+            energy = NaN;
+            p1 = NaN;
+            T2 = NaN;
+            p2 = NaN;
+            T3 = NaN;
+            p3 = NaN;
+            T4 = NaN;
+            p4 = NaN;
+            T5 = NaN;
+            p5 = NaN;
+            T6 = NaN;
+            p6 = NaN;
+            A_panel = NaN;
+            Vratio = NaN;
         else
+            
+            % solve for state after reactor
+            
+            [q_rad,~,A_panel] = Radiator(m_dot,A_panel,T_amb,T6,TLowerBound,p6,p1,fluid,mode);
+            
+            [~,~,h4] = getPropsTP(T4,p4,fluid,mode,1);
+            [~,~,h3] = getPropsTP(T3,p3,fluid,mode,1);
+            q_reactor = m_dot*(h4-h3);
+            
+            net_power = Power_T-Power_c;
+            cyc_efficiency(1) = net_power/q_reactor;
+            cyc_efficiency(2) = cyc_efficiency(1)/(1-(T1/T4));
+            HEXeffect = (h3-h2)/(h5-h2);
+            energy = Power_T+Power_c+q_reactor+q_rad;
+            
+            if plot == 1
+                % extra points for reactor and radiator
+                T_reactmid = (T3 + T4)/2;
+                T_radmid = (T6 + T1)/2;
+                p_reactmid = (p3 + p4)/2;
+                p_radmid = (p6 + p1)/2;
+                
+                Tvector = [T1, T2, fliplr(T_C), T3, T_reactmid, T4, T5, T_H, T6, T_radmid, T1];
+                pvector = [p1, p2, fliplr(p_C), p3, p_reactmid, p4, p5, p_H, p6, p_radmid, p1];
+                
+                [ ~ ] = TSDiagram( Tvector,pvector,fluid,mode,TLowerBound );
+                %         title(['A_p_a_n_e_l = ', num2str(A_panel)])
+                %         title(['UA = ', num2str(UA),' [W/K]'])
+                title(['Reactor Heat Output = ', num2str(q_reactor/1000),' [kW]'])
+                ylim([TLowerBound, T4])
+                
+                %         chan = ddeinit('EES','DDE');
+                %         rc = ddeexec(chan,'[Open EES_MATLab.ees]');
+                %         save MatLabInput.txt T1 T2 T3 T4 T5 T6 p1 p2 p3 p4 p5 p6 -ascii
+                %         %     save MatLabInput.txt Tvector pvector -ascii
+                %         rc = ddeexec(chan,'[Solve]');
+                %         ddeterm(chan)
+            else
+            end
         end
     end
     

@@ -78,7 +78,7 @@ while stop == 0
             stop = 0;
         elseif Bsign == Csign        % if no sign change between B and C
             % set A and B as Tmin and Tmax and end loop
-            fprintf(2, 'HEX_bettersolve boundFind: T_H,out wants to be lower than T_C,in - invalid HEX \n');
+%             fprintf(2, 'HEX_bettersolve boundFind: T_H,out wants to be lower than T_C,in - invalid HEX \n');
             Tmin = NaN;
             Tmax = NaN;
             stop = 1;

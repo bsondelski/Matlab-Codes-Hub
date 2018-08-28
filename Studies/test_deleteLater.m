@@ -59,3 +59,6 @@ for i=1:length(UA)
     100,{'CO2','WATER',[0.99,0.01]},mode,1.2078,optimset('TolX',1e-5));
 end
 
+[err] = maxPowerError( 11155.55555,40000,25000,1100,...
+            2,15,100,{'CO2','WATER',[0.51,0.49]},mode,optimset('TolX',1) )
+

@@ -23,7 +23,7 @@ A_panel
     T_amb,fluid,mode);
 
 
-if UA_min == Inf || m_dotcycle_max == Inf
+if isnan(UA_min) || isnan(m_dotcycle_max)
     minMass = NaN;
     UA = Inf;
     UA_min = Inf;

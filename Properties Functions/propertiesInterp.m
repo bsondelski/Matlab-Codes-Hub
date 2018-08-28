@@ -70,6 +70,11 @@ function [ result ] = propertiesInterp( out,in,val,p,mode )
 % 
 % % result = spline(x,y,val)
 
+% out 
+% in 
+% val
+% p
+
 
 if p == 25000
     props = mode(:,1:44);

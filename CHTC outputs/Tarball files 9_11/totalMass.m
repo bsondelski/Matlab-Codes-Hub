@@ -22,7 +22,7 @@ function [ mass_total,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = tota
 % recuperator conductance
 
 % find heat output for reactor for specified recuperator
-[~,~,~,~,~,~,q_reactor,~,T1,m_dot,T3,p3,T4,p4] = SpecifiedPower2(desiredPower,...
+[~,~,~,~,~,~,q_reactor,~,T1,m_dot,~,~,~,~] = SpecifiedPower2(desiredPower,...
     p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,m_dotcycle_max,options);
 
 
@@ -35,17 +35,8 @@ if isnan(m_dot)
 else
     % find system mass
     mass_reactor = 0.00131*q_reactor+100;     % original
-    
-    
     % mass_reactor = 0.000784*q_reactor+175.09;   % UW - CO2 (exotic fuel)
     % mass_reactor = 0.0034774*q_reactor+167.6;   % UO2 - CO2 (common fuel)
-    
-%     % call to python
-%     ploss_reactor = 0.0270;   % pressure drop in reactor
-%     p4 = p3-p3*ploss_reactor; % pressure at reactor outlet
-%     mass_reactor = ReactorMass(q_reactor,m_dot,p3,p4,T3,T4,fluid);
-    
-    
     mass_recuperator = 0.0131*UA; %convert to kW/K
     mass_radiator = 5.8684*A_panel;
     

@@ -61,4 +61,36 @@ end
 
 [err] = maxPowerError( 11155.55555,40000,25000,1100,...
             2,15,100,{'CO2','WATER',[0.51,0.49]},mode,optimset('TolX',1) )
+        
+        
+%%%%%%%%%%%%%%%%%%%%%%% max power vs UA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+p1 = 25000;
+T4 = 1100;
+PR_c = 2;
+A_panel = 18;
+T_amb = 100;
+fluid = {'CO2','WATER',[0.51,0.49]};
+desiredPower = 40000; % [W]
+
+UA = linspace(100,100000);
+
+for i = 1:length(UA)
+
+[max_power(i),m_dot(i)] = findMaxPower2(p1,T4,PR_c,UA(i),A_panel,T_amb,fluid,mode,[]);
+end
+plot(UA/1000,max_power/1000)
+
+
+
+[net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,...
+q_rad,T1,Power_T,Power_c,HEXeffect,energy,p1,T2,p2,T3,p3,T4,p4,T5,...
+p5,T6,p6,A_panel,Vratio] = BraytonCycle(0.7922,25000,1100,2,11.406e3,...
+54.0266,100,'CO2',2,0)
+
+
+
+
+
+
 

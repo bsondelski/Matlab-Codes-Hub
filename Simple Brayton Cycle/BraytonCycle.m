@@ -3,7 +3,7 @@ function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,...
     p5,T6,p6,A_panel,Vratio] = BraytonCycle(m_dot,p1,T4,PR_c,UA,...
     A_panel,T_amb,fluid,mode,plot)
 % entire Brayton Cycle
-% 
+% %
 % A_panel
 % UA
 % m_dot
@@ -205,6 +205,7 @@ end
             
             if plot == 1
                 % extra points for reactor and radiator
+                Tminplot = 240;
                 T_reactmid = (T3 + T4)/2;
                 T_radmid = (T6 + T1)/2;
                 p_reactmid = (p3 + p4)/2;
@@ -213,11 +214,11 @@ end
                 Tvector = [T1, T2, fliplr(T_C), T3, T_reactmid, T4, T5, T_H, T6, T_radmid, T1];
                 pvector = [p1, p2, fliplr(p_C), p3, p_reactmid, p4, p5, p_H, p6, p_radmid, p1];
                 
-                [ ~ ] = TSDiagram( Tvector,pvector,fluid,mode,TLowerBound );
+                [ ~ ] = TSDiagram( Tvector,pvector,fluid,mode,Tminplot );
                 %         title(['A_p_a_n_e_l = ', num2str(A_panel)])
                 %         title(['UA = ', num2str(UA),' [W/K]'])
-                title(['Reactor Heat Output = ', num2str(q_reactor/1000),' [kW]'])
-                ylim([TLowerBound, T4])
+%                 title(['Reactor Heat Output = ', num2str(q_reactor/1000),' [kW]'])
+                ylim([Tminplot, T4])
                 
                 %         chan = ddeinit('EES','DDE');
                 %         rc = ddeexec(chan,'[Open EES_MATLab.ees]');

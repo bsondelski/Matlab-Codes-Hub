@@ -1,4 +1,4 @@
-function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_radiator ] = minimizeTotalMass( desiredPower,p1,T4,PR_c,T_amb,fluid,mode )
+function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = minimizeTotalMass( desiredPower,p1,T4,PR_c,T_amb,fluid,mode )
 % gives minimum system mass for a cycle with a specified power output
 
 % Inputs:
@@ -63,11 +63,11 @@ function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_rad
 
 [ ~,UA,UA_min,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = minRadRecMass( A_panel,desiredPower,p1,T4,PR_c,T_amb,fluid,mode,2,1 );
 
-m_dot
+
 [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,...
     q_rad,T1,Power_T,Power_c,HEXeffect,energy,p1,T2,p2,T3,p3,T4,p4,T5,...
     p5,T6,p6,A_panel,Vratio] = BraytonCycle(m_dot,p1,T4,PR_c,UA,...
-    A_panel,T_amb,fluid,mode,0)
+    A_panel,T_amb,fluid,mode,1)
 
 end
 

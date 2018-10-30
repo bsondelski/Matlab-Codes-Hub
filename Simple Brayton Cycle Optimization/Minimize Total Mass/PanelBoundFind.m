@@ -10,9 +10,9 @@ function [ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower
 % Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
 
 % guesses may need to change if decide on a new power level
-A_panel_min = 18;
-A_panel_max = 65;
-steps = 4;
+A_panel_min = 49;
+A_panel_max = 300;
+steps = 8;
 
 
 stop = 0;
@@ -62,7 +62,7 @@ while stop == 0
         A_panel_min = A_panel_testvals(inde-1);
         
     else
-        if isnan(A_panel_testvals(inde-1)) || isnan(A_panel_testvals(inde+1))
+        if isnan(minMass(inde-1)) || isnan(minMass(inde+1))
             % modify search range if value to either side is not a valid
             % entry
             A_panel_min = A_panel_testvals(inde-1);

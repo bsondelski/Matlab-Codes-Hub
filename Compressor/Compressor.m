@@ -24,9 +24,10 @@ n_s = 0.672026784128928;
 n_c = 0.853835338294150;
 
 % psi = 0.606573624810839;
-% d_s = fzero(@psiDiameterError,[2, 5],[],psi);
-% [~,~,n_s] = psiDiameterError(d_s,psi);
-% [n_c,~] = compressorEfficiencyOld(n_s,d_s);
+% psi = 0.5
+% d_s = fzero(@psiDiameterError,[2, 5],[],psi)
+% [~,~,n_s] = psiDiameterError(d_s,psi)
+% [n_c,~] = compressorEfficiencyOld(n_s,d_s)
 
 % get initial properties
 % compressor inlet - s [J/kg-K], rho [kg/m3], h [J/kg]

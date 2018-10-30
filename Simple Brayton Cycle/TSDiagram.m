@@ -25,7 +25,7 @@ p = [6000,9000,12000,15000,18000,21000];
 %     else
 %     end
 % end
-
+% Tmin = 240;
 T = linspace(Tmin,1100,1000);
 
 for i = 1:length(p)

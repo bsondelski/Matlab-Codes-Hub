@@ -26,7 +26,7 @@ options = [];
 for j=1:(length(UA)-1)
     UA(j)
     [~,~,~,~,~,~,q_reactor(j+1),...
-    ~,~,m_dotlast(j+1),~,~,~,~] =...
+    ~,~,m_dotlast(j+1),T3out(j),p3out(j),T4out(j),p4out(j),~] =...
     SpecifiedPower2(desiredPower,p1,T4,PR_c,UA(j+1),A_panel,T_amb,fluid,mode,m_dotlast(j),options);
 end
 
@@ -81,12 +81,16 @@ title('Cycle Power Output = 40 kW')
 
 
 % updated mass model
+q_reactor(end) = [];
+
 for i = 1:length(q_reactor)
-mass_reactor(i) = ReactorMass(q_reactor(i),m_dot(i),p3(i),p4(i),T3(i),T4(i),fluid);
+mass_reactor(i) = ReactorMass(q_reactor(i),m_dotlast(i),p3out(i),p4out(i),T3out(i),T4out(i),fluid);
 end
 mass_recuperator = 0.004827273*UA + 23.59091; %convert to kW/K
 A_panel_plot = ones(1,length(UA))*A_panel;
 mass_radiator = 6.75*A_panel_plot;
+mass_recuperator(end) = [];
+mass_radiator(end) = [];
 mass_total = mass_reactor+mass_recuperator+mass_radiator;
 
 

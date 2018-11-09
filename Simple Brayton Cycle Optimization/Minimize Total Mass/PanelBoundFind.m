@@ -11,7 +11,7 @@ function [ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower
 
 % guesses may need to change if decide on a new power level
 A_panel_min = 49;
-A_panel_max = 300;
+A_panel_max = 100;
 steps = 8;
 
 

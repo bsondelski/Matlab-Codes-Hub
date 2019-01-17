@@ -1,4 +1,4 @@
-function [minMass,UA,UA_min,mass_reactor,mass_recuperator,mass_radiator,m_dot] = minRadRecMass( A_panel,desiredPower,p1,T4,PR_c,T_amb,fluid,mode,check,tolerance )
+function [minMass,UA,UA_min,mass_reactor,mass_recuperator,mass_radiator,m_dot] = minRadRecMass( A_panel,desiredPower,p1,T4,PR_c,T_amb,fluid,mode,check,tolerance,NucFuel,RecupMatl )
 % gives minimum system mass for a cycle with a specified radiator area
 % and power output
 
@@ -13,6 +13,12 @@ A_panel
 % T_amb: ambient temp for radiator [K]
 % fluid: working fluid for the system
 % Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% NucFuel: 'UO2' for uranium oxide (near term), 'UW' for uranium tunsten
+% (exotic)
+% RecupMatl: 'IN' for Inconel, 'SS' for stainless steel, 
+%   for recuperator far term exploration, use 'U#' -
+%   uninsulated, # of units, 'I#' -insulated, # of units
+%   (all units are Inconel for these cases)
 
 % Outputs:
 % minMass: lowest possible total system mass for system with desired
@@ -49,7 +55,7 @@ else
         
         for i = 1:length(UA)
             [ mass_total(i),~,~,~,~ ] = totalMass( UA(i),desiredPower,p1,T4,PR_c,A_panel,...
-                T_amb,fluid,mode,m_dotcycle_max,options1);
+                T_amb,fluid,mode,m_dotcycle_max,options1,NucFuel,RecupMatl);
             if i > 1 && mass_total(i) > mass_total(i-1)
                 % mass is getting larger, the solution has
                 % already been passed -no need to calculate the other
@@ -105,11 +111,11 @@ else
     
     options3 = [];%optimset('TolX',1e-2); %
     [UA,minMass] = fminbnd(@totalMass,UA_min,UA_max,options3,desiredPower,p1,T4,PR_c,A_panel,...
-        T_amb,fluid,mode,m_dotcycle_max,options2);
+        T_amb,fluid,mode,m_dotcycle_max,options2,NucFuel,RecupMatl);
     
     if check == 2
         [ ~,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = totalMass( UA,desiredPower,p1,T4,PR_c,A_panel,...
-            T_amb,fluid,mode,m_dotcycle_max,options2);
+            T_amb,fluid,mode,m_dotcycle_max,options2,NucFuel,RecupMatl);
     else
         mass_reactor = inf;
         mass_recuperator = inf;

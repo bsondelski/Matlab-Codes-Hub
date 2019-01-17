@@ -18,16 +18,26 @@ function [T_out,D,N,Power,Ma,h2a] = Compressor(m_dot,T_in,p_in,p_out,fluid,mode)
 % Ma: the mach number of the compressor outlet
 % h2a: enthalpy of the flow at the outlet of the compressor [J/kg]
 
+% baseline case
 psi = 0.6;
 d_s = 3.842092247585562;
 n_s = 0.672026784128928;
 n_c = 0.853835338294150;
 
-% psi = 0.606573624810839;
-% psi = 0.5
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% To find new values for the specific speed, specific diameter, efficiency,
+% set a psi and run the four lines of code below and replace values above
+% with the results.
+
+% psi = 0.6;
 % d_s = fzero(@psiDiameterError,[2, 5],[],psi)
 % [~,~,n_s] = psiDiameterError(d_s,psi)
 % [n_c,~] = compressorEfficiencyOld(n_s,d_s)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % get initial properties
 % compressor inlet - s [J/kg-K], rho [kg/m3], h [J/kg]

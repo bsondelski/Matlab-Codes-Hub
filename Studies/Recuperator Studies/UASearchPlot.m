@@ -1,3 +1,5 @@
+%plots UA vs effectiveness
+
 T_H_in=922;
 T_C_in=556;
 p_H_in=515;
@@ -9,7 +11,7 @@ m_dot_C=1.55;
 fluid_C='CO1';
 fluid_H='CO2';
 mode=2;
-plot=2;
+
 
 
 UA=300:10:15000;

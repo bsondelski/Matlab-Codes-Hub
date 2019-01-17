@@ -47,7 +47,7 @@ m_dot(i) = m_dotlast;
 [net_power(i),~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] = ...
     BraytonCycle(m_dot(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0);
 
-net_power(i) = round(net_power(i),8);
+net_power(i) = round(net_power(i),5);
 if net_power(1) == power
     m_dotcycle = m_dotlast;
     a = 2;

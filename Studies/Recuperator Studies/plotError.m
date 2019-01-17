@@ -1,4 +1,4 @@
-%%for plotting error!!!
+%%for plotting error vs TH guess!!!
 T_H_in=1084;
 T_C_in=241;
 N=20;

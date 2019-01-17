@@ -1,4 +1,4 @@
-function [ mass ] = ReactorMass( power_thermal,m_dot,p_in,p_out,T_in,T_out,fluid )
+function [ mass ] = ReactorMass( power_thermal,m_dot,p_in,p_out,T_in,T_out,fluid,NucFuel )
 % find reactor mass using python code written by Alex Swenson
 
 mycomputer = getenv('computername');
@@ -32,7 +32,17 @@ p_out = p_out*1000; % convert to Pa
 % T_out
 % p_in
 % p_out
-mass = py.reactor_mass.reactor_mass('UO2', fluidin, power_thermal, m_dot, [T_in, T_out], [p_in, p_out]);
+rxtr = py.reactor_mass.reactor_mass(NucFuel, fluidin, power_thermal, m_dot, [T_in, T_out], [p_in, p_out]);
+mass = rxtr.mass;
+
+% check if reactor power output matches thermal power desired - fuel
+% fraction bounds in reactor model may need to be altered if the results do
+% not match
+q = rxtr.gen_Q;
+diff = abs(power_thermal - q);
+if diff > 1
+    error('reactor output does not match desired thermal output')
+end
 
 end
 

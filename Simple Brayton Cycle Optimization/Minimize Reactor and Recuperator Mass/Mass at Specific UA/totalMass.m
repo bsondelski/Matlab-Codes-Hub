@@ -1,5 +1,5 @@
 function [ mass_total,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = totalMass( UA,desiredPower,p1,T4,PR_c,A_panel,...
-    T_amb,fluid,mode,m_dotcycle_max,options)
+    T_amb,fluid,mode,m_dotcycle_max,options,NucFuel,RecupMatl)
 
 % gives total system mass for a cycle with a specified recuperator
 % conductance and power output
@@ -16,6 +16,12 @@ function [ mass_total,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = tota
 % Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
 % m_dotcycle_max: maximum mass flow rate possible which will provide the
 % desired power output
+% NucFuel: 'UO2' for uranium oxide (near term), 'UW' for uranium tunsten
+% (exotic)
+% RecupMatl: 'IN' for Inconel, 'SS' for stainless steel, 
+%   for recuperator far term exploration, use 'U#' -
+%   uninsulated, # of units, 'I#' -insulated, # of units
+%   (all units are Inconel for these cases)
 
 % Outputs: 
 % mass_total: total system mass for system with desired power output and
@@ -43,7 +49,7 @@ else
     % call to python
 %     ploss_reactor = 0.0270;   % pressure drop in reactor
 %     p4 = p3-p3*ploss_reactor; % pressure at reactor outlet
-    mass_reactor = ReactorMass(q_reactor,m_dot,p3,p4,T3,T4,fluid);
+    mass_reactor = ReactorMass(q_reactor,m_dot,p3,p4,T3,T4,fluid,NucFuel);
 %     
     %%%%% original
 %     mass_recuperator = 0.0131*UA; %convert to kW/K
@@ -76,9 +82,10 @@ else
 %         mass_recuperator = 0.005772727*UA + 32.00909; %convert to kW/K 
 %     end
 
-mass_recuperator = RecuperatorMass( T5,'SS',UA );
+mass_recuperator = RecuperatorMass( T5,RecupMatl,UA,fluid );
     
     mass_radiator = 6.75*A_panel;
+%   mass_radiator = RadDens*A_panel;
     
     % modesize = size(mode);
     % if modesize(1) > 1

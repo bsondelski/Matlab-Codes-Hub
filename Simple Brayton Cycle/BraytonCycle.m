@@ -47,35 +47,37 @@ function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,...
 
 [p2,p3,p4,p6,p5,~] = findPressures(p1,PR_c);
 
-if  p1 < 7390 || p2 < 7390 || p3 < 7390 || p4 < 7390 || p5 < 7390 || p6 < 7390
-    net_power = NaN;
-    cyc_efficiency = NaN;
-    D_T = NaN;
-    D_c = NaN;
-    Ma_T = NaN;
-    Ma_c = NaN;
-    Anozzle = NaN;
-    q_reactor = NaN;
-    q_rad = NaN;
-    T1 = NaN;
-    Power_T = NaN;
-    Power_c = NaN;
-    HEXeffect = NaN;
-    energy = NaN;
-    p1 = NaN;
-    T2 = NaN;
-    p2 = NaN;
-    T3 = NaN;
-    p3 = NaN;
-    T4 = NaN;
-    p4 = NaN;
-    T5 = NaN;
-    p5 = NaN;
-    T6 = NaN;
-    p6 = NaN;
-    A_panel = NaN;
-    Vratio = NaN;
-else
+% if  p1 < 7390 || p2 < 7390 || p3 < 7390 || p4 < 7390 || p5 < 7390 || p6 < 7390
+%     net_power = NaN;
+%     cyc_efficiency = NaN;
+%     D_T = NaN;
+%     D_c = NaN;
+%     Ma_T = NaN;
+%     Ma_c = NaN;
+%     Anozzle = NaN;
+%     q_reactor = NaN;
+%     q_rad = NaN;
+%     T1 = NaN;
+%     Power_T = NaN;
+%     Power_c = NaN;
+%     HEXeffect = NaN;
+%     energy = NaN;
+%     p1 = NaN;
+%     T2 = NaN;
+%     p2 = NaN;
+%     T3 = NaN;
+%     p3 = NaN;
+%     T4 = NaN;
+%     p4 = NaN;
+%     T5 = NaN;
+%     p5 = NaN;
+%     T6 = NaN;
+%     p6 = NaN;
+%     A_panel = NaN;
+%     Vratio = NaN;
+% else
+    
+    
     % set lower bound for boundFind function according to fluid properties
     % - Tmin
 %     tf = strcmp('CO2',fluid);
@@ -232,5 +234,5 @@ end
     end
     
 end
-end
+% end
 

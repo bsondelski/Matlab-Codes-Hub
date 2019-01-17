@@ -30,6 +30,8 @@ for j=1:(length(UA)-1)
     SpecifiedPower2(desiredPower,p1,T4,PR_c,UA(j+1),A_panel,T_amb,fluid,mode,m_dotlast(j),options);
 end
 
+
+% find qreactor for dotted portion of the line
 m_dotlast2(1) = m_dotcycle_max;
 q_reactor2(1) = q_reactor(1);
 for j=1:(length(UA)-1)
@@ -38,7 +40,15 @@ for j=1:(length(UA)-1)
     ~,~,m_dotlast2(j+1),~,~,~,~] =...
     SpecifiedPower3(desiredPower,p1,T4,PR_c,UA(j+1),A_panel,T_amb,fluid,mode,m_dotlast2(j),options);
 end
- 
+
+ for j=1:length(UA)
+[net_power_j(j),~,~,~,~,~,~,q_reactor_j(j),...
+    ~,~,~,~,~,~,~,~,~,T3(j),p3(j),T4out(j),p4(j),T5(j),...
+    ~,~,~,~,~] = BraytonCycle(m_dotlast(j),p1,T4,PR_c,UA(j),...
+    A_panel,T_amb,fluid,mode,0);
+end
+
+set(0,'defaultAxesFontSize',12)
 
 % plot for UA vs Q_dot%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 figure
@@ -46,12 +56,12 @@ h = plot(q_reactor/1000,UA/1000);
 col = get(h,'color');
 hold on
 plot(q_reactor2/1000,UA/1000,'color',col,'LineStyle','--')
-scatter(q_reactor2(1)/1000,UA_min/1000,'k')
+scatter(q_reactor2(1)/1000,UA_min/1000,'k','filled')
 xlabel('Reactor Heat Output [kW]')
 ylabel('UA [kW/K]')
 grid on
 ylim([0 21])
-title('Cycle Power Output = 40 kW')
+% title('Cycle Power Output = 40 kW')
 
 % % plot for masses of reactor and recuperator%%%%%%%%%%%%%%%%%
 % mass_reactor = 0.00131*q_reactor+100;
@@ -81,10 +91,11 @@ title('Cycle Power Output = 40 kW')
 
 
 % updated mass model
-for i = 1:length(q_reactor)
-mass_reactor(i) = ReactorMass(q_reactor(i),m_dot(i),p3(i),p4(i),T3(i),T4(i),fluid);
+for i = 1:length(UA)
+mass_reactor(i) = ReactorMass(q_reactor(i),m_dotlast(i),p3(i),p4(i),T3(i),T4out(i),fluid);
+mass_recuperator(i) = RecuperatorMass( T5(i),'IN',UA(i) );
 end
-mass_recuperator = 0.004827273*UA + 23.59091; %convert to kW/K
+% mass_recuperator = 0.004827273*UA + 23.59091; %convert to kW/K
 A_panel_plot = ones(1,length(UA))*A_panel;
 mass_radiator = 6.75*A_panel_plot;
 mass_total = mass_reactor+mass_recuperator+mass_radiator;
@@ -99,14 +110,14 @@ plot(q_reactor/1000,mass_radiator, 'r')
 h = plot(q_reactor/1000,mass_total,'k');
 col = get(h,'color');
 % legend('Reactor','Recuperator','Reactor','Total','location','northwest')
-text(q_reactor(1)/1000+3,mass_reactor(1),'Reactor')
-text(q_reactor(1)/1000+3,mass_recuperator(1)+20,'Recuperator')
-text(q_reactor(1)/1000+3,mass_radiator(1),'Radiator')
-text(q_reactor(1)/1000+3,mass_total(1),'Total')
+text(q_reactor(end)/1000+3,mass_reactor(end),'Reactor')
+text(q_reactor(end)/1000+3,mass_recuperator(end)+20,'Recuperator')
+text(q_reactor(end)/1000+3,mass_radiator(end),'Radiator')
+text(q_reactor(end)/1000+3,mass_total(end),'Total')
 xlabel('Reactor Heat Output [kW]')
 ylabel('Mass [kg]')
-title('Cycle Power Output = 40 kW')
-xlim([80 320])
+% title('Cycle Power Output = 40 kW')
+xlim([80 100])
 grid on
 
 % total mass plot %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

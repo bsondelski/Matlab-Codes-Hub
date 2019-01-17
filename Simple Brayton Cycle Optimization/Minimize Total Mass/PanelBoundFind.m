@@ -1,4 +1,4 @@
-function [ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower,p1,T4,PR_c,T_amb,fluid,mode)
+function [ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower,p1,T4,PR_c,T_amb,fluid,mode,NucFuel,RecupMatl)
 
 % Inputs:
 % desiredpower: specified power for the system
@@ -8,6 +8,12 @@ function [ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower
 % T_amb: ambient temp for radiator [K]
 % fluid: working fluid for the system
 % Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% NucFuel: 'UO2' for uranium oxide (near term), 'UW' for uranium tunsten
+% (exotic)
+% RecupMatl: 'IN' for Inconel, 'SS' for stainless steel, 
+%   for recuperator far term exploration, use 'U#' -
+%   uninsulated, # of units, 'I#' -insulated, # of units
+%   (all units are Inconel for these cases)
 
 % guesses may need to change if decide on a new power level
 A_panel_min = 49;
@@ -23,9 +29,9 @@ while stop == 0
     % preallocate space
     minMass = zeros(1,steps);
     
-    for i = 1:length(A_panel_testvals)
+    parfor i = 1:length(A_panel_testvals)
 %         try
-            [minMass(i),~,~,~,~,~,~] = minRadRecMass( A_panel_testvals(i),desiredPower,p1,T4,PR_c,T_amb,fluid,mode,1,2 );
+[minMass(i),~,~,~,~,~,~] = minRadRecMass( A_panel_testvals(i),desiredPower,p1,T4,PR_c,T_amb,fluid,mode,1,2,NucFuel,RecupMatl );
 %         catch
 %             minMass(i) = NaN;
 %         end
@@ -53,7 +59,7 @@ while stop == 0
     
     if inde == 1
         % create search range that contains smaller panels
-        A_panel_min = A_panel_min*0.5;
+        A_panel_min = A_panel_min*0.75;
         A_panel_max = A_panel_testvals(inde+1);
         
     elseif inde == steps

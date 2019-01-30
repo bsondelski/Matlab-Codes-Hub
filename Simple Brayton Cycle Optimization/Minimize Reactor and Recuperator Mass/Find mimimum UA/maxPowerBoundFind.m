@@ -28,7 +28,7 @@ steps = 10;
 a = 1;
 j = 0;  % counter
 
-while a == 1 || j < 3
+while a == 1 %|| j < 3
     UA_testvals = linspace(UA_min,UA_max,steps);
     
 %     if j ==1
@@ -45,12 +45,12 @@ while a == 1 || j < 3
     for i = 1:length(UA_testvals)
         [err(i)] = maxPowerError( UA_testvals(i),desiredPower,p1,T4,...
             PR_c,A_panel,T_amb,fluid,mode,options );
-%         if i > 1 && abs(err(i)) > abs(err(i-1))
-%             % if error is getting farther from zero, the solution has
-%             % already been passed -no need to calculate the other values
-%             err(i+1:end) = [];
-%             break
-%         end
+        if i > 1 && abs(err(i)) > abs(err(i-1))
+            % if error is getting farther from zero, the solution has
+            % already been passed -no need to calculate the other values
+            err(i+1:end) = [];
+            break
+        end
     end
     
     [~,inde] = min(abs(err));

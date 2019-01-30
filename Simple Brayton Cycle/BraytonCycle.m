@@ -2,12 +2,6 @@ function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,...
     q_rad,T1,Power_T,Power_c,HEXeffect,energy,p1,T2,p2,T3,p3,T4,p4,T5,...
     p5,T6,p6,A_panel,Vratio] = BraytonCycle(m_dot,p1,T4,PR_c,UA,...
     A_panel,T_amb,fluid,mode,plot)
-% entire Brayton Cycle
-% %
-% A_panel
-% UA
-% m_dot
-% c = clock
 
 % Inputs:
 % m_dot: the mass flow in the cycle [kg/s]
@@ -41,73 +35,12 @@ function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,...
 % A_panel: area of radiator panel [m2]
 % Vratio: velocity ratio of turbine
 
-% m_dot
-% UA
-% A_panel
-
 [p2,p3,p4,p6,p5,~] = findPressures(p1,PR_c);
-
-% if  p1 < 7390 || p2 < 7390 || p3 < 7390 || p4 < 7390 || p5 < 7390 || p6 < 7390
-%     net_power = NaN;
-%     cyc_efficiency = NaN;
-%     D_T = NaN;
-%     D_c = NaN;
-%     Ma_T = NaN;
-%     Ma_c = NaN;
-%     Anozzle = NaN;
-%     q_reactor = NaN;
-%     q_rad = NaN;
-%     T1 = NaN;
-%     Power_T = NaN;
-%     Power_c = NaN;
-%     HEXeffect = NaN;
-%     energy = NaN;
-%     p1 = NaN;
-%     T2 = NaN;
-%     p2 = NaN;
-%     T3 = NaN;
-%     p3 = NaN;
-%     T4 = NaN;
-%     p4 = NaN;
-%     T5 = NaN;
-%     p5 = NaN;
-%     T6 = NaN;
-%     p6 = NaN;
-%     A_panel = NaN;
-%     Vratio = NaN;
-% else
     
     
-    % set lower bound for boundFind function according to fluid properties
-    % - Tmin
-%     tf = strcmp('CO2',fluid);
-%     if tf == 1
-%         TLowerBound = 240;
-%     elseif tf == 0
-%         tf = strcmp('HELIUM',fluid);
-%         if tf == 1
-%             TLowerBound = 5;
-%         elseif tf == 0
-%             tf = strcmp('CO',fluid);
-%             if tf == 1
-%                 TLowerBound = 133;
-%             elseif tf == 0
-%                 tf = strcmp('OXYGEN',fluid);
-%                 if tf == 1
-%                     TLowerBound = 154.581;
-%                 elseif tf == 0
-%                     tf = strcmp('WATER',fluid);
-%                     if tf == 1
-%                         TLowerBound = 273.16;
-%                     end                  
-%                 end
-%             end
-%         end
-%     end
 tf = iscell(fluid(1));
 if tf == 1
     TLowerBound = mode(1);
-%     TLowerBound = 621.56;
 else
     names = ["CO2", "HELIUM", "CO", "OXYGEN", "WATER", "H2S"];
     minT = [304.25, 2.18, 68.2, 54.4, 273.16, 200];
@@ -203,7 +136,7 @@ end
             cyc_efficiency(1) = net_power/q_reactor;
             cyc_efficiency(2) = cyc_efficiency(1)/(1-(T1/T4));
             HEXeffect = (h3-h2)/(h5-h2);
-            energy = Power_T+Power_c+q_reactor+q_rad;
+            energy = -Power_T+Power_c+q_reactor+q_rad;
             
             if plot == 1
                 % extra points for reactor and radiator
@@ -234,5 +167,4 @@ end
     end
     
 end
-% end
 

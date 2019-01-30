@@ -1,5 +1,5 @@
 % run with SS
-A_panel = 40:5:100;
+A_panel = [40:1:55, 60:5:85];
 for i = 1:length(A_panel)
 [minMass(i),UA(i),UA_min,mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i)] = minRadRecMass( A_panel(i),40000,9000,1100,2,200,'CO2',2,2,1,'UO2','IN' );
 end
@@ -9,11 +9,19 @@ end
 % end
 set(0,'defaultAxesFontSize',14)
 figure(1)
-scatter(A_panel,minMass,'filled','k')
+plot(A_panel,minMass,'k')
 xlabel('Radiator panel area [m^2]','fontsize',18)
 ylabel('Optimum cycle mass [kg]','fontsize',18)
 grid on
 box on
+hold on
+[~,I] = min(minMass);
+scatter(A_panel(I),minMass(I),'k','filled')
+scatter(A_panel(21),minMass(21),'k','filled')
+text(A_panel(I)+0.5,minMass(I)-12,'B','fontsize',14)
+text(A_panel(21)+0.8,minMass(21)-10,'A','fontsize',14)
+xlim([40 85])
+ylim([525 800])
 
 % plot(A_panel,mass_recuperator)
 % hold on 

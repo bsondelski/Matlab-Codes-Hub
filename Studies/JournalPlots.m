@@ -1,8 +1,9 @@
 p1=9000;
-T4=1100;
+T4=900;
 PR_c=2;
 % UA=10000;
-A_panel=80;
+A_panel=175;
+% A_panel=86;
 T_amb=200;
 fluid='CO2';
 mode=2;
@@ -13,7 +14,7 @@ NucFuel = 'UO2';
     T_amb,fluid,mode);
 % UA_min = UA_min + 400;
 UA_min = UA_min;
-UA=UA_min:50:UA_min+15000; % was 2022.3
+UA=UA_min:50:UA_min+12000; % was 2022.3
 m_dotlast(1) = m_dotcycle_max;
 
 [net_power,~,~,~,~,~,~,q_reactor(1),...
@@ -29,12 +30,12 @@ for j=1:(length(UA)-1)
         SpecifiedPower2(desiredPower,p1,T4,PR_c,UA(j+1),A_panel,T_amb,fluid,mode,m_dotlast(j),options);
     mass_reactor(j) = ReactorMass(q_reactor(j+1),m_dotlast(j+1),p3,p4,T3(j+1),T4out(j+1),fluid,NucFuel);
 %     mass_recuperator(j) = 0.008565*UA(j); %convert to kW/K
-    mass_recuperator(j) = RecuperatorMass( T5(j),'IN',UA(j),fluid );
+    mass_recuperator(j) = RecuperatorMass( T5(j),'SS',UA(j),fluid );
 end
 A_panel_i = ones(1,length(mass_reactor))*A_panel;
 mass_radiator = A_panel_i*6.75;
 mass_comb = mass_reactor + mass_recuperator + mass_radiator;
-
+set(0,'defaultAxesFontSize',14)
 figure(1)
 plot(mass_recuperator,mass_reactor,'k')
 xlabel('Recuperator Mass [kg]','fontsize',18)
@@ -45,30 +46,48 @@ plot(UA/1000,q_reactor/1000,'k')
 xlabel('Recuperator Conductance [kW/K]','fontsize',18)
 ylabel('Reactor Heat Input [kW]','fontsize',18)
 grid on
+xlim([2.5 15.5])
 figure(3)
 plot(UA(2:end)/1000,mass_comb,'k')
 hold on
 [~,I] = min(mass_comb);
 scatter(UA(I)/1000,mass_comb(I),'k','filled');
-text(UA(I)/1000 + 0.25,mass_comb(I) - 3,'A','fontsize',14)
+text(UA(I)/1000 + 0.15,mass_comb(I) - 2.5,'A','fontsize',14)
 xlabel('Recuperator Conductance [kW/K]','fontsize',18)
 ylabel('Combined Mass [kg]','fontsize',18)
 grid on
-% figure
-% plot(UA(2:end)/1000,mass_reactor)
+xlim([2.5 15.5])
 
-% checks for Alex
-% figure
-% plot(q_reactor(2:end)/1000,mass_reactor)
-% xlabel('Reactor Heat Input [kW]')
-% ylabel('Reactor Mass [kg]')
-% figure
-% plot(q_reactor(2:end)/1000,T3(2:end),q_reactor(2:end)/1000,T4out(2:end))
-% ylabel('Temperature [K]')
-% legend('T_i_n','T_o_u_t')
-% xlabel('Reactor Heat Input [kW]')
-% figure
-% plot(q_reactor(2:end)/1000,m_dotlast(2:end))
-% xlabel('Reactor Heat Input [kW]')
-% ylabel('Mass Flow Rate [kg/s]')
+figure(4)
+plot(q_reactor(2:end)/1000,mass_reactor,'k')
+ylabel('Reactor Mass [kg]','fontsize',18)
+xlabel('Reactor Heat Input [kW]','fontsize',18)
+grid on
+ylim([0 250])
 
+
+% 
+% % run with SS
+% A_panel = [78:1:100, 105:5:185];
+% for i = 1:length(A_panel)
+% [minMass(i),UA(i),UA_min,mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i)] = minRadRecMass( A_panel(i),40000,9000,900,2,200,'CO2',2,2,1,'UO2','SS' );
+% end
+% % A_panel = 70;
+% % parfor i = 1:length(A_panel)
+% % [minMass(i),UA(i),UA_min,mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i)] = minRadRecMass( A_panel(i),40000,25000,1100,2,200,'WATER',3,2,1,'UO2','IN' );
+% % end
+% set(0,'defaultAxesFontSize',14)
+% figure(4)
+% plot(A_panel,minMass,'k')
+% xlabel('Radiator panel area [m^2]','fontsize',18)
+% ylabel('Optimum cycle mass [kg]','fontsize',18)
+% grid on
+% box on
+% hold on
+% [~,I] = min(minMass);
+% scatter(A_panel(I),minMass(I),'k','filled')
+% scatter(A_panel(38),minMass(38),'k','filled')
+% text(A_panel(I)+0.7,minMass(I)-30,'B','fontsize',14)
+% text(A_panel(38)+0.8,minMass(38)-20,'A','fontsize',14)
+% xlim([78 185])
+% ylim([750 1450])

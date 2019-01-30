@@ -16,11 +16,11 @@
 % % plot temperature mass dependence along with recuperator inlet temps
 % % for UO2 only
 % % figure 4
-% plotTtinDependence
+plotTtinDependence
 
-% plot p1 dependence
-% figure 5
-plotP1Dependence
+% % plot p1 dependence
+% % figure 5
+% plotP1Dependence
 
 
 
@@ -197,14 +197,22 @@ for i=1:length(TotalMinMass)
 end
 set(0,'defaultAxesFontSize',16)
 figure(4)
-set(gcf, 'units','normalized','outerposition',[0 0 0.5 0.8]);
-plot(T4(1:6),TotalMinMass(1:6),'--k','linewidth',1.5)
+set(gcf, 'units','normalized','outerposition',[0 0 0.38 0.87]);
+leg1 = plot(T4(1:6),TotalMinMass(1:6),'--k','linewidth',1.5);
 hold on
-plot(T4(6:end),TotalMinMass(6:end),':k','linewidth',1.5)
+leg2 = plot(T4(6:end),TotalMinMass(6:end),':k','linewidth',1.5);
+
+%points 1,2
+scatter(T4(6),TotalMinMass(6),'k','filled')
+[~,I] = min(TotalMinMass);
+scatter(T4(I),TotalMinMass(I),'k','filled')
+text(T4(6)+3,TotalMinMass(6)+15,'B','fontsize',22)
+text(T4(I)+3,TotalMinMass(I)+18,'C','fontsize',22)
+
 set(gca,'box','off')
 
 % plot Stainless Steel 
-clear
+clearvars -except leg1 leg2
 load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_INTemp.mat'
 
 for i=1:length(TotalMinMass)
@@ -213,13 +221,19 @@ for i=1:length(TotalMinMass)
     p5,T6,p6,~,Vratio] = BraytonCycle(m_dot(i),9000,T4(i),2,UA(i),...
     A_panel(i),200,'CO2',2,0);
 end
-set(0,'defaultAxesFontSize',12)
+set(0,'defaultAxesFontSize',16)
 
-plot(T4,TotalMinMass,'k')
-ylim([500 1000])
+leg3 = plot(T4,TotalMinMass,'k');
+ylim([525 1000])
+
+% point 3
+[~,I] = min(TotalMinMass);
+scatter(T4(I),TotalMinMass(I),'k','filled')
+text(T4(I)+3,TotalMinMass(I)+18,'D','fontsize',22)
+
 ylabel('Optimum Cycle Mass [kg]','fontsize',22)
 xlabel('Turbine Inlet Temperature [K]','fontsize',22)
-legend({'Stainless Steel Near Term','Stainless Steel Far Term','Inconel'},'fontsize',16,'location','north')
+legend([leg1,leg2,leg3],{'Stainless Steel Near Term','Stainless Steel Far Term','Inconel'},'fontsize',16,'location','north')
 
 
 ax1 = gca;
@@ -232,7 +246,7 @@ ax2 = axes('Position',ax1_pos,...
 line(T5,TotalMinMass,'Parent',ax2,'Color','k')
 set(gca,'YTickLabel',[])
 xlim([T5(1),T5(end)])
-ylim([500 1000])
+ylim([525 1000])
 xlabel('Recuperator Inlet Temperature [K]','fontsize',22)
 end
 
@@ -262,7 +276,7 @@ load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Stud
 plot(p1./1000,TotalMinMass,'k')
 [minMass,I] = min(TotalMinMass);
 scatter(p1(I)/1000,minMass,'k')
-text(p1(end)/1000+0.2,TotalMinMass(end),['T_4 = 970 K'],'fontsize',11)
+text(p1(end)/1000+0.2,TotalMinMass(end),['T_4 = 980 K'],'fontsize',11)
 text(p1(end)/1000+0.2,TotalMinMass(end)+20,['Stainless Steel'],'fontsize',11)
 
 % Inconel

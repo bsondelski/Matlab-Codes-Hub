@@ -11,9 +11,9 @@ function [ s_cycle ] = TSDiagram( Tvector,pvector,fluid,mode,Tmin )
 % s_cycle: vector of enthalpies around the cycle [kJ/kg-K]
 
 figure
-
+set(0,'defaultAxesFontSize',14)
 % plot isobars
-p = [6000,9000,12000,15000,18000,21000];
+p = [21000,18000,15000,12000,9000,6000];
 
 % tf = strcmp('CO2',fluid);
 % if tf == 1
@@ -32,8 +32,8 @@ for i = 1:length(p)
     [s,~,~] = getPropsTP(T,p(i),fluid,mode,2);
     s = s/1000;
     plot(s,T)
-    xlabel('s[kJ/kg-K]')
-    ylabel('T[K]')
+    xlabel('Entropy [kJ/kg-K]','fontsize',18)
+    ylabel('Temperature [K]','fontsize',18)
     hold on
 end
 tf = iscell(fluid(1));
@@ -95,19 +95,19 @@ plot(s_qtot,T_qtot)
 % plot cycle
 [s_cycle,~,~] = getPropsTP(Tvector,pvector,fluid,mode,2);
 s_cycle = s_cycle/1000;
-plot(s_cycle,Tvector,'k')
+plot(s_cycle,Tvector,'k','LineWidth',1.5)
 
 spoints = [s_cycle(1),s_cycle(2),s_cycle(24),s_cycle(26),s_cycle(27),s_cycle(49)];
 Tpoints = [Tvector(1),Tvector(2),Tvector(24),Tvector(26),Tvector(27),Tvector(49)];
-scatter(spoints,Tpoints)
+scatter(spoints,Tpoints,'k','filled')
 
-legend('6000 kPa','9000 kPa','12000 kPa','15000 kPa','18000 kPa','21000 kPa','location','northwest')
+legend({'21000 kPa','18000 kPa','15000 kPa','12000 kPa','9000 kPa','6000 kPa'},'location','northwest','fontsize',14)
 
-text(spoints(1)+0.03,Tpoints(1)-5,'1')
-text(spoints(2)-0.1,Tpoints(2)+5,'2')
-text(spoints(3)-0.1,Tpoints(3)+5,'3')
-text(spoints(4)-0.1,Tpoints(4)-5,'4')
-text(spoints(5)+0.03,Tpoints(5)-5,'5')
-text(spoints(6)+0.03,Tpoints(6)-5,'6')
+text(spoints(1)+0.08,Tpoints(1)-8,'1','fontsize',14)
+text(spoints(2)-0.13,Tpoints(2)+10,'2','fontsize',14)
+text(spoints(3)-0.13,Tpoints(3)+10,'3','fontsize',14)
+text(spoints(4)-0.13,Tpoints(4)-3,'4','fontsize',14)
+text(spoints(5)+0.08,Tpoints(5)-8,'5','fontsize',14)
+text(spoints(6)+0.08,Tpoints(6)-8,'6','fontsize',14)
 end
 

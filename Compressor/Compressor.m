@@ -25,18 +25,16 @@ n_s = 0.672026784128928;
 n_c = 0.853835338294150;
 
 
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % To find new values for the specific speed, specific diameter, efficiency,
 % set a psi and run the four lines of code below and replace values above
 % with the results.
-
-% psi = 0.6;
+% 
+% psi = 0.64;
 % d_s = fzero(@psiDiameterError,[2, 5],[],psi)
 % [~,~,n_s] = psiDiameterError(d_s,psi)
 % [n_c,~] = compressorEfficiencyOld(n_s,d_s)
-
+% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % get initial properties

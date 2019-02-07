@@ -8,6 +8,7 @@ parfor i = 1:length(p1)
     p1(i)
     [ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i) ] = minimizeTotalMass( 40000,p1(i),900,2,200,'CO2',2 );
 end
+
 set(0,'defaultAxesFontSize',12)
 figure(1)
 plot(p1./1000,TotalMinMass,'k')

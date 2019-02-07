@@ -1,15 +1,29 @@
 % plots cycle power output vs reactor heat output for various UA values
 
 clear
+% p1=9000;
+% T4=1100;
+% PR_c=2;
+% % UA=10000;
+% A_panel=100;
+% T_amb=100;
+% fluid='CO2';
+% mode=2;
+% UA=[6000, 7000:1000:10000, 1000, 3000:1000:5000, 1921.6]; % was 2022.3
+% % UA = 6000;
+% % UA = [600:100:1000];
+% % UA=[6000, 7000:1000:10000, 1000, 3000:1000:5000, 2000]
+% m_dot=0.35:0.05:3;
+
 p1=9000;
-T4=1100;
+T4=900;
 PR_c=2;
 % UA=10000;
-A_panel=100;
-T_amb=100;
+A_panel=175;
+T_amb=200;
 fluid='CO2';
 mode=2;
-UA=[6000, 7000:1000:10000, 1000, 3000:1000:5000, 1921.6]; % was 2022.3
+UA=[1000:1000:2000, 2.9335e+03, 4000:1000:8000]; % was 2022.3
 % UA = 6000;
 % UA = [600:100:1000];
 % UA=[6000, 7000:1000:10000, 1000, 3000:1000:5000, 2000]
@@ -68,7 +82,11 @@ for j=1:length(UA)
     plot(q_reactor/1000,net_power/1000)
     %     figure
     %     plot(m_dot,power_T,m_dot,power_C)
+    if j == 7 || j == 8
+        text(q_reactor(end)/1000+10,net_power(end)/1000+1,[num2str(UA(j)/1000) ' kW/K'])
+    else
     text(q_reactor(end)/1000+10,net_power(end)/1000,[num2str(UA(j)/1000) ' kW/K'])
+    end
     
     hold on
 end
@@ -81,7 +99,7 @@ grid on
 % % plot([0,424],[40,40],'k')
 plot([0,1200],[40,40],'k')
 h1 = scatter(q_reactormax/1000,max_power/1000,'k');
-h2 = scatter(q_reactormax(end)/1000,max_power(end)/1000,'filled','k');
+h2 = scatter(q_reactormax(3)/1000,max_power(3)/1000,'filled','k');
 % legend('2.022 kW/K','5 kW/K','7 kW/K','9 kW/K','11 kW/K','13 kW/K','15 kW/K','17 kW/K','19 kW/K','40 kW','Peak Power','location','northeast')
 % legend('1 kW/K Conductance','2.022 kW/K Conductance','3 kW/K Conductance','5 kW/K Conductance','5 kW/K Conductance','6 kW/K Conductance',...
 %     '7 kW Conductance','8 kW/K Conductance','9 kW/K Conductance','10 kW/K Conductance','40 kW Power Output','Peak Power','location','northeast')
@@ -89,10 +107,11 @@ h2 = scatter(q_reactormax(end)/1000,max_power(end)/1000,'filled','k');
 %     '7 kW','8 kW/K','9 kW/K','10 kW/K','40 kW Power Output','40 kW Power Output','Peak Power','location','northeast')
 legend([h1 h2],{'Peak Power','40 kW Power Output'})
 % legend([h1],{'Peak Power'})
-ylim([10 70])
-xlim([0 1200])
+% ylim([10 70])
+% xlim([0 1200])
 
-
+ylim([10 58])
+xlim([0 1000])
 
 % vs m_dot!
 

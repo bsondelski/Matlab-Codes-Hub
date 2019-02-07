@@ -2,7 +2,7 @@ tic
 p1 = 9000;
 T4 = 1100;
 PR_c = 2;
-A_panel = 40:2:120;
+A_panel = 40:10:120;
 T_amb = 100;
 fluid = 'CO2';
 mode = 2;

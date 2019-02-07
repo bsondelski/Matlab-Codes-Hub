@@ -1,4 +1,4 @@
-function [ mass ] = RecuperatorMass( T5,Material,UA,fluid )
+function [ mass ] = RecuperatorMass( p2,T5,p5,Material,UA,fluid,mode )
 % Inputs:
 % T5: hot side inlet temperature (used for allowable stress scaling) [K]
 % RecupMatl: 'IN' for Inconel, 'SS' for stainless steel,
@@ -12,6 +12,9 @@ function [ mass ] = RecuperatorMass( T5,Material,UA,fluid )
 % mass: total unit mass [kg]
 
 
+[~,rhoHot,~] = getPropsTP(T5,p5,fluid,mode,2);
+[~,rhoCold,~] = getPropsTP(T5,p2,fluid,mode,2);
+
 tf = iscell(fluid(1));
 if tf == 1
     %     comp = cell2mat(fluid(3));
@@ -23,6 +26,12 @@ if tf == 1
     %     fluidin = py.dict(pyargs(fluid{1},comp(1),fluid{2},comp(2)));
     
 elseif strcmp(fluid,'CO2') == 1
+    % set original pressure, temperature, and density valuesosn email 
+    ORIGINAL_T5 = 823.15; % K
+    ORIGINAL_P2 = 18000; % kPa
+    ORIGINAL_P5 = 9229.3; % kPa
+    [~,rhoColdDesign,~] = getPropsTP(ORIGINAL_T5,ORIGINAL_P2,fluid,mode,2);
+    [~,rhoHotDesign,~] = getPropsTP(ORIGINAL_T5,ORIGINAL_P5,fluid,mode,2);
     
     % temp values [K]
     Temp = [204, 316, 426, 482, 538, 648, 760, 815];
@@ -55,13 +64,16 @@ elseif strcmp(fluid,'CO2') == 1
         % get allowable stress at T5
         Stress_allow_T = spline(Temp, Stress_allow, T5);
         
-        % get actual mass
-%         mass5 = (Stress_allow_550C + 0.6*designPressure)/(Stress_allow_T + 0.6*operatingPressure)*Mass_550C;
-        mass5 = Stress_allow_550C/Stress_allow_T*Mass_550C;
-        %     mass6 = Stress_allow_650C/Stress_allow_T*Mass_650C;
-        %     massvec = [mass5,mass6];
-        %     mass = mean(massvec);
-        mass = mass5;
+%         % get actual mass
+% %         mass5 = (Stress_allow_550C + 0.6*designPressure)/(Stress_allow_T + 0.6*operatingPressure)*Mass_550C;
+%         mass5 = Stress_allow_550C/Stress_allow_T*Mass_550C;
+%         %     mass6 = Stress_allow_650C/Stress_allow_T*Mass_650C;
+%         %     massvec = [mass5,mass6];
+%         %     mass = mean(massvec);
+%         mass = mass5;
+        
+tubeFrac = 0.2272;
+        
         
     elseif Material == 'IN'
         Stress_allow = [42600, 40300, 40000, 40000, 40000, 33100, 10700, 3200];
@@ -89,16 +101,16 @@ elseif strcmp(fluid,'CO2') == 1
 
         % get allowable stress at T5
         Stress_allow_T = spline(Temp, Stress_allow, T5);
-        
-        % get actual mass
-%         mass5 = (Stress_allow_550C + 0.6*designPressure)/(Stress_allow_T + 0.6*operatingPressure)*Mass_550C;
-        mass5 = Stress_allow_550C/Stress_allow_T*Mass_550C;
-%         mass6 = Stress_allow_650C/Stress_allow_T*Mass_650C;
-%         mass7 = Stress_allow_750C/Stress_allow_T*Mass_750C;
-%         massvec = [mass5,mass6,mass7];
-%         mass = mean(massvec);
-        mass = mass5;
-
+%         
+%         % get actual mass
+% %         mass5 = (Stress_allow_550C + 0.6*designPressure)/(Stress_allow_T + 0.6*operatingPressure)*Mass_550C;
+%         mass5 = Stress_allow_550C/Stress_allow_T*Mass_550C;
+% %         mass6 = Stress_allow_650C/Stress_allow_T*Mass_650C;
+% %         mass7 = Stress_allow_750C/Stress_allow_T*Mass_750C;
+% %         massvec = [mass5,mass6,mass7];
+% %         mass = mean(massvec);
+%         mass = mass5;
+tubeFrac = 0.5716;
     elseif Material == 'U1'
         mass = 0.005963636363636*UA + 29.145454545454552;
     elseif Material == 'U2'
@@ -112,6 +124,14 @@ elseif strcmp(fluid,'CO2') == 1
     elseif Material == 'I4'
         mass = 0.002530909090909*UA + 7.436363636363637;
     end
+    
+    massTubes = tubeFrac*Mass_550C;
+        massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T)*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
+        
+        massShell = Mass_550C - massTubes;
+        massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
+        
+        mass = massShellNew + massTubesNew;
 elseif strcmp(fluid,'WATER') == 1
     fluidin = 'H2O';
     

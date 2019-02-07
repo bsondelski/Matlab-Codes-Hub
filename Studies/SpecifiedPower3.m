@@ -1,9 +1,9 @@
 function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,q_reactor,...
     q_rad,T1,m_dotcycle,T3,p3,T4,p4] =...
-    SpecifiedPower2(power,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,m_dotlast,options)
+    SpecifiedPower3(power,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,m_dotlast,options)
 
 % finding the mass flow rate required for the specified power output of the
-% system
+% system with larger reactor sizes
 
 % Inputs:
 % power: specified power for the system

@@ -6,21 +6,21 @@
 
 
 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% UO2 Studies %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% % plot PR dependence
-% % figure 1 - total mass
-% % figure 2 - Turbine Mach numbers
-% % figure 3 - Compressor Mach numbers
-% plotPRdependence
-% 
-% % plot temperature mass dependence along with recuperator inlet temps
-% % for UO2 only
-% % figure 4
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% UO2 Studies %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plot PR dependence
+% figure 1 - total mass
+% figure 2 - Turbine Mach numbers
+% figure 3 - Compressor Mach numbers
+plotPRdependence
+
+% plot temperature mass dependence along with recuperator inlet temps
+% for UO2 only
+% figure 4
 plotTtinDependence
 
-% % plot p1 dependence
-% % figure 5
-% plotP1Dependence
+% plot p1 dependence
+% figure 5
+plotP1Dependence
 
 
 
@@ -197,7 +197,7 @@ for i=1:length(TotalMinMass)
 end
 set(0,'defaultAxesFontSize',16)
 figure(4)
-set(gcf, 'units','normalized','outerposition',[0 0 0.38 0.87]);
+set(gcf, 'units','normalized','outerposition',[0 0 0.36 0.8]);
 leg1 = plot(T4(1:6),TotalMinMass(1:6),'--k','linewidth',1.5);
 hold on
 leg2 = plot(T4(6:end),TotalMinMass(6:end),':k','linewidth',1.5);

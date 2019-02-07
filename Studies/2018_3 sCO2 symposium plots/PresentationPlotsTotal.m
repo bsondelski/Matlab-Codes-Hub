@@ -21,9 +21,10 @@ for i=1:length(A_panel)
     
     options = [];
     for j = 1:length(UA)
-        [net_power,cyc_efficiency(j,i),D_T,D_c,Ma_T,Ma_c,q_reactor(j,i),...
+        [net_power,cyc_efficiencyArray,D_T,D_c,Ma_T,Ma_c,q_reactor(j,i),...
             q_rad,T1,m_dot(j,i),T3(j,i),p3(j,i),T4_out(j,i),p4(j,i)] =...
             SpecifiedPower2(desiredPower,p1,T4,PR_c,UA(j),A_panel(i),T_amb,fluid,mode,m_dotcycle_max,options);
+        cyc_efficiency(j,i) = cyc_efficiencyArray(1);
         UA_output(j,i) = UA(j);
         A_panel_output(j,i) = A_panel(i)
     end

@@ -65,6 +65,17 @@ xlabel('Reactor Heat Input [kW]','fontsize',18)
 grid on
 ylim([0 250])
 
+figure(5)
+plot(UA(1:end-1)/1000,mass_reactor,'k')
+hold on 
+plot(UA(1:end-1)/1000,mass_recuperator,'--k')
+plot(UA(1:end-1)/1000,mass_radiator,'-.k')
+ylabel('Mass [kg]','fontsize',18)
+xlabel('Recuperator Conductance [kW/K]','fontsize',18)
+legend({'m_r_e_a_c_t_o_r','m_r_e_c_u_p_e_r_a_t_o_r','m_r_a_d_i_a_t_o_r'},'fontsize',11,'location','east')
+grid on
+ylim([0 1500])
+xlim([2 15])
 
 % 
 % % run with SS

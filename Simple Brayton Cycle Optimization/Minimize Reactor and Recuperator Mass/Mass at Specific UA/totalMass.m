@@ -28,7 +28,7 @@ function [ mass_total,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = tota
 % recuperator conductance
 
 % find heat output for reactor for specified recuperator
-[~,~,~,~,~,~,q_reactor,~,T1,m_dot,T3,p3,T4,p4,T5] = SpecifiedPower2(desiredPower,...
+[~,~,~,~,~,~,q_reactor,~,T1,m_dot,T3,p3,T4,p4,T5,p5,T2,p2,T6,p6] = SpecifiedPower2(desiredPower,...
     p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,m_dotcycle_max,options);
 
 
@@ -82,7 +82,7 @@ else
 %         mass_recuperator = 0.005772727*UA + 32.00909; %convert to kW/K 
 %     end
 
-mass_recuperator = RecuperatorMass( T5,RecupMatl,UA,fluid );
+mass_recuperator = RecuperatorMass( p2,T5,p5,RecupMatl,UA,fluid,mode );
     
     mass_radiator = 6.75*A_panel;
 %   mass_radiator = RadDens*A_panel;

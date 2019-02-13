@@ -2,12 +2,15 @@
 
 set(0,'defaultAxesFontSize',14)
 
+p2 = 18000;
+p5 = 9229.3;
 T5 = linspace(700,1050);
 UA = 15000;
 Material = 'IN';
 TR1 = 550 + 273.15;
 TR2 = 650 + 273.15;
 TR3 = 750 + 273.15;
+mode = 2;
 for i = 1:length(T5)
 %      if T5(i) < TR1
 %         mass_recuperator(i) = 0.002034545*UA + 8.481818; %convert to kW/K
@@ -26,7 +29,7 @@ for i = 1:length(T5)
 %         mass_recuperator(i) = 0.005772727*UA + 32.00909; %convert to kW/K
 %     end
    
-    [ mass_spline(i) ] = RecuperatorMass( T5(i),Material,UA,'CO2' );
+    [ mass_spline(i) ] = RecuperatorMass( p2,T5(i),p5,Material,UA,'CO2',mode );
 
 end
 creareTemp = [550, 650, 750] + 273.15;
@@ -58,7 +61,7 @@ for i = 1:length(T5)
 %         mass_recuperator(i) = 0.005772727*UA + 32.00909; %convert to kW/K
 %     end
     
-    [ mass_spline(i) ] = RecuperatorMass( T5(i),Material,UA,'CO2' );
+    [ mass_spline(i) ] = RecuperatorMass( p2,T5(i),p5,Material,UA,'CO2',mode );
 
 end
 creareTemp = [550, 650, 750] + 273.15;
@@ -69,7 +72,7 @@ plot(T5,mass_spline,'--k')
 scatter(creareTemp, crearemass,'k')
 xlabel('Temperature at Recuperator Hot Side Inlet [K]','fontsize',18)
 ylabel('Recuperator Mass [kg]','fontsize',18)
-legend({'UA = 15 [kW/K] Cubic interpolation - max allow stress','UA = 15 [kW/K] Industry partner data','UA = 4 [kW/K] Cubic interpolation - max allow stress','UA = 4 [kW/K] Industry partner data'},'location','northwest','fontsize',11)
+legend({'UA = 15 [kW/K] Using max. allowable stress','UA = 15 [kW/K] Industry partner data','UA = 4 [kW/K] Using max. allowable stress','UA = 4 [kW/K] Industry partner data'},'location','northwest','fontsize',12)
 % legend('UA = 15 [kW/K] Cubic interpolation - max allow stress','liner interpolation - Creare data','Creare Data','UA = 4 [kW/K] Cubic interpolation - max allow stress','liner interpolation - Creare data','Creare Data','location','northwest')
 % title('Inconel')
 grid on
@@ -80,7 +83,7 @@ UA = 15000;
 Material = 'SS';
 for i = 1:length(T5)
    
-    [ mass_spline(i) ] = RecuperatorMass( T5(i),Material,UA,'CO2' );
+    [ mass_spline(i) ] = RecuperatorMass( p2,T5(i),p5,Material,UA,'CO2',mode );
 
 end
 creareTemp = [550, 650] + 273.15;
@@ -94,7 +97,7 @@ scatter(creareTemp, crearemass,'k','filled')
 UA = 4000;
 for i = 1:length(T5)
    
-    [ mass_spline(i) ] = RecuperatorMass( T5(i),Material,UA,'CO2' );
+    [ mass_spline(i) ] = RecuperatorMass( p2,T5(i),p5,Material,UA,'CO2',mode );
 
 end
 creareTemp = [550, 650] + 273.15;

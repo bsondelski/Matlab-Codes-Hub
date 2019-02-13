@@ -78,9 +78,9 @@ ylabel('Recuperator Mass [kg]','fontsize',18)
 grid on
 
 
-
-
-
+% 
+% 
+% 
 % % create plot for 2 units and insulated core
 % 
 % UA = [4,15];
@@ -95,16 +95,16 @@ grid on
 % xlabel('UA [kW/K]','fontsize',18)
 % ylabel('Recuperator Mass [kg]','fontsize',18)
 % grid on
-
-
-
-
-
-
-%%%%%%%% combined %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
+% 
+% 
+% 
+% 
+% 
+% 
+% %%%%%%%% combined %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% 
+% 
 % 
 % 
 % set(0,'defaultAxesFontSize',14)
@@ -154,7 +154,7 @@ grid on
 % mass_550C = [42.9, 96];
 % mass_550Cline = 4.827272727*UA_vec+23.59090909;
 % 
-% l4 = plot(UA,mass_550C,'--ok','MarkerSize',10);
+% l4 = plot(UA,mass_550C,'--ok','MarkerFaceColor','k','MarkerSize',10);
 % 
 % mass_550Cline1 = mass_550Cline(UA_vec<4);
 % mass_550Cline2 = mass_550Cline(UA_vec>15);

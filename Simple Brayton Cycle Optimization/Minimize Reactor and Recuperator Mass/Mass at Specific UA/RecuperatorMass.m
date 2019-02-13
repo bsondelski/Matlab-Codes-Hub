@@ -15,6 +15,9 @@ function [ mass ] = RecuperatorMass( p2,T5,p5,Material,UA,fluid,mode )
 
 [~,rhoHot,~] = getPropsTP(T5,p5,fluid,mode,2);
 [~,rhoCold,~] = getPropsTP(T5,p2,fluid,mode,2);
+KPA2PSI = 0.145038;
+p2_psi = p2*KPA2PSI;
+p5_psi = p5*KPA2PSI;
 
 tf = iscell(fluid(1));
 if tf == 1
@@ -30,7 +33,9 @@ elseif strcmp(fluid,'CO2') == 1
     % set original pressure, temperature, and density valuesosn email 
     ORIGINAL_T5 = 823.15; % K
     ORIGINAL_P2 = 18000; % kPa
+    ORIGINAL_P2_PSI = ORIGINAL_P2*KPA2PSI; % kPa
     ORIGINAL_P5 = 9229.3; % kPa
+    ORIGINAL_P5_PSI = ORIGINAL_P5*KPA2PSI; % kPa
     [~,rhoColdDesign,~] = getPropsTP(ORIGINAL_T5,ORIGINAL_P2,fluid,mode,2);
     [~,rhoHotDesign,~] = getPropsTP(ORIGINAL_T5,ORIGINAL_P5,fluid,mode,2);
     
@@ -75,6 +80,19 @@ elseif strcmp(fluid,'CO2') == 1
         
 tubeFrac = 0.2272;
         
+    massTubes = tubeFrac*Mass_550C;
+%     massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T);
+%         massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T)*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
+                massTubesNew = massTubes*((Stress_allow_550C + 0.6*ORIGINAL_P2_PSI)/(Stress_allow_T + 0.6*p2_psi))*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
+
+        
+        massShell = Mass_550C - massTubes;
+%         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T);
+%         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
+           massShellNew = massShell*((Stress_allow_550C + 0.6*ORIGINAL_P5_PSI)/(Stress_allow_T + 0.6*p5_psi))*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
+
+        
+        mass = massShellNew + massTubesNew;
         
     elseif Material == 'IN'
         Stress_allow = [42600, 40300, 40000, 40000, 40000, 33100, 10700, 3200];
@@ -112,6 +130,20 @@ tubeFrac = 0.2272;
 % %         mass = mean(massvec);
 %         mass = mass5;
 tubeFrac = 0.5716;
+
+    massTubes = tubeFrac*Mass_550C;
+%     massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T);
+%         massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T)*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
+                massTubesNew = massTubes*((Stress_allow_550C + 0.6*ORIGINAL_P2_PSI)/(Stress_allow_T + 0.6*p2_psi))*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
+
+        
+        massShell = Mass_550C - massTubes;
+%         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T);
+%         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
+           massShellNew = massShell*((Stress_allow_550C + 0.6*ORIGINAL_P5_PSI)/(Stress_allow_T + 0.6*p5_psi))*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
+
+        
+        mass = massShellNew + massTubesNew;
     elseif Material == 'U1'
         mass = 0.005963636363636*UA + 29.145454545454552;
     elseif Material == 'U2'
@@ -126,13 +158,7 @@ tubeFrac = 0.5716;
         mass = 0.002530909090909*UA + 7.436363636363637;
     end
     
-    massTubes = tubeFrac*Mass_550C;
-        massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T)*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
-        
-        massShell = Mass_550C - massTubes;
-        massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
-        
-        mass = massShellNew + massTubesNew;
+
 elseif strcmp(fluid,'WATER') == 1
     fluidin = 'H2O';
     

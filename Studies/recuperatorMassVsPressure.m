@@ -3,7 +3,7 @@
 set(0,'defaultAxesFontSize',14)
 
 
-p1 = linspace(9000,20000);
+p1 = linspace(1000,50000);
 PR_c = 2;
 
 % pressure drop values
@@ -24,7 +24,7 @@ p5 = p6/(1-ploss_HEX_H);      % pressure at recuperatpr hot side inlet
 
 
 
-T5 = 900;
+T5 = 823;
 UA = 15000;
 mode = 2;
 
@@ -33,7 +33,7 @@ Material = 'SS';
 for i = 1:length(p2)
     [ massStainless(i) ] = RecuperatorMass( p2(i),T5,p5(i),Material,UA,'CO2',mode );
 end
-plot(p2/1000,massStainless,'--k','linewidth',1.5);
+plot(p1/1000,massStainless,'--k','linewidth',1.5);
 hold on
 
 
@@ -41,7 +41,7 @@ Material = 'IN';
 for i = 1:length(p2)
     [ massInconel(i) ] = RecuperatorMass( p2(i),T5,p5(i),Material,UA,'CO2',mode );
 end
-plot(p2/1000,massInconel,'k');
+plot(p1/1000,massInconel,'k');
 
 
 xlabel('Pressure at Compressor Inlet [kPa]','fontsize',18)

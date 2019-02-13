@@ -15,6 +15,10 @@ function [ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower
 %   uninsulated, # of units, 'I#' -insulated, # of units
 %   (all units are Inconel for these cases)
 
+% Outputs:
+% minimum and maximum range for panel area - optimum cycle lies in this
+% range of panel areas
+
 % guesses may need to change if decide on a new power level
 A_panel_min = 49;
 A_panel_max = 100;

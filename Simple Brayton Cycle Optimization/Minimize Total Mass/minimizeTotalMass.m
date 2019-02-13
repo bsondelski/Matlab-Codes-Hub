@@ -2,7 +2,7 @@ function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_rad
 % gives minimum system mass for a cycle with a specified power output
 
 % Inputs:
-% desiredpower: specified power for the system
+% desiredpower: specified power for the system [W]
 % p1: flow pressure at inlet of the compressor [kPa]
 % T4: Temp at turbine inlet [K]
 % PR_c: pressure ratio of the compressor
@@ -10,7 +10,6 @@ function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_rad
 % fluid: working fluid for the system
 % Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
 % NucFuel: 'UO2' for uranium oxide (near term), 'UW' for uranium tunsten
-% (exotic)
 % RecupMatl: 'IN' for Inconel, 'SS' for stainless steel, 
 %   for recuperator far term exploration, use 'U#' -
 %   uninsulated, # of units, 'I#' -insulated, # of units
@@ -19,7 +18,14 @@ function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_rad
 
 % Outputs:
 % minMass: lowest possible total system mass for system with desired
-% power output
+% UA: recuperator conductance for optimum cycle [W/K]
+% UA_min: minimum recuperator conductance for optimum radiator panel area
+% [W/K]
+% A_panel: optimum radiator panel area [m2]
+% mass_reactor: reactor mass of optimum cycle [kg]
+% mass_recuperator: recuperator mass of optimum cycle [kg]
+% mass_radiator: radiator mass of optimum cycle [kg]
+% m_dot: mass flow rate of optimum cycle [kg/s]
 
 % tf = strcmp('OXYGEN',fluid);
 % if tf == 1
@@ -51,18 +57,6 @@ function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_rad
 % end
 
 [ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower,p1,T4,PR_c,T_amb,fluid,mode,NucFuel,RecupMatl);
-
-
-% if max(size(gcp)) == 0 % parallel pool needed
-%     parpool % create the parallel pool
-% end
-% 
-% options = optimoptions('fmincon','UseParallel',true);
-% [A_panel,TotalMinMass] = fmincon(@minRadRecMass,A_panel_guess,[],[],[],[],A_panel_min,A_panel_max,[],options,desiredPower,p1,T4,PR_c,...
-%     T_amb,fluid,mode,1,1);
-
-% A_panel_min = 34;
-% A_panel_max = 60;
 
 
 [A_panel,TotalMinMass] = fminbnd(@minRadRecMass,A_panel_min,A_panel_max,[],desiredPower,p1,T4,PR_c,...

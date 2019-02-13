@@ -2,10 +2,13 @@ function [ T, a, rho ] = getPropsPH( p,h,fluid,mode,check )
 % find properties of fluids given enthalpy and pressure
 %
 % Inputs:
-% h: enthalpy [J/kg] - array or scalar value
 % p: pressure [kPa]
-% fluid: fluid in HEX
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% h: enthalpy [J/kg] - array or scalar value
+% fluid: working fluid
+% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP), or
+% array of properties from REFPROP
+% check: 1(only find temperature), 2(temperature and speed of sound), 3(
+% temperature, speed of sound, and density)
 %
 % Output array:
 % T: temperature [K] - array or scalar value - size matches h input size
@@ -37,10 +40,10 @@ if check == 1
             end
         end
     elseif modesize(1) > 1
-%         T = zeros(1,leng);
-%         for i = 1:leng
-%             T(i) = propertiesInterp('T','h',h(i),p(i));
-%         end
+        %         T = zeros(1,leng);
+        %         for i = 1:leng
+        %             T(i) = propertiesInterp('T','h',h(i),p(i));
+        %         end
         T = propertiesInterp('T','h',h,p,mode);
     end
     a = zeros(1,leng);
@@ -75,15 +78,15 @@ elseif check == 2
             end
         end
     elseif modesize(1) > 1
-%         T = zeros(1,leng);
-%         a = zeros(1,leng);
-%         for i = 1:leng
-%             T(i) = propertiesInterp('T','h',h(i),p(i));
-%             a(i) = propertiesInterp('a','h',h(i),p(i));
-%         end
+        %         T = zeros(1,leng);
+        %         a = zeros(1,leng);
+        %         for i = 1:leng
+        %             T(i) = propertiesInterp('T','h',h(i),p(i));
+        %             a(i) = propertiesInterp('a','h',h(i),p(i));
+        %         end
         p = p(1);
         T = propertiesInterp('T','h',h,p,mode);
-            a = propertiesInterp('a','h',h,p,mode);
+        a = propertiesInterp('a','h',h,p,mode);
     end
     rho = zeros(1,leng);
     
@@ -94,7 +97,7 @@ elseif check == 3
         c_pval = 1000;     	% cp value estimation [J/kg-K]
         T = h./c_pval;     	% find temps with h0 at 0K
         % Find speed of sound: Cp/Cv=1.28, R=188.9 [J/kg-K]
-        a = sqrt(1.28*188.9*T);       
+        a = sqrt(1.28*188.9*T);
         R = 188.9;          % specific gas constant for CO2 [J/kg-K]
         rho = p/(R*T);      % Ideal gas law
     elseif mode == 2
@@ -121,18 +124,18 @@ elseif check == 3
             end
         end
     elseif modesize(1) > 1
-%         T = zeros(1,leng);
-%         a = zeros(1,leng);
-%         rho = zeros(1,leng);
-%         for i = 1:leng
-%             T(i) = propertiesInterp('T','h',h(i),p(i));
-%             a(i) = propertiesInterp('a','h',h(i),p(i));
-%             rho(i) = propertiesInterp('d','h',h(i),p(i));
-%         end  
-p = p(1);
+        %         T = zeros(1,leng);
+        %         a = zeros(1,leng);
+        %         rho = zeros(1,leng);
+        %         for i = 1:leng
+        %             T(i) = propertiesInterp('T','h',h(i),p(i));
+        %             a(i) = propertiesInterp('a','h',h(i),p(i));
+        %             rho(i) = propertiesInterp('d','h',h(i),p(i));
+        %         end
+        p = p(1);
         T = propertiesInterp('T','h',h,p,mode);
-            a = propertiesInterp('a','h',h,p,mode);
-            rho = propertiesInterp('d','h',h,p,mode);
+        a = propertiesInterp('a','h',h,p,mode);
+        rho = propertiesInterp('d','h',h,p,mode);
     end
 end
 end

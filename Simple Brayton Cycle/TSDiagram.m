@@ -6,6 +6,7 @@ function [ s_cycle ] = TSDiagram( Tvector,pvector,fluid,mode,Tmin )
 % pvector: vector of pressures around cycle [kPa]
 % fluid: working fluid for the system
 % Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Tmin: minimum temperature available for fluid data [K]
 
 % Outputs:
 % s_cycle: vector of enthalpies around the cycle [kJ/kg-K]

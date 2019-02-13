@@ -14,6 +14,7 @@ function [T1Error] = simpleCycleError(T1guess,m_dot,p1,T4,UA,A_panel,...
 % fluid: working fluid for the system
 % Mode=1(constant property model),2(use of FIT),3(use of REFPROP)
 % various cycle pressures
+% TFluidMin: minimum temperature available for fluid data [K]
 
 % output:
 % T1Error: error between guessed and actual T1 values

@@ -23,24 +23,11 @@ function [T_H_out, T_C_out,h_C_out,p_H,p_C,T_H,T_C] = HEX_bettersolve(T_H_in,T_C
 % Outputs:
 % T_H_out: outlet temperature at hot side of HEX [K]
 % T_C_out: outlet temperature at cold side of HEX [K]
-% elaptime: time elapsed during running of the process
 % p_H: hotside pressure vector
 % p_C: cold side pressure vector
 % T_H: hotside temperature vector
 % T_C: cold side temperature vector
 
-% T_H_in
-% T_C_in
-% p_H_in
-% p_H_out
-% p_C_in
-% p_C_out
-% m_dot_H
-% m_dot_C
-% UA
-% fluid_C
-% fluid_H
-% ploton
 
 % discretize HEX
 N = 20;                   % number of sub HEX's

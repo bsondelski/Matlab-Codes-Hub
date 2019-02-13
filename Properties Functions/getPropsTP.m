@@ -5,14 +5,16 @@ function [s, rho, h] = getPropsTP(T,p,substance,mode,check)
 % T:Temperature[K]
 % p: pressure[kPa]
 % substance: fluid in HEX
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP), or
+% array of properties from REFPROP
+% check: 1(only find enthalpy), 2(temperature and speed of sound), 3(
+% enthalpy, density, and entropy)
 
 % Output array: 
 % s: entropy[J/kg-K]
 % rho: density[kg/m^3]
 % h: enthalpy[J/kg]
-% T
-% p
+
 modesize = size(mode);
 
 if check == 1

@@ -1,4 +1,5 @@
 function [ DataOut ] = createTables( DataIn )
+% create data tables from refprop data
 
 p_low = DataIn(:,2)*1000;
 p_high = DataIn(:,8)*1000;

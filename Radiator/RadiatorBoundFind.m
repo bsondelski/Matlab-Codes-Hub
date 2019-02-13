@@ -28,11 +28,8 @@ while stop == 0
     
     % generate an array of error values given the enthalpy increments
     for i = 1:length(h_outarray)
-        %         try
         h_error(i) = radiatorError(h_outarray(i),h_in,m_dot,epsilon,T12_pp,p_out,sigma,A_panel,T_amb,fluid,mode,TFluidMin);
-        %         catch
-        %             h_error(i) = NaN;
-        %         end
+
         if i > 1 && abs(h_error(i)) > abs(h_error(i-1))
             % if error is getting farther from zero, the solution has
             % already been passed -no need to calculate the other values

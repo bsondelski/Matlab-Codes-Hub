@@ -2,10 +2,11 @@ function [q_rad,T_out,A_panel] = Radiator(m_dot,A_panel,T_amb,T_in,TFluidMin,p_i
 % Radiator model
 
 % inputs:
-% m_dot: mass flow through radiator
-% A_panel: area of the radiator panel that is transferring heat
-% T_amb: temperature of surrounding space
+% m_dot: mass flow through radiator [kg/s]
+% A_panel: area of the radiator panel that is transferring heat [m2]
+% T_amb: temperature of surrounding space [K]
 % T_in: temp at inlet of radiator [K]
+% TFluidMin: minimum temperature available for fluid data [K]
 % p_in: pressure at inlet of radiator [kPa]
 % p_out: pressure at outlet of radiator [kPa]
 % fluid: fluid in HEX
@@ -18,7 +19,7 @@ function [q_rad,T_out,A_panel] = Radiator(m_dot,A_panel,T_amb,T_in,TFluidMin,p_i
 
 % known vals
 eps = 0.9;            % emissivity
-T12_pp = 10;          % Pressure point temp change [K]
+T12_pp = 10;          % Approach temperature difference (pinch point) [K]
 sigma = 5.670367E-8;  % Stefan-Boltzmann constant [W/m2-K4]
 
 [~,~,h_in] = getPropsTP(T_in,p_in,fluid,mode,1); % inlet enthalpy [J/kg]

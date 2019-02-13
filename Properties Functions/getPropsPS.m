@@ -5,7 +5,9 @@ function [h,T] = getPropsPS(s,p,substance,mode,check)
 % s: entropy[J/kg-K]
 % p: pressure[kPa]
 % substance: fluid in HEX
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP), or
+% array of properties from REFPROP
+% check: 1(only find enthalpy), 2 (only find temperature)
 %
 % Output array:
 % h: enthalpy[J/kg]

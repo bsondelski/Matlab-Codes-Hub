@@ -1,5 +1,16 @@
 function [ err,d_s,n_s ] = psiDiameterError( d_s_guess,psi )
 
+% Inputs:
+% d_s: value for specific diameter
+% psi: compressor head coefficient
+
+% outputs:
+% err: error value between guessed d_s and resulting d_s for psi value
+% d_s: specific diameter
+% n_s: specific speed
+
+
+% equation relating n_s, d_s, and psi
 n_s = 2/(d_s_guess*psi^(1/2));
 
 logns = log10(n_s);

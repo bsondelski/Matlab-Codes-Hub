@@ -27,7 +27,7 @@ n_c = 0.853835338294150;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % To find new values for the specific speed, specific diameter, efficiency,
-% set a psi and run the four lines of code below and replace values above
+% set a psi value, run the four lines of code below, and replace values above
 % with the results.
 % 
 % psi = 0.64;
@@ -37,26 +37,28 @@ n_c = 0.853835338294150;
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% get initial properties
-% compressor inlet - s [J/kg-K], rho [kg/m3], h [J/kg]
+% get inlet properties - s [J/kg-K], rho [kg/m3], h [J/kg]
 [s1, rho1, h1] = getPropsTP(T_in,p_in,fluid,mode,2);
-% isentropic outlet enthalpy [J/kg]
 [h2s,~] = getPropsPS(s1,p_out,fluid,mode,1);
-h_12s = h2s-h1;             % isentropic enthaply change [J/kg]
-V_dot = m_dot/rho1;         % volumetric flow rate [m3/s]
-u_t = sqrt(h_12s/psi);          % compressor rotor tip velocity [m/s]
+                                    % isentropic outlet enthalpy [J/kg]
+h_12s = h2s-h1;                     % isentropic enthaply change [J/kg]
+V_dot = m_dot/rho1;                 % volumetric flow rate [m3/s]
+u_t = sqrt(h_12s/psi);              % compressor rotor tip velocity [m/s]
 
-D = d_s*sqrt(V_dot)/(h_12s^(1/4));
-N = n_s*h_12s^(3/4)/sqrt(V_dot);
+
+D = d_s*sqrt(V_dot)/(h_12s^(1/4));  % Impeller Diameter [m]
+N = n_s*h_12s^(3/4)/sqrt(V_dot);    % Shaft speed [rad/s]
+
 
 % calculate flow coefficient
-Area = pi()*D^2/4;
-phi = m_dot/(rho1*u_t*Area);
+Area = pi()*D^2/4;                  % [m2]
+phi = m_dot/(rho1*u_t*Area);        % flow coefficient [-]
 
-Power = m_dot*h_12s./n_c;  % [W]
-h2a = Power./m_dot+h1;     % actual outlet enthalpy
-% compressor outlet temperature [K]
+
+Power = m_dot*h_12s./n_c;           % [W]
+h2a = Power./m_dot+h1;              % actual outlet enthalpy [J/kg]
+% compressor outlet - temperature [K], speed of sound [m/s]
 [T_out,a,~] = getPropsPH(p_out,h2a,fluid,mode,2);
-Ma = u_t/a;               % tip mach number
+Ma = u_t/a;                         % tip mach number
 end
 

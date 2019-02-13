@@ -1,4 +1,5 @@
 function [ result ] = propertiesInterp( out,in,val,p,mode )
+% read data from tables of refprop data
 
 
 % % global props18 props9

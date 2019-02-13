@@ -19,6 +19,7 @@ function [err,UA_each] = errorGen(T_H_out,T_H_in,T_C_in,p_H,p_C,m_dot_H,m_dot_C,
 % Output:
 % err: magnitude of the difference between the HEX conductance defined by
 % T_H_out, T_H_in, and T_C_in and the actual, given HEX conductance
+% UA_each: conductance of sub HEX's [W/K]
 
 % calculate enthalpies of fully specified states
 [~,~,h_H_in] = getPropsTP(T_H_in,p_H(1),fluid_H,mode,1); % hot side inlet enthalpy

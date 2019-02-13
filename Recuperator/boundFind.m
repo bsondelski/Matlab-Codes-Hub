@@ -28,14 +28,8 @@ loopcount = 1;
 
 % while loop runs with temp range getting smaller until realistic answer is found
 while stop == 0
-% for p=1:20
     % set interval for for loop with 10 increments in temp range
-%     if tempstep == 1
-        Q = (Tmax-Tmin)/nstep;
-%     elseif tempstep == 2
-%         nstep = nstep + 5;
-%         Q = (Tmax-Tmin)/nstep;
-%     end
+    Q = (Tmax-Tmin)/nstep;
     TH = Tmin:Q:Tmax;         % create an array for temps to check
     err = zeros(1, length(TH));   % preallocate space
     
@@ -49,10 +43,7 @@ while stop == 0
             break
         end
     end
-%     T_H_in
-%     T_C_in
-%     TH
-%     err
+
     [~,I] = min(abs(err));        % find the value in the error array with the smallest magnitude
     % Temp value for smallest value in error array
     B = TH(I);

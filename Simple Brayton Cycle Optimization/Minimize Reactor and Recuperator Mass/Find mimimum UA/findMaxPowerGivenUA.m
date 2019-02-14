@@ -1,4 +1,4 @@
-function [max_power,m_dot] = findMaxPower2(p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,options)
+function [max_power,m_dot] = findMaxPowerGivenUA(p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,options)
 % find maximum power output and corresponding mass flow rate for a given
 % conductance and other system parameters
 
@@ -31,12 +31,11 @@ while stop == 0
     power = zeros(1,steps);
     
     for i = 1:length(m_dot_testvals)
-%         try
-            power(i) = powerFind(m_dot_testvals(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode);
-%         catch
-%             power(i) = NaN;
-%         end
-        
+%         power(i) = powerFind(m_dot_testvals(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode);
+        [net_power,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] =...
+            BraytonCycle(m_dot_testvals(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0);
+                power(i) = -net_power;
+
         if i > 1 && abs(power(i)) < abs(power(i-1))
             % if the power level is decreasing, the solution has
             % already been passed -no need to calculate the other values 
@@ -82,8 +81,8 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%% bound finding %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-[m_dot,net_power] = fminbnd(@powerFind,m_dot_min,m_dot_max,options,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode);
+[m_dot,net_power] = fminbnd(@BraytonCycle,m_dot_min,m_dot_max,options,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0);
 
-max_power = -net_power;
+max_power = net_power;
 end
 

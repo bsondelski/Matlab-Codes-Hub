@@ -1,7 +1,7 @@
-function [ UA,m_dot ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
+function [ UA,m_dot ] = minimumUA(desiredPower,p1,T4,PR_c,A_panel,...
     T_amb,fluid,mode)
-% provides error from max power with guessed input UA to actual desired
-% power
+% provides mimimum UA and corresponding mass flow rate to achieve the
+% desired power at the specified panel area
 
 % Inputs: 
 % desiredPower: desired system power [w]
@@ -18,7 +18,7 @@ function [ UA,m_dot ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
 % power
 % m_dot: mass flow rate at ideal power [kg/s]
 
-[UA_min,UA_max] = maxPowerBoundFind( desiredPower,p1,T4,PR_c,A_panel,T_amb,fluid,mode );
+[UA_min,UA_max] = minimumUABoundFind( desiredPower,p1,T4,PR_c,A_panel,T_amb,fluid,mode );
 
     
 
@@ -30,9 +30,9 @@ elseif isnan(UA_min)
     m_dot = NaN;
 else
     options = [];
-    UA = fzero(@maxPowerError,[UA_min,UA_max],[],desiredPower,p1,T4,PR_c,A_panel,T_amb,fluid,mode,options);
+    UA = fzero(@minimumUAError,[UA_min,UA_max],[],desiredPower,p1,T4,PR_c,A_panel,T_amb,fluid,mode,options);
     
-    [~,m_dot] = findMaxPower2(p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,options);
+    [~,m_dot] = findMaxPowerGivenUA(p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,options);
 end
 
 end

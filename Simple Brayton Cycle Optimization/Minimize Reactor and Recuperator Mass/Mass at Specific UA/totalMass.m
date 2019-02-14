@@ -28,7 +28,7 @@ function [ mass_total,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = tota
 % recuperator conductance
 
 % find heat output for reactor for specified recuperator
-[~,~,~,~,~,~,q_reactor,~,T1,m_dot,T3,p3,T4,p4,T5,p5,T2,p2,T6,p6] = SpecifiedPower2(desiredPower,...
+[~,~,~,~,~,~,q_reactor,~,~,m_dot,T3,p3,T4,p4,T5,p5,~,p2,~,~] = SpecifiedPower2(desiredPower,...
     p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,m_dotcycle_max,options);
 
 
@@ -39,69 +39,22 @@ if isnan(m_dot)
     mass_radiator = NaN;
     m_dot = NaN;
 else
-    % find system mass
-%     mass_reactor = 0.00131*q_reactor+100;     %%%% original
     
-    
-    % mass_reactor = 0.000784*q_reactor+175.09;   % UW - CO2 (exotic fuel)
-    % mass_reactor = 0.0034774*q_reactor+167.6;   % UO2 - CO2 (common fuel)
+    %%%%% original
+    % mass_reactor = 0.00131*q_reactor+100;
+    % mass_recuperator = 0.0131*UA; %convert to kW/K
+    % mass_radiator = 5.8684*A_panel;
     
     % call to python
-%     ploss_reactor = 0.0270;   % pressure drop in reactor
-%     p4 = p3-p3*ploss_reactor; % pressure at reactor outlet
+    % ploss_reactor = 0.0270;   % pressure drop in reactor
+    % p4 = p3-p3*ploss_reactor; % pressure at reactor outlet
     mass_reactor = ReactorMass(q_reactor,m_dot,p3,p4,T3,T4,fluid,NucFuel);
-%     
-    %%%%% original
-%     mass_recuperator = 0.0131*UA; %convert to kW/K
-%     mass_radiator = 5.8684*A_panel;
-
-
-    % stainless steel
-%     mass_recuperator = 0.004827273*UA + 23.59091; %convert to kW/K
     
-    % inconel for temp distribution study
-    
-%     TR1 = 550 + 273.15;
-%     TR2 = 650 + 273.15;
-%     TR3 = 750 + 273.15;
-%     
-%     if T5 < TR1
-%        mass_recuperator = 0.002034545*UA + 8.481818; %convert to kW/K 
-%     elseif T5 < TR2
-%         mass_recuperator1 = 0.002034545*UA + 8.481818; %convert to kW/K 
-%         mass_recuperator2 = 0.002890909*UA + 13.13636; %convert to kW/K 
-%         
-%         mass_recuperator = (mass_recuperator2 - mass_recuperator1)/(TR2 - TR1)*(T5 - TR1) + mass_recuperator1;
-%         
-%     elseif T5 < TR3 
-%         mass_recuperator1 = 0.002890909*UA + 13.13636; %convert to kW/K 
-%         mass_recuperator2 = 0.005772727*UA + 32.00909; %convert to kW/K 
-%         
-%         mass_recuperator = (mass_recuperator2 - mass_recuperator1)/(TR3 - TR2)*(T5 - TR2) + mass_recuperator1;
-%     else
-%         mass_recuperator = 0.005772727*UA + 32.00909; %convert to kW/K 
-%     end
-
-mass_recuperator = RecuperatorMass( p2,T5,p5,RecupMatl,UA,fluid,mode );
+    mass_recuperator = RecuperatorMass( p2,T5,p5,RecupMatl,UA,fluid,mode );
     
     mass_radiator = 6.75*A_panel;
-%   mass_radiator = RadDens*A_panel;
     
-    % modesize = size(mode);
-    % if modesize(1) > 1
-    %     %keeping out of vapor dome
-    %     Tsat = mode(1,89);
-    %     if T1 < Tsat
-    %         difference = Tsat - T1;
-    %         mass_penalty = difference*500;
-    %     else
-    %         mass_penalty = 0;
-    %     end
-    % else
-    %     mass_penalty = 0;
-    % end
-    
-    mass_total = mass_reactor+mass_recuperator+mass_radiator;%+mass_penalty;
+    mass_total = mass_reactor+mass_recuperator+mass_radiator;
 end
 end
 

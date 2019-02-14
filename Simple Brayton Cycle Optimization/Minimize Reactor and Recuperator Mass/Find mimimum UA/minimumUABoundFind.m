@@ -1,6 +1,6 @@
-function [ UA_min,UA_max ] = maxPowerBoundFind( desiredPower,p1,T4,PR_c,...
+function [ UA_min,UA_max ] = minimumUABoundFind( desiredPower,p1,T4,PR_c,...
     A_panel,T_amb,fluid,mode )
-% find bounds for matching max power
+% find bounds for selecting the minimum UA
 
 % Inputs:
 % desiredPower: desired system power [w]
@@ -13,8 +13,8 @@ function [ UA_min,UA_max ] = maxPowerBoundFind( desiredPower,p1,T4,PR_c,...
 % Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
 
 % Outputs:
-% UA_guess: closest conductance [W/K] to solution with max power at desired
-% power
+% UA_min,UA_max: range of conductances [W/K] where solution with max power at desired
+% power lies
 
 % arbitrary starting values
 UA_min = 100;
@@ -43,7 +43,7 @@ while a == 1 %|| j < 3
     err = zeros(1,steps);
 
     for i = 1:length(UA_testvals)
-        [err(i)] = maxPowerError( UA_testvals(i),desiredPower,p1,T4,...
+        [err(i)] = minimumUAError( UA_testvals(i),desiredPower,p1,T4,...
             PR_c,A_panel,T_amb,fluid,mode,options );
         if i > 1 && abs(err(i)) > abs(err(i-1))
             % if error is getting farther from zero, the solution has

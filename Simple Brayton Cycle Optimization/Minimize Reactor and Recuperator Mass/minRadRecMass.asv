@@ -28,11 +28,11 @@ A_panel
 % power output and radiator area
 
 % find minimum UA which gives desired power output
-[ UA_min,m_dot_original ] = minimumUA(desiredPower,p1,T4,PR_c,A_panel,...
+[ UA_min,m_dotcycle_max ] = minimumUA(desiredPower,p1,T4,PR_c,A_panel,...
     T_amb,fluid,mode);
 
 
-if isnan(UA_min) || isnan(m_dot_original)
+if isnan(UA_min) || isnan(m_dotcycle_max)
     minMass = NaN;
     UA = Inf;
     UA_min = Inf;
@@ -55,7 +55,7 @@ else
         
         % preallocate space
         mass_total = zeros(1,length(UA));
-        m_dotcycle_max = m_dot_original;
+        
         for i = 1:length(UA)
             [ mass_total(i),~,~,~,m_dot_last ] = totalMass( UA(i),desiredPower,p1,T4,PR_c,A_panel,...
                 T_amb,fluid,mode,m_dotcycle_max,options1,NucFuel,RecupMatl);
@@ -95,7 +95,7 @@ else
     if tolerance == 1
         options2 = [];
         [UA,minMass] = fminbnd(@totalMass,UA_min,UA_max,[],desiredPower,p1,T4,PR_c,A_panel,...
-        T_amb,fluid,mode,m_dot_original,options2,NucFuel,RecupMatl);
+        T_amb,fluid,mode,m_dotcycle_max,options2,NucFuel,RecupMatl);
     elseif tolerance == 2
 %         options2 = optimset('TolX',0.1);
         % if high accuracy in tolerance is not required, use minimum mass
@@ -107,7 +107,7 @@ else
     
     if check == 2
         [ ~,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = totalMass( UA,desiredPower,p1,T4,PR_c,A_panel,...
-            T_amb,fluid,mode,m_dot_original,options2,NucFuel,RecupMatl);
+            T_amb,fluid,mode,m_dotcycle_max,options2,NucFuel,RecupMatl);
     else
         mass_reactor = inf;
         mass_recuperator = inf;
@@ -116,7 +116,7 @@ else
     end
 end
 
-minMass
+
 
 end
 

@@ -31,7 +31,6 @@ while stop == 0
     power = zeros(1,steps);
     
     for i = 1:length(m_dot_testvals)
-%         power(i) = powerFind(m_dot_testvals(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode);
         [net_power,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] =...
             BraytonCycle(m_dot_testvals(i),p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0);
                 power(i) = -net_power;
@@ -43,7 +42,7 @@ while stop == 0
             break
         end
     end
-
+    
     [~,inde] = min(power);
     
     if inde == 1
@@ -79,10 +78,19 @@ while stop == 0
     loopcount = loopcount + 1;
 end  
 
-%%%%%%%%%%%%%%%%%%%%%%%%% bound finding %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% bound finding end %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-[m_dot,net_power] = fminbnd(@BraytonCycle,m_dot_min,m_dot_max,options,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0);
 
-max_power = net_power;
+[m_dot,net_power] = fminbnd(@negativeBraytonCycle,m_dot_min,m_dot_max,options,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode);
+max_power = -net_power;
+
+
+
+    function negativeNetPower = negativeBraytonCycle(m_dot,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode)
+        [netPower,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] =...
+            BraytonCycle(m_dot,p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,0);
+        negativeNetPower = -netPower;
+    end
+
 end
 

@@ -27,38 +27,11 @@ function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_rad
 % mass_radiator: radiator mass of optimum cycle [kg]
 % m_dot: mass flow rate of optimum cycle [kg/s]
 
-% tf = strcmp('OXYGEN',fluid);
-% if tf == 1
-%     A_panel_min = 50;
-%     A_panel_max = 100;
-% else
-%     tf = strcmp('H2S',fluid);
-%     if tf == 1
-%         A_panel_min = 125;
-%         A_panel_max = 132;
-%     else
-%         if T4 < 800
-%             A_panel_min = 135;
-%             A_panel_max = 170;
-%         elseif T4 < 850
-%             A_panel_min = 113;
-%             A_panel_max = 140;
-%         elseif T4 < 900
-%             A_panel_min = 90;
-%             A_panel_max = 140;
-%         elseif T4 < 975
-%             A_panel_min = 70;
-%             A_panel_max = 120;
-%         else
-%             A_panel_min = 40;
-%             A_panel_max = 120;
-%         end
-%     end
-% end
+
 
 [ A_panel_min,A_panel_max,A_panel_guess ] = PanelBoundFind(desiredPower,p1,T4,PR_c,T_amb,fluid,mode,NucFuel,RecupMatl);
 
-
+options = optimset('TolX', 1e-3);
 [A_panel,TotalMinMass] = fminbnd(@minRadRecMass,A_panel_min,A_panel_max,[],desiredPower,p1,T4,PR_c,...
     T_amb,fluid,mode,1,1,NucFuel,RecupMatl);
 

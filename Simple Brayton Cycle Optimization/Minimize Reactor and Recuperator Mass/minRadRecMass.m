@@ -116,7 +116,5 @@ else
     end
 end
 
-minMass
-
 end
 

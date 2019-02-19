@@ -13,7 +13,7 @@ Tmin = T4(I);
 
 clearvars -except Tmin
 
-p1 = [9000:500:20000];
+p1 = [1000:500:20000];
 parfor i = 1:length(p1)
     
     p1(i)
@@ -22,7 +22,7 @@ end
 save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSp1Near.mat'
 clearvars -except Tmin
 
-p1 = [9000:500:20000];
+p1 = [1000:500:20000];
 parfor i = 1:length(p1)
     
     p1(i)
@@ -77,7 +77,7 @@ save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Stud
 Tmin = T4(I);
 clearvars -except Tmin
 
-p1 = [5000:500:20000];
+p1 = [1000:500:20000];
 parfor i = 1:length(p1)
     
     p1(i)

@@ -91,14 +91,14 @@ elseif strcmp(fluid,'CO2') == 1
         % stress --------- same below for Inconel
         
         massTubes = tubeFrac*Mass_550C;
-        % massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T);
-        % massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T)*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
-        massTubesNew = massTubes*((Stress_allow_550C + 0.6*ORIGINAL_P2_PSI)/(Stress_allow_T + 0.6*p2_psi))*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
+%         massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T);
+        massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T)*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
+%         massTubesNew = massTubes*((Stress_allow_550C + 0.6*ORIGINAL_P2_PSI)/(Stress_allow_T + 0.6*p2_psi))*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
         
         massShell = Mass_550C - massTubes;
-        % massShellNew = massShell*(Stress_allow_550C/Stress_allow_T);
-        % massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
-        massShellNew = massShell*((Stress_allow_550C + 0.6*ORIGINAL_P5_PSI)/(Stress_allow_T + 0.6*p5_psi))*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
+%         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T);
+        massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
+%         massShellNew = massShell*((Stress_allow_550C + 0.6*ORIGINAL_P5_PSI)/(Stress_allow_T + 0.6*p5_psi))*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
         
         
         mass = massShellNew + massTubesNew;
@@ -142,15 +142,15 @@ elseif strcmp(fluid,'CO2') == 1
         tubeFrac = 0.5716;
         
         massTubes = tubeFrac*Mass_550C;
-        % massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T);
-        % massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T)*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
-        massTubesNew = massTubes*((Stress_allow_550C + 0.6*ORIGINAL_P2_PSI)/(Stress_allow_T + 0.6*p2_psi))*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
+%         massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T);
+        massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T)*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
+%         massTubesNew = massTubes*((Stress_allow_550C + 0.6*ORIGINAL_P2_PSI)/(Stress_allow_T + 0.6*p2_psi))*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
         
         
         massShell = Mass_550C - massTubes;
-        % massShellNew = massShell*(Stress_allow_550C/Stress_allow_T);
-        % massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
-        massShellNew = massShell*((Stress_allow_550C + 0.6*ORIGINAL_P5_PSI)/(Stress_allow_T + 0.6*p5_psi))*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
+%         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T);
+        massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
+%         massShellNew = massShell*((Stress_allow_550C + 0.6*ORIGINAL_P5_PSI)/(Stress_allow_T + 0.6*p5_psi))*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
         
         
         mass = massShellNew + massTubesNew;

@@ -288,8 +288,8 @@ scatter(p1(I)/1000,minMass,'k')
 text(p1(end)/1000+0.2,TotalMinMass(end),['T_4 = 1050 K'],'fontsize',11)
 text(p1(end)/1000+0.2,TotalMinMass(end)+20,['Inconel'],'fontsize',11)
 
-xlim([9 24])
-ylim([500 850])
+xlim([1 24])
+% ylim([500 850])
 % plot([9 9],[500 850],'--k')
 end
 

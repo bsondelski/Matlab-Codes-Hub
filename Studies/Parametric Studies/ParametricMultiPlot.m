@@ -6,17 +6,17 @@
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% UO2 Studies %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% plot PR dependence
-% figure 1 - total mass
-% figure 2 - Turbine Mach numbers
-% figure 3 - Compressor Mach numbers
-plotPRdependence
-
-% plot temperature mass dependence along with recuperator inlet temps
-% for UO2 only
-% figure 4
-plotTtinDependence
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% UO2 Studies %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % plot PR dependence
+% % figure 1 - total mass
+% % figure 2 - Turbine Mach numbers
+% % figure 3 - Compressor Mach numbers
+% plotPRdependence
+% 
+% % plot temperature mass dependence along with recuperator inlet temps
+% % for UO2 only
+% % figure 4
+% plotTtinDependence
 
 % plot p1 dependence
 % figure 5
@@ -268,7 +268,7 @@ grid on
 [minMass,I] = min(TotalMinMass);
 scatter(p1(I)/1000,minMass,'k')
 text(p1(end)/1000+0.2,TotalMinMass(end),['T_4 = 900 K'],'fontsize',11)
-text(p1(end)/1000+0.2,TotalMinMass(end)+20,['Stainless Steel'],'fontsize',11)
+text(p1(end)/1000+0.2,TotalMinMass(end)+30,['Stainless Steel'],'fontsize',11)
 
 % stainless steel far term
 clear
@@ -276,7 +276,7 @@ load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Stud
 plot(p1./1000,TotalMinMass,'k')
 [minMass,I] = min(TotalMinMass);
 scatter(p1(I)/1000,minMass,'k')
-text(p1(end)/1000+0.2,TotalMinMass(end),['T_4 = 980 K'],'fontsize',11)
+text(p1(end)/1000+0.2,TotalMinMass(end)-10,['T_4 = ',num2str(Tmin),' K'],'fontsize',11)
 text(p1(end)/1000+0.2,TotalMinMass(end)+20,['Stainless Steel'],'fontsize',11)
 
 % Inconel
@@ -285,11 +285,11 @@ load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Stud
 plot(p1./1000,TotalMinMass,'k')
 [minMass,I] = min(TotalMinMass);
 scatter(p1(I)/1000,minMass,'k')
-text(p1(end)/1000+0.2,TotalMinMass(end),['T_4 = 1050 K'],'fontsize',11)
-text(p1(end)/1000+0.2,TotalMinMass(end)+20,['Inconel'],'fontsize',11)
+text(p1(end)/1000+0.2,TotalMinMass(end),['T_4 = ',num2str(Tmin),' K'],'fontsize',11)
+text(p1(end)/1000+0.2,TotalMinMass(end)+30,['Inconel'],'fontsize',11)
 
-xlim([1 24])
-% ylim([500 850])
+xlim([0 28])
+ylim([500 1020])
 % plot([9 9],[500 850],'--k')
 end
 

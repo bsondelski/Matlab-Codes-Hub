@@ -72,7 +72,7 @@ plot(T5,mass_spline,'--k')
 scatter(creareTemp, crearemass,'k')
 xlabel('Temperature at Recuperator Hot Side Inlet [K]','fontsize',18)
 ylabel('Recuperator Mass [kg]','fontsize',18)
-legend({'UA = 15 [kW/K] Using max. allowable stress','UA = 15 [kW/K] Industry partner data','UA = 4 [kW/K] Using max. allowable stress','UA = 4 [kW/K] Industry partner data'},'location','northwest','fontsize',12)
+legend({'UA = 15 [kW/K] Using max. allowable stress','UA = 15 [kW/K] Industry partner data','UA = 4 [kW/K] Using max. allowable stress','UA = 4 [kW/K] Industry partner data'},'location','northwest','fontsize',11)
 % legend('UA = 15 [kW/K] Cubic interpolation - max allow stress','liner interpolation - Creare data','Creare Data','UA = 4 [kW/K] Cubic interpolation - max allow stress','liner interpolation - Creare data','Creare Data','location','northwest')
 % title('Inconel')
 grid on
@@ -108,8 +108,8 @@ scatter(creareTemp, crearemass,'k')
 
 xlabel('Temperature at Recuperator Hot Side Inlet [K]','fontsize',18)
 ylabel('Recuperator Mass [kg]','fontsize',18)
-legend('UA = 15 [kW/K] Cubic interpolation - max allow stress','UA = 15 [kW/K] Creare Data','UA = 4 [kW/K] Cubic interpolation - max allow stress','UA = 4 [kW/K] Creare Data','location','northwest')
+legend({'UA = 15 [kW/K] Using max. allowable stress','UA = 15 [kW/K] Creare Data','UA = 4 [kW/K] Using max. allowable stress','UA = 4 [kW/K] Creare Data'},'location','northwest','fontsize',11)
 % title('Stainless Steel')
 grid on
-
+xlim([700 1050])
 

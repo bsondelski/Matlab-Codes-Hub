@@ -83,7 +83,6 @@ elseif p == mode(1,90)      % p_high
     props = mode(:,45:88);
 end
 
-
 if in == 'T'
     x = props(:,1);
     if out == 'd'

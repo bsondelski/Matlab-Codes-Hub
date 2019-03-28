@@ -14,7 +14,7 @@
 
 
 
-for i = 2:23
+for i = 2:24
     % set properties
     clear mode
     
@@ -43,26 +43,28 @@ for i = 2:23
     elseif i == 12
         mode = mode10;
     elseif i == 13
-        mode = mode15;
+        mode = mode12;
     elseif i == 14
-        mode = mode20;
+        mode = mode15;
     elseif i == 15
-        mode = mode25;
+        mode = mode20;
     elseif i == 16
-        mode = mode30;
+        mode = mode25;
     elseif i == 17
-        mode = mode40;
+        mode = mode30;
     elseif i == 18
-        mode = mode50;
+        mode = mode40;
     elseif i == 19
-        mode = mode60;
+        mode = mode50;
     elseif i == 20
-        mode = mode70;
+        mode = mode60;
     elseif i == 21
-        mode = mode80;
+        mode = mode70;
     elseif i == 22
-        mode = mode90;
+        mode = mode80;
     elseif i == 23
+        mode = mode90;
+    elseif i == 24
         mode = mode100;
     end
     
@@ -76,17 +78,17 @@ for i = 2:23
     
     tic
     for j = 1:10
-        % % optimum
-        %         [net_power(j),cyc_efficiency(j,1:2),D_T(j),D_c(j),Ma_T(j),Ma_c(j),Anozzle(j),q_reactor(j),...
-        %             q_rad(j),T1(j),Power_T(j),Power_c(j),HEXeffect(j),energy(j),p1(j),T2(j),p2(j),T3(j),p3(j),T4(j),p4(j),T5(j),...
-        %             p5(j),T6(j),p6(j),~,Vratio(j)] = BraytonCycle(0.1855,25000,1100,2,4.01e3,...
-        %             20.4568,100,fluid,mode,0);
+        % optimum
+                [net_power(j),cyc_efficiency(j,1:2),D_T(j),D_c(j),Ma_T(j),Ma_c(j),Anozzle(j),q_reactor(j),...
+                    q_rad(j),T1(j),Power_T(j),Power_c(j),HEXeffect(j),energy(j),p1(j),T2(j),p2(j),T3(j),p3(j),T4(j),p4(j),T5(j),...
+                    p5(j),T6(j),p6(j),~,Vratio(j)] = BraytonCycle(0.1855,25000,1100,2,4.01e3,...
+                    20.4568,100,fluid,mode,0);
         
         % other cycle
-        [net_power(j),cyc_efficiency(j,1:2),D_T(j),D_c(j),Ma_T(j),Ma_c(j),Anozzle(j),q_reactor(j),...
-            q_rad(j),T1(j),Power_T(j),Power_c(j),HEXeffect(j),energy(j),p1(j),T2(j),p2(j),T3(j),p3(j),T4(j),p4(j),T5(j),...
-            p5(j),T6(j),p6(j),~,Vratio(j)] = BraytonCycle(0.25,25000,1100,2,5.01e3,...
-            21,100,fluid,mode,0);
+%         [net_power(j),cyc_efficiency(j,1:2),D_T(j),D_c(j),Ma_T(j),Ma_c(j),Anozzle(j),q_reactor(j),...
+%             q_rad(j),T1(j),Power_T(j),Power_c(j),HEXeffect(j),energy(j),p1(j),T2(j),p2(j),T3(j),p3(j),T4(j),p4(j),T5(j),...
+%             p5(j),T6(j),p6(j),~,Vratio(j)] = BraytonCycle(0.25,25000,1100,2,5.01e3,...
+%             21,100,fluid,mode,0);
     end
     time(i) = toc;
     
@@ -128,13 +130,13 @@ net_power_out(1) = [];
 net_power_deviation(1) = [];
 time(1) = [];
 
-xvals = [1:10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100];
+xvals = [1:10, 12, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100];
 figure(1)
 y = net_power_out/1000;
 plot(xvals,y(2:end),'-x',[xvals(1),xvals(end)],[y(1),y(1)],'-*');
 xlabel('dT between cubic spline points [K]')
 ylabel('net power output of cycle [kW]')
-legend('cubic spline','REFPROP')
+legend('cubic spline','REFPROP','location','northwest')
 
 
 figure(2)
@@ -150,7 +152,7 @@ y = time;
 plot(xvals,y(2:end),[xvals(1),xvals(end)],[y(1),y(1)],'-o');
 xlabel('dT between cubic spline points [K]')
 ylabel('time to call BraytonCycle 10 instances [sec]')
-legend('cubic spline','REFPROP')
+legend('cubic spline','REFPROP','location','east')
 
 % figure
 % y = cyc_efficiency_out1;

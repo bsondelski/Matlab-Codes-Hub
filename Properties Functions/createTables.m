@@ -34,6 +34,10 @@ Aspline(A == 0) = [];
 
 DataIn(:,1:6) = [];
 Data(:,1:6) = [];
+% DataIn = DataIn(logical(DataIn(:,1)),:);
+% Data = Data(logical(Data(:,1)),:);
+
+
 
 Thigh = Data(:,1);
 Dhigh = Data(:,3);

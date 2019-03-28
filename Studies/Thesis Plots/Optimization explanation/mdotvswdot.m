@@ -40,7 +40,7 @@ for j=1:length(UA)
         %         [net_power(i),~,~,~,~,~,~,~,~,~,power_T(i),power_C(i),~,~,~,~,~,~,~,~,~,~,~,~,~] = BraytonCycle(m_dot(i),p1,T4,PR_c,UA(j),A_panel,T_amb,fluid,mode);
     end
     options = [];
-    [max_power(j),m_dotmax(j)] = findMaxPower2(p1,T4,PR_c,UA(j),A_panel,T_amb,fluid,mode,options);
+    [max_power(j),m_dotmax(j)] = findMaxPowerGivenUA(p1,T4,PR_c,UA(j),A_panel,T_amb,fluid,mode,options);
     [~,~,~,~,~,~,~,q_reactormax(j),~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~,~] = BraytonCycle(m_dotmax(j),p1,T4,PR_c,UA(j),A_panel,T_amb,fluid,mode,0);
     %     plot(m_dot,net_power/1000)
     

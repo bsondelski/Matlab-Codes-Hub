@@ -13,7 +13,7 @@ mode=2;
 desiredPower = 40000;
 NucFuel = 'UO2';
 
-[ UA_min,m_dotcycle_max ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
+[ UA_min,m_dotcycle_max ] = minimumUA(desiredPower,p1,T4,PR_c,A_panel,...
     T_amb,fluid,mode);
 UA=UA_min:50:UA_min+15000; % was 2022.3
 m_dotlast(1) = m_dotcycle_max;

@@ -10,7 +10,7 @@ mode=2;
 desiredPower = 40000;
 NucFuel = 'UO2';
 
-[ UA_min,m_dotcycle_max ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
+[ UA_min,m_dotcycle_max ] = minimumUA(desiredPower,p1,T4,PR_c,A_panel,...
     T_amb,fluid,mode);
 % UA_min = UA_min + 400;
 UA_min = UA_min;
@@ -26,11 +26,11 @@ options = [];
 for j=1:(length(UA)-1)
     UA(j)
     [~,~,~,~,~,~,q_reactor(j+1),...
-        ~,~,m_dotlast(j+1),T3(j+1),p3,T4out(j+1),p4,T5(j+1)] =...
+        ~,~,m_dotlast(j+1),T3(j+1),p3,T4out(j+1),p4,T5(j+1),p5,T2,p2,~,~] =...
         SpecifiedPower2(desiredPower,p1,T4,PR_c,UA(j+1),A_panel,T_amb,fluid,mode,m_dotlast(j),options);
     mass_reactor(j) = ReactorMass(q_reactor(j+1),m_dotlast(j+1),p3,p4,T3(j+1),T4out(j+1),fluid,NucFuel);
 %     mass_recuperator(j) = 0.008565*UA(j); %convert to kW/K
-    mass_recuperator(j) = RecuperatorMass( T5(j),'SS',UA(j),fluid );
+    mass_recuperator(j) = RecuperatorMass( p2,T5(j),p5,'SS',UA(j),fluid,mode );
 end
 A_panel_i = ones(1,length(mass_reactor))*A_panel;
 mass_radiator = A_panel_i*6.75;

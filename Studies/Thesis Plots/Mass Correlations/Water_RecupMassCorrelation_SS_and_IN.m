@@ -1,6 +1,9 @@
 % to be used for creating plots for recuperator mass correlation
 
 set(0,'defaultAxesFontSize',12)
+p2 = 50000;
+p5 = 25000;
+mode = 3;
 
 T5 = linspace(700,1050);
 UA = 15000;
@@ -26,7 +29,7 @@ for i = 1:length(T5)
 %         mass_recuperator(i) = 0.005772727*UA + 32.00909; %convert to kW/K
 %     end
    
-    [ mass_spline(i) ] = RecuperatorMass( T5(i),Material,UA,'WATER' );
+    [ mass_spline(i) ] = RecuperatorMass( p2,T5(i),p5,Material,UA,'WATER',mode );
 
 end
 creareTemp = [550, 650, 750] + 273.15;
@@ -58,7 +61,7 @@ for i = 1:length(T5)
 %         mass_recuperator(i) = 0.005772727*UA + 32.00909; %convert to kW/K
 %     end
     
-    [ mass_spline(i) ] = RecuperatorMass( T5(i),Material,UA,'WATER' );
+    [ mass_spline(i) ] = RecuperatorMass( p2,T5(i),p5,Material,UA,'WATER',mode );
 
 end
 creareTemp = [550, 650, 750] + 273.15;
@@ -69,7 +72,7 @@ plot(T5,mass_spline,'--k')
 scatter(creareTemp, crearemass,'k')
 xlabel('Temperature at Recuperator Hot Side Inlet [K]')
 ylabel('Recuperator Mass [kg]')
-legend('UA = 15 [kW/K] Cubic interpolation - max allow stress','UA = 15 [kW/K] Creare Data','UA = 4 [kW/K] Cubic interpolation - max allow stress','UA = 4 [kW/K] Creare Data','location','northwest')
+legend('UA = 15 [kW/K] Using max. allowable stress','UA = 15 [kW/K] Creare Data','UA = 4 [kW/K] Using max. allowable stress','UA = 4 [kW/K] Creare Data','location','northwest')
 % legend('UA = 15 [kW/K] Cubic interpolation - max allow stress','liner interpolation - Creare data','Creare Data','UA = 4 [kW/K] Cubic interpolation - max allow stress','liner interpolation - Creare data','Creare Data','location','northwest')
 % title('Inconel')
 grid on
@@ -79,7 +82,7 @@ UA = 15000;
 Material = 'SS';
 for i = 1:length(T5)
    
-    [ mass_spline(i) ] = RecuperatorMass( T5(i),Material,UA,'WATER' );
+    [ mass_spline(i) ] = RecuperatorMass( p2,T5(i),p5,Material,UA,'WATER',mode );
 
 end
 creareTemp = [550, 650] + 273.15;
@@ -93,7 +96,7 @@ scatter(creareTemp, crearemass,'k','filled')
 UA = 4000;
 for i = 1:length(T5)
    
-    [ mass_spline(i) ] = RecuperatorMass( T5(i),Material,UA,'WATER' );
+    [ mass_spline(i) ] = RecuperatorMass(p2,T5(i),p5,Material,UA,'WATER',mode );
 
 end
 creareTemp = 550 + 273.15;
@@ -104,8 +107,9 @@ scatter(creareTemp, crearemass,'k')
 
 xlabel('Temperature at Recuperator Hot Side Inlet [K]')
 ylabel('Recuperator Mass [kg]')
-legend('UA = 15 [kW/K] Cubic interpolation - max allow stress','UA = 15 [kW/K] Creare Data','UA = 4 [kW/K] Cubic interpolation - max allow stress','UA = 4 [kW/K] Creare Data','location','northwest')
+legend('UA = 15 [kW/K] Using max. allowable stress','UA = 15 [kW/K] Creare Data','UA = 4 [kW/K] Using max. allowable stress','UA = 4 [kW/K] Creare Data','location','northwest')
 % title('Stainless Steel')
 grid on
+ylim([0 125])
 
 

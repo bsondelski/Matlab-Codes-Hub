@@ -24,7 +24,7 @@ function [err,UA_each] = errorGen(T_H_out,T_H_in,T_C_in,p_H,p_C,m_dot_H,m_dot_C,
 % calculate enthalpies of fully specified states
 [~,~,h_H_in] = getPropsTP(T_H_in,p_H(1),fluid_H,mode,1); % hot side inlet enthalpy
 [~,~,h_H_out] = getPropsTP(T_H_out,p_H(N+1),fluid_H,mode,1); % hot side outlet properties
-[~,~,h_C_in] = getPropsTP(T_C_in,p_C(1),fluid_C,mode,1); % cold side inlet properties
+[~,~,h_C_in] = getPropsTP(T_C_in,p_C(N+1),fluid_C,mode,1); % cold side inlet properties
 
 % calculate total heat transfer
 q_dot = m_dot_H*(h_H_in-h_H_out); % total heat transfer rate
@@ -71,23 +71,21 @@ else
         C_dot_min = min(C_dot_C,C_dot_H);                     % minimum capacitance rates
         C_dot_max = max(C_dot_C,C_dot_H);                     % maximum capacitance rates
         epsilon = q_dot./(N.*C_dot_min.*(T_H(1:N)-T_C(2:(N+1))));             % effectiveness of sub HEXs
-        
         if any(epsilon(:)>1)    % check for non-physical answers
             err = NaN;
         else
             C_R = C_dot_min./C_dot_max;                           % capacity ratio of sub HEXs
-            inds = find(C_R == 1);                                % find the indicies of the C_R members that are 1
+            inds = find(C_R == 1) ;                               % find the indicies of the C_R members that are 1
             NTU = log((1-epsilon.*C_R)./(1-epsilon))./(1-C_R);    % NTU of sub HEXs
             NTU(inds) = epsilon(inds)./(1-epsilon(inds));         % NTU of sub HEXs where C_R is 1
-            % conductance comparison
+                        % conductance comparison
             UA_each = NTU.*C_dot_min; % conductance in sub HEX
             UA_total = sum(UA_each); % UA calculated with temp guess
             err = UA_total-UA;       % returns magnitude ofdifference between UA calculated and given
             
         end
        
-    end
-
+    end  
 end
 end
 

@@ -21,15 +21,23 @@ if strcmp(mycomputer,'SEL-24') == 1
     insert(py.sys.path,int32(0),'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Reactor\sCO2_reactor\optimization')
 end
 
+if p_in == p_out
+    ploss_reactor = 0.0270;   % pressure drop in reactor
+    p_out = p_in-p_in*ploss_reactor; % pressure at reactor outlet
+end
+
+
 tf = iscell(fluid(1));
 if tf == 1
-    comp = cell2mat(fluid(3));
     if strcmp(fluid{1},'WATER') == 1
-        fluid{1} = 'H2O';
+        comp1 = string(fluid(4));
+        comp2 = string(fluid(3));
     elseif strcmp(fluid{2},'WATER') == 1
-        fluid{2} = 'H2O';
+        comp1 = string(fluid(3));
+        comp2 = string(fluid(4));
     end
-    fluidin = py.dict(pyargs(fluid{1},comp(1),fluid{2},comp(2)));
+%     fluidin = py.dict(pyargs(fluid{1},comp(1),fluid{2},comp(2)));
+    fluidin = strcat('CO2H2O',comp1,comp2);
 elseif strcmp(fluid,'WATER') == 1
     fluidin = 'H2O';
 elseif strcmp(fluid,'CO2') == 1

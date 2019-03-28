@@ -42,8 +42,8 @@ tf = iscell(fluid(1));
 if tf == 1
     TLowerBound = mode(1);
 else
-    names = ["CO2", "HELIUM", "CO", "OXYGEN", "WATER", "H2S"];
-    minT = [304.25, 2.18, 68.2, 54.4, 273.16, 200];
+    names = ["CO2", "HELIUM", "CO", "OXYGEN", "WATER", "H2S", "AMMONIA"];
+    minT = [304.25, 2.18, 68.2, 54.4, 273.16, 200, 240];
     TLowerBound = minT(names == fluid);
 end
 %     TLowerBound = refpropm('T','C',0,' ',0,fluid);
@@ -135,7 +135,16 @@ end
             net_power = Power_T-Power_c;
             cyc_efficiency(1) = net_power/q_reactor;
             cyc_efficiency(2) = cyc_efficiency(1)/(1-(T1/T4));
-            HEXeffect = (h3-h2)/(h5-h2);
+            
+%             HEXeffect = (h3-h2)/(h5-h2);
+            % Heat exchanger effectiveness
+            [~, ~, h_H_min] = getPropsTP(T2,p6,fluid,mode,1);
+            q_max_H = m_dot*(h5-h_H_min);
+            [~, ~, h_C_max] = getPropsTP(T5,p3,fluid,mode,1);
+            q_max_C = m_dot*(h_C_max-h2);
+            q_max = min(q_max_H,q_max_C);
+            HEXeffect = m_dot*(h3-h2)/q_max;
+            
             energy = -Power_T+Power_c+q_reactor+q_rad;
             
             if plot == 1

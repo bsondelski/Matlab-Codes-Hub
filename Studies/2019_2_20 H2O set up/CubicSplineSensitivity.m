@@ -14,7 +14,7 @@
 
 
 
-for i = 1:23
+for i = 1:24
     % set properties
     clear mode
     
@@ -43,26 +43,28 @@ for i = 1:23
     elseif i == 12
         mode = mode10;
     elseif i == 13
-        mode = mode15;
+        mode = mode12;
     elseif i == 14
-        mode = mode20;
+        mode = mode15;
     elseif i == 15
-        mode = mode25;
+        mode = mode20;
     elseif i == 16
-        mode = mode30;
+        mode = mode25;
     elseif i == 17
-        mode = mode40;
+        mode = mode30;
     elseif i == 18
-        mode = mode50;
+        mode = mode40;
     elseif i == 19
-        mode = mode60;
+        mode = mode50;
     elseif i == 20
-        mode = mode70;
+        mode = mode60;
     elseif i == 21
-        mode = mode80;
+        mode = mode70;
     elseif i == 22
-        mode = mode90;
+        mode = mode80;
     elseif i == 23
+        mode = mode90;
+    elseif i == 24
         mode = mode100;
     end
     
@@ -122,13 +124,13 @@ for i = 1:23
 end
     
 
-xvals = [1:10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100];
+xvals = [1:10, 12, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100];
 figure(1)
 y = net_power_out/1000;
 plot(xvals,y(3:end),'-x',[xvals(1),xvals(end)],[y(1),y(1)],'-*',[xvals(1),xvals(end)],[y(2),y(2)],'-o');
 xlabel('dT between cubic spline points [K]')
 ylabel('net power output of cycle [kW]')
-legend('cubic spline','FIT','REFPROP')
+legend('cubic spline','FIT','REFPROP','location','northwest')
 
 
 figure(2)
@@ -144,8 +146,8 @@ y = time;
 plot(xvals,y(3:end),[xvals(1),xvals(end)],[y(1),y(1)],'-*',[xvals(1),xvals(end)],[y(2),y(2)],'-o');
 xlabel('dT between cubic spline points [K]')
 ylabel('time to call BraytonCycle 10 instances [sec]')
-legend('cubic spline','FIT','REFPROP')
-ylim([0,6])
+legend('cubic spline','FIT','REFPROP','location','east')
+% ylim([0,6])
 
 % figure
 % y = cyc_efficiency_out1;

@@ -25,26 +25,28 @@ KPA2PSI = 0.145038;
 p2_psi = p2*KPA2PSI;
 p5_psi = p5*KPA2PSI;
 
-tf = iscell(fluid(1));
-if tf == 1
-    %     comp = cell2mat(fluid(3));
-    %     if strcmp(fluid{1},'WATER') == 1
-    %         fluid{1} = 'H2O';
-    %     elseif strcmp(fluid{2},'WATER') == 1
-    %         fluid{2} = 'H2O';
-    %     end
-    %     fluidin = py.dict(pyargs(fluid{1},comp(1),fluid{2},comp(2)));
-    
-elseif strcmp(fluid,'CO2') == 1
+% tf = iscell(fluid(1));
+% if tf == 1
+%     %     comp = cell2mat(fluid(3));
+%     %     if strcmp(fluid{1},'WATER') == 1
+%     %         fluid{1} = 'H2O';
+%     %     elseif strcmp(fluid{2},'WATER') == 1
+%     %         fluid{2} = 'H2O';
+%     %     end
+%     %     fluidin = py.dict(pyargs(fluid{1},comp(1),fluid{2},comp(2)));
+%     
+% elseif strcmp(fluid,'CO2') == 1
     
     % set original pressure, temperature, and density values of design
-    ORIGINAL_T5 = 823.15; % K
-    ORIGINAL_P2 = 18000; % kPa
-    ORIGINAL_P2_PSI = ORIGINAL_P2*KPA2PSI; % kPa
-    ORIGINAL_P5 = 9229.3; % kPa
-    ORIGINAL_P5_PSI = ORIGINAL_P5*KPA2PSI; % kPa
-    [~,rhoColdDesign,~] = getPropsTP(ORIGINAL_T5,ORIGINAL_P2,fluid,mode,2);
-    [~,rhoHotDesign,~] = getPropsTP(ORIGINAL_T5,ORIGINAL_P5,fluid,mode,2);
+%     ORIGINAL_T5 = 823.15; % K
+%     ORIGINAL_P2 = 18000; % kPa
+%     ORIGINAL_P2_PSI = ORIGINAL_P2*KPA2PSI; % kPa
+%     ORIGINAL_P5 = 9229.3; % kPa
+%     ORIGINAL_P5_PSI = ORIGINAL_P5*KPA2PSI; % kPa
+%     [~,rhoColdDesign,~] = getPropsTP(ORIGINAL_T5,ORIGINAL_P2,fluid,mode,2);
+% %     rhoColdDesign = 112.4303;
+%     [~,rhoHotDesign,~] = getPropsTP(ORIGINAL_T5,ORIGINAL_P5,fluid,mode,2);
+% %     rhoHotDesign = 58.5952;
     
     % temp values [K]
     Temp = [204, 316, 426, 482, 538, 648, 760, 815];
@@ -91,13 +93,13 @@ elseif strcmp(fluid,'CO2') == 1
         % stress --------- same below for Inconel
         
         massTubes = tubeFrac*Mass_550C;
-%         massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T);
-        massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T)*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
+        massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T);
+%         massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T)*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
 %         massTubesNew = massTubes*((Stress_allow_550C + 0.6*ORIGINAL_P2_PSI)/(Stress_allow_T + 0.6*p2_psi))*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
         
         massShell = Mass_550C - massTubes;
-%         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T);
-        massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
+        massShellNew = massShell*(Stress_allow_550C/Stress_allow_T);
+%         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
 %         massShellNew = massShell*((Stress_allow_550C + 0.6*ORIGINAL_P5_PSI)/(Stress_allow_T + 0.6*p5_psi))*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
         
         
@@ -142,14 +144,14 @@ elseif strcmp(fluid,'CO2') == 1
         tubeFrac = 0.5716;
         
         massTubes = tubeFrac*Mass_550C;
-%         massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T);
-        massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T)*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
+        massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T);
+%         massTubesNew = massTubes*(Stress_allow_550C/Stress_allow_T)*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
 %         massTubesNew = massTubes*((Stress_allow_550C + 0.6*ORIGINAL_P2_PSI)/(Stress_allow_T + 0.6*p2_psi))*(p2/ORIGINAL_P2)*(rhoColdDesign/rhoCold);
         
         
         massShell = Mass_550C - massTubes;
-%         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T);
-        massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
+        massShellNew = massShell*(Stress_allow_550C/Stress_allow_T);
+%         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
 %         massShellNew = massShell*((Stress_allow_550C + 0.6*ORIGINAL_P5_PSI)/(Stress_allow_T + 0.6*p5_psi))*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
         
         
@@ -169,64 +171,65 @@ elseif strcmp(fluid,'CO2') == 1
     end
     
 
-elseif strcmp(fluid,'WATER') == 1
-    fluidin = 'H2O';
-    
-    % temp values [K]
-    Temp = [204, 316, 426, 482, 538, 648, 760, 815];
-    Temp = Temp + 273.15;
-    
-    if Material == 'SS'
-        % maximum allowable stress corresponding with Temp array [PSI]
-        Stress_allow = [18300, 16600, 15200, 14600, 14000, 6100, 2300, 1400];
-        
-        % baseline values 550
-        Slope_550C = 0.000413636363636364;
-        Intercept_550C = 1.605454545454547;
-        Stress_allow_550C = spline(Temp, Stress_allow, 550+273.15);
-        
-        % it was decided that recuperator mass at 650 is inaccurate
-        %     % baseline values 650
-        %     Slope_650C = 0.007236363636;
-        %     Intercept_650C = 20.55454545;
-        %     Stress_allow_650C = spline(Temp, Stress_allow, 650+273.15);
-        
-        % get baseline masses
-        Mass_550C = Slope_550C*UA + Intercept_550C;
-        %     Mass_650C = Slope_650C*UA + Intercept_650C;
-        % get allowable stress at T5
-        Stress_allow_T = spline(Temp, Stress_allow, T5);
-        % get actual mass
-        mass5 = Stress_allow_550C/Stress_allow_T*Mass_550C;
-        %     mass6 = Stress_allow_650C/Stress_allow_T*Mass_650C;
-        %     massvec = [mass5,mass6];
-        %     mass = mean(massvec);
-        mass = mass5;
-        
-    elseif Material == 'IN'
-        Stress_allow = [42600, 40300, 40000, 40000, 40000, 33100, 10700, 3200];
-        
-        % baseline values 550
-        Slope_550C = 0.000147272727272727;
-        Intercept_550C = 2.560909090909092;
-        Stress_allow_550C = spline(Temp, Stress_allow, 550+273.15);
-        
-        % baseline values 650
-        Slope_650C = 0.000264545454545455;
-        Intercept_650C = 4.611818181818183;
-        Stress_allow_650C = spline(Temp, Stress_allow, 650+273.15);
-        
-        % get baseline masses
-        Mass_550C = Slope_550C*UA + Intercept_550C;
-        Mass_650C = Slope_650C*UA + Intercept_650C;
-        % get allowable stress at T5
-        Stress_allow_T = spline(Temp, Stress_allow, T5);
-        % get actual mass
-        mass5 = Stress_allow_550C/Stress_allow_T*Mass_550C;
-        mass6 = Stress_allow_650C/Stress_allow_T*Mass_650C;
-        massvec = [mass5,mass6];
-        mass = mean(massvec);
-    end
+% elseif strcmp(fluid,'WATER') == 1
+%     fluidin = 'H2O';
+%     
+%     % temp values [K]
+%     Temp = [204, 316, 426, 482, 538, 648, 760, 815];
+%     Temp = Temp + 273.15;
+%     
+%     if Material == 'SS'
+%         % maximum allowable stress corresponding with Temp array [PSI]
+%         Stress_allow = [18300, 16600, 15200, 14600, 14000, 6100, 2300, 1400];
+%         
+%         % baseline values 550
+%         Slope_550C = 0.000413636363636364;
+%         Intercept_550C = 1.605454545454547;
+%         Stress_allow_550C = spline(Temp, Stress_allow, 550+273.15);
+%         
+%         % it was decided that recuperator mass at 650 is inaccurate
+%         %     % baseline values 650
+%         %     Slope_650C = 0.007236363636;
+%         %     Intercept_650C = 20.55454545;
+%         %     Stress_allow_650C = spline(Temp, Stress_allow, 650+273.15);
+%         
+%         % get baseline masses
+%         Mass_550C = Slope_550C*UA + Intercept_550C;
+%         %     Mass_650C = Slope_650C*UA + Intercept_650C;
+%         % get allowable stress at T5
+%         Stress_allow_T = spline(Temp, Stress_allow, T5);
+%         % get actual mass
+%         mass5 = Stress_allow_550C/Stress_allow_T*Mass_550C;
+%         %     mass6 = Stress_allow_650C/Stress_allow_T*Mass_650C;
+%         %     massvec = [mass5,mass6];
+%         %     mass = mean(massvec);
+%         mass = mass5;
+%         
+%     elseif Material == 'IN'
+%         Stress_allow = [42600, 40300, 40000, 40000, 40000, 33100, 10700, 3200];
+%         
+%         % baseline values 550
+%         Slope_550C = 0.000147272727272727;
+%         Intercept_550C = 2.560909090909092;
+%         Stress_allow_550C = spline(Temp, Stress_allow, 550+273.15);
+%         
+%         % baseline values 650
+%         Slope_650C = 0.000264545454545455;
+%         Intercept_650C = 4.611818181818183;
+%         Stress_allow_650C = spline(Temp, Stress_allow, 650+273.15);
+%         
+%         % get baseline masses
+%         Mass_550C = Slope_550C*UA + Intercept_550C;
+% %         Mass_650C = Slope_650C*UA + Intercept_650C;
+%         % get allowable stress at T5
+%         Stress_allow_T = spline(Temp, Stress_allow, T5);
+%         % get actual mass
+%         mass5 = Stress_allow_550C/Stress_allow_T*Mass_550C;
+% %         mass6 = Stress_allow_650C/Stress_allow_T*Mass_650C;
+% %         massvec = [mass5,mass6];
+% %         mass = mean(massvec);
+%         mass = mass5;
+%     end
     
     
 end

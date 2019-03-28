@@ -74,18 +74,18 @@ else
     % find enthalpies of fully specified states
     [~,~,h_H_in] = getPropsTP(T_H_in,p_H(1),fluid_H,mode,1);     % hot side inlet properties
     [~,~,h_H_out] = getPropsTP(T_H_out,p_H(N+1),fluid_H,mode,1);   % hot side outlet properties
-    [~,~,h_C_in] = getPropsTP(T_C_in,p_C(1),fluid_C,mode,1);     % cold side inlet properties
+    [~,~,h_C_in] = getPropsTP(T_C_in,p_C(N+1),fluid_C,mode,1);     % cold side inlet properties
     
     % calculate total heat transfer
     q_dot = m_dot_H*(h_H_in-h_H_out); % total heat transfer rate
     
     % calculate enthalpy of cold side outlet
     h_C_out = h_C_in+q_dot/m_dot_C;   % specific heat capacity for cold side outlet
-    
+
     % find temperature of cold side
     [T_C_out,~,~] = getPropsPH(p_C(N+1),h_C_out,fluid_C,mode,1); % find outlet temperature for cold side
     
-    if ploton == 1 || ploton == 2
+    if ploton == 1 || ploton == 2 || ploton == 0
         %%%%%%%%%%%%%%%%%%%%% only to plot %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % preallocate space
         h_H = zeros(1,(N+1));
@@ -128,4 +128,89 @@ else
     
 end
 
+% % HEXeffect = (h_C_out-h_C_in)/(h_H_in-h_C_in);
+% 
+%         % capacitance rates
+%         C_dot_H = m_dot_H.*(h_H(1:N)-h_H(2:(N+1)))./(T_H(1:N)-T_H(2:(N+1)));  %hot side capacitance rates
+%         %                           h_H1-h_H2                T_H1-T_H2
+%         
+%         C_dot_C = m_dot_C.*(h_C(1:N)-h_C(2:(N+1)))./(T_C(1:N)-T_C(2:(N+1)));  % cold side capacitance rates
+% %         change = find(C_dot_C==Inf);
+% %         C_dot_C(change) = 9999;
+% % 
+% 
+%         C_dot_min = min(C_dot_C,C_dot_H);                     % minimum capacitance rates
+%         C_dot_max = max(C_dot_C,C_dot_H);                     % maximum capacitance rates
+%         epsilon = q_dot./(N.*C_dot_min.*(T_H(1:N)-T_C(2:(N+1))));     
+% C_R = C_dot_min./C_dot_max;     
+% 
+% inds = find(C_R == 1);                                % find the indicies of the C_R members that are 1
+%             NTU = log((1-epsilon.*C_R)./(1-epsilon))./(1-C_R);    % NTU of sub HEXs
+%             NTU(inds) = epsilon(inds)./(1-epsilon(inds));   
+%             
+%             UA_each = NTU.*C_dot_min; % conductance in sub HEX
+%             UA_total = sum(UA_each); 
+
+% T_H_avgs = (T_H(1:N)+T_H(2:(N+1)))./2;
+% T_C_avgs = (T_C(1:N)+T_C(2:(N+1)))./2;
+% % plot(T_H_avgs,C_dot_H)
+% q_max_H = trapz(flip(T_H_avgs),flip(C_dot_H));
+% q_max_C = trapz(flip(T_C_avgs),flip(C_dot_C));
+% q_max = min(q_max_H,q_max_C);
+% 
+% C_dot_H = m_dot_H.*h_H(1:(N+1))./T_H(1:(N+1))
+% C_dot_C = m_dot_C.*h_C(1:(N+1))./T_C(1:(N+1));
+% q_max_H = trapz(flip(T_H),flip(C_dot_H))
+% q_max_C = trapz(flip(T_C),flip(C_dot_C))
+% q_max = min(q_max_H,q_max_C);
+% 
+% C_dot_C = m_dot_C*(h_C_in-h_C_out)/(T_C_in-T_C_out);
+% C_dot_H = m_dot_H*(h_H_in-h_H_out)/(T_H_in-T_H_out);
+% C_dot_min = min(C_dot_C,C_dot_H)
+% C_dot_max = max(C_dot_C,C_dot_H)
+% C_R = C_dot_min/C_dot_max
+%  q_max = C_dot_min*(T_H_in-T_C_in)
+% [~, ~, h_H_min] = getPropsTP(T_C_in,p_H_out,fluid_H,mode,1);
+% q_max_H = m_dot_H*(h_H_in-h_H_min)
+% [~, ~, h_C_max] = getPropsTP(T_H_in,p_C_out,fluid_C,mode,1);
+% q_max_C = m_dot_C*(h_C_max-h_C_in)
+% q_max = min(q_max_H,q_max_C)
+% 
+% q_dot = m_dot_C*(h_C_out-h_C_in);
+% HEXeffect = q_dot/q_max
+% NTU = log((1-HEXeffect.*C_R)./(1-HEXeffect))./(1-C_R)
+% % 
+% % %%% close!!!!!
+
+
+
+
+% [~, ~, h_H_min] = getPropsTP(T_C_in,p_H_out,fluid_H,mode,1);
+% q_max_H = m_dot_H*(h_H_in-h_H_min);
+% [~, ~, h_C_max] = getPropsTP(T_H_in,p_C_out,fluid_C,mode,1);
+% q_max_C = m_dot_C*(h_C_max-h_C_in);
+% q_max = min(q_max_H,q_max_C);
+% q_dot = m_dot_C*(h_C_out-h_C_in);
+% HEXeffect = q_dot/q_max
+
+% 
+% 
+% 
+% 
+% 
+% 
+% % capacitance rates
+%         C_dot_H = m_dot_H.*(h_H(1:N+1))./(T_H(1:(N+1)))  %hot side capacitance rates
+%         %                           h_H1-h_H2                T_H1-T_H2
+%         
+%         C_dot_C = m_dot_C.*(h_C(1:(N+1)))./(T_C(1:(N+1)))  % cold side capacitance rates
+%         
+%         q_dot = m_dot_C*(h_C_out-h_C_in);
+%         
+%     T_vec = linspace(T_C_in,T_H_in,N+1);
+%     qMaxC = trapz(T_vec,C_dot_C);
+%     qMaxH = trapz(T_vec,C_dot_H);
+%     q_max = min(qMaxC,qMaxH);
+%     HEXeffect = q_dot/q_max
+    
 end

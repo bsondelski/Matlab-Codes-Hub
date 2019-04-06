@@ -16,12 +16,14 @@
 % % plot temperature mass dependence along with recuperator inlet temps
 % % for UO2 only
 % % figure 4
-% plotTtinDependence
+plotTtinDependence
 
 % plot p1 dependence
 % figure 5
-plotP1Dependence
-
+% load data without pressure dependence, run this
+% c1 = plotP1Dependence
+% load data with pressure depencence, run this
+% plotP1DependenceInclPressDepend(c1)
 
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% UW Studies %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -148,7 +150,7 @@ figure(1)
 plot(PR,TotalMinMass,'k')
 [minMass,I] = min(TotalMinMass);
 scatter(PR(I),minMass,'k')
-text(PR(end)+0.01,TotalMinMass(end),['T_4 = 1070 K'],'fontsize',11)
+text(PR(end)+0.01,TotalMinMass(end),['T_4 = 1080 K'],'fontsize',11)
 text(PR(end)+0.01,TotalMinMass(end)+35,['Inconel'],'fontsize',11)
 
 for i=1:length(TotalMinMass)
@@ -161,7 +163,7 @@ end
 figure(2)
 plot(PR,Ma_T,'k')
 scatter(PR(I),Ma_T(I),'k')
-text(PR(I)+0.02,Ma_T(I)-0.023,['T_4 = 1070 K'],'fontsize',11)
+text(PR(I)+0.02,Ma_T(I)-0.023,['T_4 = 1080 K'],'fontsize',11)
 text(PR(I)+0.02,Ma_T(I)-0.008,['Inconel'],'fontsize',11)
 ylabel('Turbine Mach Number','fontsize',18)
 xlabel('Pressure Ratio','fontsize',18)
@@ -170,7 +172,7 @@ grid on
 figure(3)
 plot(PR,Ma_c,'k')
 scatter(PR(I),Ma_c(I),'k')
-text(PR(I)-0.22,Ma_c(I)+0.005,['T_4 = 1070 K'],'fontsize',11)
+text(PR(I)-0.22,Ma_c(I)+0.005,['T_4 = 1080 K'],'fontsize',11)
 text(PR(I)-0.22,Ma_c(I)+0.02,['Inconel'],'fontsize',11)
 ylabel('Compressor Mach Number','fontsize',18)
 xlabel('Pressure Ratio','fontsize',18)
@@ -197,7 +199,8 @@ for i=1:length(TotalMinMass)
 end
 set(0,'defaultAxesFontSize',16)
 figure(4)
-set(gcf, 'units','normalized','outerposition',[0 0 0.36 0.8]);
+% set(gcf, 'units','normalized','outerposition',[0 0 0.36 0.8]);
+set(gcf, 'units','normalized','outerposition',[0 0 0.48 0.8]);
 leg1 = plot(T4(1:6),TotalMinMass(1:6),'--k','linewidth',1.5);
 hold on
 leg2 = plot(T4(6:end),TotalMinMass(6:end),':k','linewidth',1.5);
@@ -250,7 +253,7 @@ ylim([525 1000])
 xlabel('Recuperator Inlet Temperature [K]','fontsize',22)
 end
 
-function [] = plotP1Dependence
+function [c1] = plotP1Dependence
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plot p1 dependence
 % stainless steel near term
@@ -282,12 +285,55 @@ text(p1(end)/1000+0.2,TotalMinMass(end)+20,['Stainless Steel'],'fontsize',11)
 % Inconel
 clear
 load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_INp1.mat'
-plot(p1./1000,TotalMinMass,'k')
+c1 = plot(p1./1000,TotalMinMass,'k');
 [minMass,I] = min(TotalMinMass);
 scatter(p1(I)/1000,minMass,'k')
 text(p1(end)/1000+0.2,TotalMinMass(end),['T_4 = ',num2str(Tmin),' K'],'fontsize',11)
 text(p1(end)/1000+0.2,TotalMinMass(end)+30,['Inconel'],'fontsize',11)
 
+xlim([0 28])
+ylim([500 1020])
+% plot([9 9],[500 850],'--k')
+end
+function [] = plotP1DependenceInclPressDepend(c1)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plot p1 dependence
+% stainless steel near term
+clearvars -except c1
+load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSp1Near.mat'
+set(0,'defaultAxesFontSize',12)
+figure(5)
+plot(p1./1000,TotalMinMass,'--k')
+hold on
+% ylabel('Optimum Cycle Mass [kg]','fontsize',18)
+% xlabel('Compressor Inlet Pressure [MPa]','fontsize',18)
+box on
+grid on
+
+[minMass,I] = min(TotalMinMass);
+scatter(p1(I)/1000,minMass,'k','filled')
+% text(p1(end)/1000+0.2,TotalMinMass(end),['T_4 = 900 K'],'fontsize',11)
+% text(p1(end)/1000+0.2,TotalMinMass(end)+30,['Stainless Steel'],'fontsize',11)
+
+% stainless steel far term
+clearvars -except c1
+load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSp1Far.mat'
+plot(p1./1000,TotalMinMass,'--k')
+[minMass,I] = min(TotalMinMass);
+scatter(p1(I)/1000,minMass,'k','filled')
+% text(p1(end)/1000+0.2,TotalMinMass(end)-10,['T_4 = ',num2str(Tmin),' K'],'fontsize',11)
+% text(p1(end)/1000+0.2,TotalMinMass(end)+20,['Stainless Steel'],'fontsize',11)
+
+% Inconel
+clearvars -except c1
+load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_INp1.mat'
+c2 = plot(p1./1000,TotalMinMass,'--k');
+[minMass,I] = min(TotalMinMass);
+scatter(p1(I)/1000,minMass,'k','filled')
+% text(p1(end)/1000+0.2,TotalMinMass(end),['T_4 = ',num2str(Tmin),' K'],'fontsize',11)
+% text(p1(end)/1000+0.2,TotalMinMass(end)+30,['Inconel'],'fontsize',11)
+
+legend([c2 c1],{'No Pressure Dependence', 'Includes Pressure Dependence'},'fontsize',13,'location','northeast')
 xlim([0 28])
 ylim([500 1020])
 % plot([9 9],[500 850],'--k')

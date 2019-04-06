@@ -115,8 +115,8 @@
 % 
 % HEXeffect = (h_C_out-h_C_in)/(h_H_in-h_C_in)
 
-UA = linspace(500,40000,200);
-for i = 1:length(UA)
+% UA = linspace(500,40000,200);
+% for i = 1:length(UA)
 %case 6
 UA = 6761;
 fluid = 'WATER';
@@ -136,17 +136,17 @@ mode = 3;
 ploton = 1;
 
 [T_H_out, T_C_out,h_C_out,p_H,p_C,T_H,T_C] = HEX_bettersolve(T_H_in,T_C_in,p_H_in,p_H_out,p_C_in,p_C_out,m_dot_H,m_dot_C,UA,fluid_C,fluid_H,mode,ploton)
-end
-plot(UA/1000,T_C_out)
-xlabel('UA [kW/K]')
-ylabel('T_C_,_o_u_t [K]')
-grid on
-
-hold on
-plot([0 40],[768.3, 768.3],'k')
-plot([0 40],[805.7, 805.7],'k')
-text(30,763,'T_C_,_o_u_t = 768 [K]')
-text(30,800,'T_C_,_o_u_t = 806 [K]')
+% end
+% plot(UA/1000,T_C_out)
+% xlabel('UA [kW/K]')
+% ylabel('T_C_,_o_u_t [K]')
+% grid on
+% 
+% hold on
+% plot([0 40],[768.3, 768.3],'k')
+% plot([0 40],[805.7, 805.7],'k')
+% text(30,763,'T_C_,_o_u_t = 768 [K]')
+% text(30,800,'T_C_,_o_u_t = 806 [K]')
 
 % [~,~,h_C_out] = getPropsTP(T_C_out,p_C_out,fluid,mode,1);
 % [~,~,h_C_in] = getPropsTP(T_C_in,p_C_in,fluid,mode,1);

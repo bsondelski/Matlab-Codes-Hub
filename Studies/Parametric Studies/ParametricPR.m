@@ -28,7 +28,7 @@ grid on
 %%%% for temperatures
 for i=1:length(TotalMinMass)
     [net_power(i),efficiency,D_T,D_c,Ma_T(i),Ma_c(i),Anozzle,q_reactor(i),...
-    q_rad(i),T1(i),Power_T,Power_c,HEXeffect(i),energy,~,T2(i),p2,T3(i),p3(i),~,p4(i),T5(i),...
+    q_rad(i),T1(i),Power_T(i),Power_c(i),HEXeffect(i),energy,~,T2(i),p2,T3(i),p3(i),~,p4(i),T5(i),...
     p5,T6(i),p6,~,Vratio] = BraytonCycle(m_dot(i),p1(i),900,PR(i),UA(i),...
     A_panel(i),200,'CO2',2,0);
 cyc_eff(i) = efficiency(1);
@@ -62,7 +62,7 @@ figure(3)
 plot(PR,cyc_eff,'k')
 grid on
 xlabel('Pressure Ratio','fontsize',18)
-ylabel('Efficiency of Optimum Mass','fontsize',18)
+ylabel('Efficiency of Optimum Cycle','fontsize',18)
 
 
 

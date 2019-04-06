@@ -69,7 +69,7 @@ else
     loopcount = 1;
     
     while a ==1
-        UA = linspace(UA_min,UA_max,20);
+        UA = linspace(UA_min,UA_max,5);
         
         % preallocate space
         mass_total = zeros(1,length(UA));

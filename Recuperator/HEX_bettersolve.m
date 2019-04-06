@@ -83,7 +83,7 @@ else
     h_C_out = h_C_in+q_dot/m_dot_C;   % specific heat capacity for cold side outlet
 
     % find temperature of cold side
-    [T_C_out,~,~] = getPropsPH(p_C(N+1),h_C_out,fluid_C,mode,1); % find outlet temperature for cold side
+    [T_C_out,~,~] = getPropsPH(p_C(1),h_C_out,fluid_C,mode,1); % find outlet temperature for cold side
     
     if ploton == 1 || ploton == 2 || ploton == 0
         %%%%%%%%%%%%%%%%%%%%% only to plot %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

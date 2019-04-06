@@ -44,8 +44,7 @@ while stop == 0
             break
         end
     end
-%     T
-%     err
+
     [~,I] = min(abs(err));    % find the value in the error array with the smallest magnitude
     
     % Temp value for smallest value in error array

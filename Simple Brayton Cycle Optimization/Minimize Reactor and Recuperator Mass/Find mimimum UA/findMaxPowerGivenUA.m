@@ -42,7 +42,6 @@ while stop == 0
             break
         end
     end
-    
     [~,inde] = min(power);
     
     if inde == 1

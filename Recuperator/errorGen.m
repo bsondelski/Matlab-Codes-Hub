@@ -31,7 +31,7 @@ q_dot = m_dot_H*(h_H_in-h_H_out); % total heat transfer rate
 
 % calculate enthalpy of cold side outlet
 h_C_out = h_C_in+q_dot/m_dot_C;   % specific heat capacity for cold side outlet
-[~,~,h_C_max] = getPropsTP(T_H_in,p_C(N+1),fluid_C,mode,1);  % find max possible enthalpy for cold side
+[~,~,h_C_max] = getPropsTP(T_H_in,p_C(1),fluid_C,mode,1);  % find max possible enthalpy for cold side
 
 if h_C_out > (h_C_max)
     % return an error of NaN because this enthalpy will not result in a

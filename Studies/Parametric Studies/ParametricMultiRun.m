@@ -1,15 +1,25 @@
 % % run all studies for stainless steel and UO2
 % 
 clear
-T4 = [850:10:1150];
+T4 = 900;
 parfor i = 1:length(T4)
    T4(i)
-[ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i) ] = minimizeTotalMass( 40000,9000,T4(i),2,200,'CO2',2,'UO2','SS' );
+[ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures( 40000,9000,T4(i),2,200,'CO2',2,'UO2','SN' );
 
 end
-save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSTemp.mat'
+save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSTempNear.mat'
 [~,I] = min(TotalMinMass);
 Tmin = T4(I);
+% clear
+% T4 = [850:10:1150];
+% parfor i = 1:length(T4)
+%    T4(i)
+% [ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures( 40000,9000,T4(i),2,200,'CO2',2,'UO2','SF' );
+% 
+% end
+% save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSTemp.mat'
+% [~,I] = min(TotalMinMass);
+% Tmin = T4(I);
 
 clearvars -except Tmin
 
@@ -17,36 +27,49 @@ p1 = [1000:500:20000];
 parfor i = 1:length(p1)
     
     p1(i)
-    [ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i) ] = minimizeTotalMass( 40000,p1(i),900,2,200,'CO2',2,'UO2','SS' );
+    [ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures( 40000,p1(i),900,2,200,'CO2',2,'UO2','SN' );
 end
 save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSp1Near.mat'
 clearvars -except Tmin
 
+PR = [2:0.1:3];
+parfor i = 1:length(PR)
+    p1(i) = 18000/PR(i);
+[ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures( 40000,p1(i),900,PR(i),200,'CO2',2,'UO2','SN' );
+
+end
+save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSPRNear.mat'
+
+
+clear
+T4 = 900;
+parfor i = 1:length(T4)
+   T4(i)
+[ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures( 40000,9000,T4(i),2,200,'CO2',2,'UO2','SF' );
+
+end
+save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSTempFar.mat'
+[~,I] = min(TotalMinMass);
+Tmin = T4(I);
+
 p1 = [1000:500:20000];
 parfor i = 1:length(p1)
     
     p1(i)
-    [ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i) ] = minimizeTotalMass( 40000,p1(i),Tmin,2,200,'CO2',2,'UO2','SS' );
+    [ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures( 40000,p1(i),Tmin,2,200,'CO2',2,'UO2','SF' );
 end
 save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSp1Far.mat'
 clearvars -except Tmin
 
 
-PR = [2:0.1:3];
-parfor i = 1:length(PR)
-    p1(i) = 18000/PR(i);
-[ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i) ] = minimizeTotalMass( 40000,p1(i),900,PR(i),200,'CO2',2,'UO2','SS' );
 
-end
-save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSPRNear.mat'
-clearvars -except Tmin
 
 
 PR = [2:0.1:3];
 % p1 = 18000/PR
 parfor i = 1:length(PR)
     p1(i) = 18000/PR(i);
-[ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i) ] = minimizeTotalMass( 40000,p1(i),Tmin,PR(i),200,'CO2',2,'UO2','SS' );
+[ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures( 40000,p1(i),Tmin,PR(i),200,'CO2',2,'UO2','SF' );
 
 end
 save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSPRFar.mat'
@@ -68,7 +91,7 @@ clear
 T4 = [850:10:1150];
 parfor i = 1:length(T4)
     T4(i)
-[ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i) ] = minimizeTotalMass( 40000,9000,T4(i),2,200,'CO2',2,'UO2','IN' );
+[ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures( 40000,9000,T4(i),2,200,'CO2',2,'UO2','IN' );
 
 end
 
@@ -81,7 +104,7 @@ p1 = [1000:500:20000];
 parfor i = 1:length(p1)
     
     p1(i)
-    [ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i) ] = minimizeTotalMass( 40000,p1(i),Tmin,2,200,'CO2',2,'UO2','IN' );
+    [ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures( 40000,p1(i),Tmin,2,200,'CO2',2,'UO2','IN' );
 end
 
 save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_INp1.mat'
@@ -91,7 +114,7 @@ PR = [2:0.1:3];
 % p1 = 18000/PR
 parfor i = 1:length(PR)
     p1(i) = 18000/PR(i);
-[ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i) ] = minimizeTotalMass( 40000,p1(i),Tmin,PR(i),200,'CO2',2,'UO2','IN' );
+[ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures( 40000,p1(i),Tmin,PR(i),200,'CO2',2,'UO2','IN' );
 
 end
 

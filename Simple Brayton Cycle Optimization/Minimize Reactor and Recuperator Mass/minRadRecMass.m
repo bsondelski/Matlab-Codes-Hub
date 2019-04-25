@@ -73,11 +73,12 @@ else
         
         % preallocate space
         mass_total = zeros(1,length(UA));
-        m_dotcycle_max = m_dot_original;
+        m_dotcycle_max = zeros(1,length(UA));
+        m_dotcycle_max(1) = m_dot_original;
         for i = 1:length(UA)
             [ mass_total(i),~,~,~,m_dot_last ] = totalMass( UA(i),desiredPower,p1,T4,PR_c,A_panel,...
-                T_amb,fluid,mode,m_dotcycle_max,options1,NucFuel,RecupMatl);
-            m_dotcycle_max = m_dot_last;
+                T_amb,fluid,mode,m_dotcycle_max(i),options1,NucFuel,RecupMatl);
+            m_dotcycle_max(i+1) = m_dot_last;
             
             [~,~,~,~,~,~,~,~,...
                 ~,T1,~,~,~,~,~,~,~,~,~,~,~,~,...
@@ -103,8 +104,8 @@ else
         [~,inde] = min(mass_total);
         
         if TBelowDewPoint == 1
-            UA_max = UA(end);
-            UA_min = UA(end - 1);
+            UA_max = UA(length(mass_total));
+            UA_min = UA(length(mass_total) - 1);
             break
         else
             if inde == length(UA)
@@ -128,24 +129,24 @@ else
     %%%%%%%%%%%%%%%%%%%%%%% end bound find %%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     % find recuperator conductance for cycle with minimum mass
-    
+    m_dot_max = m_dotcycle_max(length(mass_total) - 1);
     
     if tolerance == 1
         % if high tolerance is required, find exact minimum mass or
         % minimum temperature (if Dew Point is reached)
         if TBelowDewPoint == 1
             options = optimset('TolX', 1e-4);
-            UA_maxValid = fzero(@UAatTDewPoint,[UA_min_original,UA_max],options,desiredPower,p1,T4,PR_c,A_panel,...
-                T_amb,fluid,mode,NucFuel,RecupMatl,TDewPoint,m_dot_original);
+            UA_maxValid = fzero(@UAatTDewPoint,[UA_min,UA_max],options,desiredPower,p1,T4,PR_c,A_panel,...
+                T_amb,fluid,mode,NucFuel,RecupMatl,TDewPoint,m_dot_max);
             [ minMass,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = totalMass( UA_maxValid,desiredPower,p1,T4,PR_c,A_panel,...
-                T_amb,fluid,mode,m_dot_original,[],NucFuel,RecupMatl);
+                T_amb,fluid,mode,m_dot_max,[],NucFuel,RecupMatl);
             UA = UA_maxValid;
         else
             options2 = [];
             [UA,minMass] = fminbnd(@totalMass,UA_min,UA_max,[],desiredPower,p1,T4,PR_c,A_panel,...
-                T_amb,fluid,mode,m_dot_original,options2,NucFuel,RecupMatl);
+                T_amb,fluid,mode,m_dot_max,options2,NucFuel,RecupMatl);
             [ ~,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = totalMass( UA,desiredPower,p1,T4,PR_c,A_panel,...
-                T_amb,fluid,mode,m_dot_original,options2,NucFuel,RecupMatl);
+                T_amb,fluid,mode,m_dot_max,options2,NucFuel,RecupMatl);
             % check T1 is above Dew Point and decrease UA if it is not
             % (this happens when UA causing T1 below Dew Point and UA
             % causing min mass are very close
@@ -156,9 +157,9 @@ else
             if T1 < TDewPoint
                 options = optimset('TolX', 1e-4);
                 UA_maxValid = fzero(@UAatTDewPoint,[UA_min_original,UA_max],options,desiredPower,p1,T4,PR_c,A_panel,...
-                    T_amb,fluid,mode,NucFuel,RecupMatl,TDewPoint,m_dot_original);
+                    T_amb,fluid,mode,NucFuel,RecupMatl,TDewPoint,m_dot_max);
                 [ minMass,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = totalMass( UA_maxValid,desiredPower,p1,T4,PR_c,A_panel,...
-                    T_amb,fluid,mode,m_dot_original,[],NucFuel,RecupMatl);
+                    T_amb,fluid,mode,m_dot_max,[],NucFuel,RecupMatl);
                 UA = UA_maxValid;
             end
         end

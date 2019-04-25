@@ -22,7 +22,7 @@ plot(T4,mass_recuperator,'--k')
 plot(T4,mass_radiator,'-.k')
 ylabel('Mass [kg]','fontsize',18)
 xlabel('Turbine inlet temperature [K]','fontsize',18)
-legend({'m_r_e_a_c_t_o_r','m_r_e_c_u_p_e_r_a_t_o_r','m_r_a_d_i_a_t_o_r'},'fontsize',11)
+legend({'m_r_e_a_c_t_o_r','m_r_e_c_u_p_e_r_a_t_o_r','m_r_a_d_i_a_t_o_r'},'fontsize',11,'location','west')
 grid on
 
 for j = 1:length(T4)

@@ -12,7 +12,7 @@ fluid='CO2';
 mode=2;
 desiredPower = 40000;
 
-[ UA_min,m_dotcycle_max ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel,...
+[ UA_min,m_dotcycle_max ] = minimumUA(desiredPower,p1,T4,PR_c,A_panel,...
     T_amb,fluid,mode);
 UA_min = UA_min;
 UA=UA_min:100:20000;

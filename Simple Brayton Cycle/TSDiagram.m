@@ -27,7 +27,7 @@ p = [21000,18000,15000,12000,9000,6000];
 %     end
 % end
 % Tmin = 240;
-T = linspace(Tmin,1100,1000);
+T = linspace(Tmin,1200,1000);
 
 for i = 1:length(p)
     [s,~,~] = getPropsTP(T,p(i),fluid,mode,2);
@@ -110,5 +110,7 @@ text(spoints(3)-0.13,Tpoints(3)+10,'3','fontsize',14)
 text(spoints(4)-0.13,Tpoints(4)-3,'4','fontsize',14)
 text(spoints(5)+0.08,Tpoints(5)-8,'5','fontsize',14)
 text(spoints(6)+0.08,Tpoints(6)-8,'6','fontsize',14)
+
+grid on
 end
 

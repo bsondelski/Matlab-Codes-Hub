@@ -17,7 +17,7 @@ function [p_out,T_out,D,Power,Ma,Anozzle,h2a,Vratio] = Turbine(m_dot,T_in,p_in,p
 % D: the diameter of the rotor in the turbine (turbine diameter) [m]
 % Power: the power supplied by the turbine [W]
 % Ma: the mach number of the turbine outlet
-% Anozzle: the effective nozzle area 
+% Anozzle: the effective nozzle area [m^2]
 % h2a: actual outlet enthalpy
 % Vradio: velocity ratio [J/kg]
 
@@ -45,7 +45,7 @@ h2a = h1-Power/m_dot;     % calculate actual outlet enthalpy
 % solve for turbine diameter
 [T_out,a,rho2] = getPropsPH(p_out,h2a,fluid,mode,3);   
 C_s = sqrt(abs(2*h_12s));         % spouting velocity
-Anozzle = m_dot/(C_s*rho2);       % the effective nozzle area 
+Anozzle = m_dot/(C_s*rho2);       % the effective nozzle area [m^2]
 D = d_s*sqrt(V_dot)/h_12s^(1/4);
 
 % solve for mach number and shaft speed

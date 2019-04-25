@@ -95,7 +95,7 @@ while a == 1 %|| j < 3
     end
     
     j = j + 1;
-    if UA_max > 100000 || UA_min < 50
+    if UA_max > 150000 || UA_min < 50
         fprintf(2, 'maxPowerBoundFind: recuperator too small or large \n \n');
         UA_min = NaN;
         UA_max = NaN;

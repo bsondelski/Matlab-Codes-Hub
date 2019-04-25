@@ -8,19 +8,38 @@ function [ ApanelMin ] = minApanelFind(desiredPower,p1,T4,PR_c,T_amb,fluid,mode)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% bound finding %%%%%%%%%%%%%%%%%%%%%%%%%%%
-UA = 30000;
-A_panel_min = 20;
-A_panel_max = 40;
-stepsize = 2;
-stop = 0;
-loopcount = 1;
+
+% mixtures
+if strcmp(fluid,'WATER')
+    UA = 12000;
+    A_panel_min = 20; 
+    A_panel_max = 40;
+    stepsize = 2;
+    stop = 0;
+    loopcount = 1;
+% elseif strcmp(fluid,'CO2')
+%     UA = 50000;
+%     A_panel_min = 50;
+%     A_panel_max = 100;
+%     stepsize = 10;
+%     stop = 0;
+%     loopcount = 1;
+else
+    UA = 26000; 
+    A_panel_min = 20; 
+    A_panel_max = 40;
+    stepsize = 2;
+    stop = 0;
+    loopcount = 1;
+end
+
 
 while stop == 0 % && stepsize > 0.25
-    A_panel = A_panel_min:stepsize:A_panel_max
+    A_panel = A_panel_min:stepsize:A_panel_max;
     powerDifference = zeros(1,length(A_panel));
     for i=1:length(A_panel)
         [ powerDifference(i) ] = minimumApanelError( A_panel(i),UA,desiredPower,p1,T4,PR_c,...
-            T_amb,fluid,mode,[] )
+            T_amb,fluid,mode,[] );
         
         if i > 1 && powerDifference(i) > 0
             % if mass is getting larger with larger Apanel, the solution has
@@ -52,7 +71,7 @@ while stop == 0 % && stepsize > 0.25
 break
         elseif powerDifference(inde) < 0
             A_panel_max = A_panel_max*1.5;
-            A_panel_min = A_panel_testvals(inde-1);
+            A_panel_min = A_panel(inde-1);
         end
         
     elseif powerDifference(inde) < 0 && powerDifference(inde+1) > 0
@@ -89,8 +108,11 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% bound finding %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % exact option
-ApanelMin = fzero(@minimumApanelError,[A_panel_min,A_panel_max],[],UA,...
+options = optimset('TolX', 1e-5);
+ApanelMin = fzero(@minimumApanelError,[A_panel_min,A_panel_max],options,UA,...
     desiredPower,p1,T4,PR_c,T_amb,fluid,mode,[] );
+
+ApanelMin = ApanelMin + 1e-4;
 
 % approximate option
 % ApanelMin = A_panel_max;

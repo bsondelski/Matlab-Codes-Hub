@@ -50,9 +50,10 @@ else
     % p4 = p3-p3*ploss_reactor; % pressure at reactor outlet
     mass_reactor = ReactorMass(q_reactor,m_dot,p3,p4,T3,T4,fluid,NucFuel);
     
-    mass_recuperator = RecuperatorMass( p2,T5,p5,RecupMatl,UA,fluid,mode );
+    mass_recuperator = RecuperatorMass( p2,T5,p5,RecupMatl,UA,fluid,mode,m_dot );
     
     mass_radiator = 6.75*A_panel;
+% mass_radiator = 1.5*A_panel;
     
     mass_total = mass_reactor+mass_recuperator+mass_radiator;
 end

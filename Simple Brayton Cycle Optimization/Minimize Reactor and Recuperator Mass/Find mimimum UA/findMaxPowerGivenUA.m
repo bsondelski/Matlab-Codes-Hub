@@ -20,7 +20,7 @@ function [max_power,m_dot] = findMaxPowerGivenUA(p1,T4,PR_c,UA,A_panel,T_amb,flu
 %%%%%%%%%%%%%%%%%%%%%%%%%% bound finding %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 m_dot_min = 0.7;
-m_dot_max = 3.5;
+m_dot_max = 1.5;
 steps = 10;
 
 stop = 0;

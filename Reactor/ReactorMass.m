@@ -47,6 +47,16 @@ end
 % fluidin = 'CO2';
 p_in = p_in*1000;   % convert to Pa
 p_out = p_out*1000; % convert to Pa
+
+% NucFuel
+% fluidin
+% power_thermal
+% m_dot
+% T_in
+% T_out
+% p_in
+% p_out
+
 rxtr = py.reactor_mass.reactor_mass(NucFuel, fluidin, power_thermal, m_dot, [T_in, T_out], [p_in, p_out]);
 mass = rxtr.mass;
 

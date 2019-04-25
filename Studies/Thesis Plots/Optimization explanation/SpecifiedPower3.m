@@ -5,6 +5,9 @@ function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,q_reactor,...
 % finding the mass flow rate required for the specified power output of the
 % system with larger reactor sizes
 
+%%%%%% USED FOR Thesis Plots\Optimization explanation\recuperatorVsReactor
+
+
 % Inputs:
 % power: specified power for the system
 % p1: flow pressure at inlet of the compressor [kPa]

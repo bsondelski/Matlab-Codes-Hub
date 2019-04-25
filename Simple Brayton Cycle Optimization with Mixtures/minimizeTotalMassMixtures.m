@@ -1,4 +1,4 @@
-function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_radiator,m_dot,T1,ApanelMin ] = minimizeTotalMassMixtures( desiredPower,p1,T4,PR_c,T_amb,fluid,mode,NucFuel,RecupMatl )
+function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_radiator,m_dot,T1,ApanelMin,flag ] = minimizeTotalMassMixtures( desiredPower,p1,T4,PR_c,T_amb,fluid,mode,NucFuel,RecupMatl )
 % gives minimum system mass for a cycle with a specified power output
 
 % Inputs:
@@ -26,20 +26,25 @@ function [ TotalMinMass,UA,UA_min,A_panel,mass_reactor,mass_recuperator,mass_rad
 % mass_recuperator: recuperator mass of optimum cycle [kg]
 % mass_radiator: radiator mass of optimum cycle [kg]
 % m_dot: mass flow rate of optimum cycle [kg/s]
+% flag: 1 - there is no section 1, 2 - A=Apanelmax in section 1, 3 - Apanel
+% otherwise in section 1, 4 - section 1 exists but section 2 has lower
+% mass, 5 - Tmin did not reach TDewPoint (normal solving), 0 - flag not set
 
-[ ApanelMin ] = 18.8;%minApanelFind(desiredPower,p1,T4,PR_c,T_amb,fluid,mode)
+flag = 0;
+
+[ ApanelMin ] = minApanelFind(desiredPower,p1,T4,PR_c,T_amb,fluid,mode);
 A_panel_max = ApanelMin + 70;
 steps = 20;
 T1BelowDewPoint = 0;
 stop = 0;
 
 while stop == 0
-    A_panel = linspace(ApanelMin,A_panel_max,steps)
+    A_panel = linspace(ApanelMin,A_panel_max,steps);
     minMass = zeros(1,steps);
     for i = 1:length(A_panel)
         [minMass(i),~,~,~,~,~,...
             ~] = minRadRecMass( A_panel(i),desiredPower,p1,T4,PR_c,T_amb,...
-            fluid,mode,2,2,NucFuel,RecupMatl )
+            fluid,mode,2,2,NucFuel,RecupMatl );
         if i > 1 && minMass(i) > minMass(i-1)
             % if mass is getting larger with larger Apanel, the solution has
             % already been passed -no need to calculate the other values
@@ -63,6 +68,7 @@ while stop == 0
 end
 
 if T1BelowDewPoint == 1 && i == 1
+    flag = 1;
     % bounds for Apanel where T1 = TDewPoint
     [ApanelMin,A_panel_max] = findApanelBounds(ApanelMin,desiredPower,p1,T4,PR_c,T_amb,...
         fluid,mode,NucFuel,RecupMatl );
@@ -107,7 +113,13 @@ elseif T1BelowDewPoint == 1
     
     % calculate minimum mass with small A_panels
     [A_panel_small,TotalMinMass_small] = fminbnd(@minRadRecMass,ApanelMin,A_panel_max_small,[],desiredPower,p1,T4,PR_c,...
-        T_amb,fluid,mode,1,1,NucFuel,RecupMatl);  
+        T_amb,fluid,mode,1,1,NucFuel,RecupMatl); 
+    
+    if A_panel_small == A_panel_max_small
+        flag = 2;
+    else
+        flag = 3;
+    end
     
     %%%%%%%%%%%%%%%%%%%%%%%% larger A_panels %%%%%%%%%%%%%%%%%%%%%%%%
     % bounds for Apanel where T1 = TDewPoint
@@ -131,6 +143,7 @@ elseif T1BelowDewPoint == 1
         A_panel = A_panel_small;
         TotalMinMass = TotalMinMass_small;
     else
+        flag = 4;
         % minimize mass in large A_panel range
         
         % find maximum A_panel
@@ -169,9 +182,9 @@ elseif T1BelowDewPoint == 1
  
 else
     % normal solving between min/max bounds
-    
-    % options = optimset('TolX', 1e-3);
-    [A_panel,TotalMinMass] = fminbnd(@minRadRecMass,ApanelMin,A_panel_max,[],desiredPower,p1,T4,PR_c,...
+    flag = 5;
+    options = optimset('TolX', 1e-3);
+    [A_panel,TotalMinMass] = fminbnd(@minRadRecMass,ApanelMin,A_panel_max,options,desiredPower,p1,T4,PR_c,...
         T_amb,fluid,mode,1,1,NucFuel,RecupMatl);
         % note: ApanelMin is left at minimum Apanel becuase if it is increased,
         % when minMass(i) > minMass(i-1), then the minimum could be between
@@ -199,7 +212,6 @@ end
     function [T1_error] = ApanelAtTDewPoint (Apanel_maxValidGuess,desiredPower,p1,T4,PR_c,...
             T_amb,fluid,mode)
         % Find Apanel where T1 = TDewPoint
-        Apanel_maxValidGuess
         % find minimum UA - T1 is highest at this UA
         [ UA_min_fcn,m_dot_original ] = minimumUA(desiredPower,p1,T4,PR_c,Apanel_maxValidGuess,...
             T_amb,fluid,mode);
@@ -220,7 +232,7 @@ end
             TDewPoint = mode(1,91);
         end
         
-        T1_error = T1_max-TDewPoint
+        T1_error = T1_max-TDewPoint;
     end
 
 

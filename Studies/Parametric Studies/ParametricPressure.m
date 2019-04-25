@@ -18,13 +18,13 @@ box on
 grid on
 
 figure(2)
-% plot(p1./1000,mass_reactor,'k')
+plot(p1./1000,mass_reactor,'k')
 hold on 
-plot(p1./1000,mass_recuperator,'k')
-% plot(p1./1000,mass_radiator,'-.k')
+plot(p1./1000,mass_recuperator,'--k')
+plot(p1./1000,mass_radiator,'-.k')
 ylabel('Mass [kg]','fontsize',18)
 xlabel('Compressor Inlet Pressure [MPa]','fontsize',18)
-% legend({'m_r_e_a_c_t_o_r','m_r_e_c_u_p_e_r_a_t_o_r','m_r_a_d_i_a_t_o_r'},'fontsize',11,'location','west')
+legend({'m_r_e_a_c_t_o_r','m_r_e_c_u_p_e_r_a_t_o_r','m_r_a_d_i_a_t_o_r'},'fontsize',11,'location','west')
 grid on
 
 

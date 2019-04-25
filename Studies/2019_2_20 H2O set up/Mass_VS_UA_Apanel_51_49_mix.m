@@ -15,10 +15,12 @@ p1 = 25000;
 T4 = 1100;
 PR_c = 2;
 % A_panel = [20.1, 22:2:30];
-A_panel = 24:2:34;
+A_panel = 20:1:30;
 T_amb = 100;
-fluid = {'CO2','WATER',[0.75,0.25]};
+% fluid = {'CO2','WATER',80,20};
 desiredPower = 40000; % [W]
+NucFuel = 'UO2';
+RecupMatl = 'IN';
 
 
 for i=1:length(A_panel)
@@ -26,7 +28,7 @@ for i=1:length(A_panel)
     A_panel(i)
     
     % find minimum UA which gives desired power output
-    [ UA_min,m_dotcycle_max ] = maxPowerMatch(desiredPower,p1,T4,PR_c,A_panel(i),...
+    [ UA_min,m_dotcycle_max ] = minimumUA(desiredPower,p1,T4,PR_c,A_panel(i),...
         T_amb,fluid,mode)
     
     if isnan(UA_min)
@@ -36,7 +38,7 @@ for i=1:length(A_panel)
         options = [];
         for j = 1:length(UA)
             [ mass_total(j,i),mass_reactor(j,i),mass_recuperator(j,i),mass_radiator(j,i),m_dot(j,i) ] = totalMass( UA(j,i),desiredPower,p1,T4,PR_c,A_panel(i),...
-                T_amb,fluid,mode,m_dotcycle_max,[])
+                T_amb,fluid,mode,m_dotcycle_max,[],NucFuel,RecupMatl)
             if isnan(mass_total(j,i))
                 break
             else

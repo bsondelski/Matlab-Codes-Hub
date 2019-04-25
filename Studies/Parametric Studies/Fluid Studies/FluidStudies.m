@@ -12,8 +12,8 @@ CO2 = 100 - H2O;
 H2O(end) = 1;
 CO2(1) = 1;
 
-for i = 18%17:length(CO2)
-%    try
+for i = 21%1:length(CO2)
+%     try
         fluid4file = strcat('CO2','H2O',num2str(CO2(i)),num2str(H2O(i)));
         fluid = {'CO2','WATER',num2str(CO2(i)),num2str(H2O(i))};
         fluidfile = strcat('C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\H2O Information\Properties\',fluid4file);
@@ -27,20 +27,27 @@ for i = 18%17:length(CO2)
         fluid
         
         [ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),...
-            mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures(desiredPower,...
+            mass_radiator(i),m_dot(i),T1(i),ApanelMin(i),flag(i) ] = minimizeTotalMassMixtures(desiredPower,...
             p1,T4,PR_c,T_amb,fluid,mode,NucFuel,RecupMatl);
-%    catch
-%        TotalMinMass(i) = NaN;
-%        UA(i) = NaN;
-%        A_panel(i) = NaN;
-%        mass_reactor(i) = NaN;
-%        mass_recuperator(i) = NaN;
-%        mass_radiator(i) = NaN;
-%        m_dot(i) = NaN;
-%        T1(i)  = NaN;
-%        ApanelMin(i)  = NaN;
+        
+        [net_power(i),cyc_efficiency,~,~,~,~,~,q_reactor(i),...
+            q_rad(i),~,~,~,~,~,~,~,~,~,~,~,~,~,...
+            ~,~,~,~,~] = BraytonCycle(m_dot(1,i),p1,T4,PR_c,UA(1,i),...
+            A_panel(i),T_amb,fluid,mode,0);
+        efficiency_cycle(i) = cyc_efficiency(1);
+%     catch
+%         TotalMinMass(i) = NaN;
+%         UA(i) = NaN;
+%         A_panel(i) = NaN;
+%         mass_reactor(i) = NaN;
+%         mass_recuperator(i) = NaN;
+%         mass_radiator(i) = NaN;
+%         m_dot(i) = NaN;
+%         T1(i)  = NaN;
+%         ApanelMin(i)  = NaN;
+%         flag(i) = NaN;
 %         
-%    end
+%     end
     
     
 end

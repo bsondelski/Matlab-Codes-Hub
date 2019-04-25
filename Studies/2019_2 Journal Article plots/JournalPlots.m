@@ -2,8 +2,8 @@ p1=9000;
 T4=900;
 PR_c=2;
 % UA=10000;
-A_panel=175;
-% A_panel=86;
+% A_panel=175;
+A_panel=80.7;
 T_amb=200;
 fluid='CO2';
 mode=2;
@@ -14,7 +14,7 @@ NucFuel = 'UO2';
     T_amb,fluid,mode);
 % UA_min = UA_min + 400;
 UA_min = UA_min;
-UA=UA_min:50:UA_min+12000; % was 2022.3
+UA=UA_min:500:UA_min+30000; % was 2022.3
 m_dotlast(1) = m_dotcycle_max;
 
 [net_power,~,~,~,~,~,~,q_reactor(1),...
@@ -30,7 +30,7 @@ for j=1:(length(UA)-1)
         SpecifiedPower2(desiredPower,p1,T4,PR_c,UA(j+1),A_panel,T_amb,fluid,mode,m_dotlast(j),options);
     mass_reactor(j) = ReactorMass(q_reactor(j+1),m_dotlast(j+1),p3,p4,T3(j+1),T4out(j+1),fluid,NucFuel);
 %     mass_recuperator(j) = 0.008565*UA(j); %convert to kW/K
-    mass_recuperator(j) = RecuperatorMass( p2,T5(j),p5,'SS',UA(j),fluid,mode );
+    mass_recuperator(j) = RecuperatorMass( p2,T5(j),p5,'SN',UA(j),fluid,mode );
 end
 A_panel_i = ones(1,length(mass_reactor))*A_panel;
 mass_radiator = A_panel_i*6.75;
@@ -61,9 +61,10 @@ xlim([2.5 15.5])
 figure(4)
 plot(q_reactor(2:end)/1000,mass_reactor,'k')
 ylabel('Reactor Mass [kg]','fontsize',18)
-xlabel('Reactor Heat Input [kW]','fontsize',18)
+xlabel('Thermal Power [kW]','fontsize',18)
 grid on
-ylim([0 250])
+ylim([0 200])
+xlim([135 163])
 
 figure(5)
 plot(UA(1:end-1)/1000,mass_reactor,'k')
@@ -76,6 +77,24 @@ legend({'m_r_e_a_c_t_o_r','m_r_e_c_u_p_e_r_a_t_o_r','m_r_a_d_i_a_t_o_r'},'fontsi
 grid on
 ylim([0 1500])
 xlim([2 15])
+
+
+
+% % when looking at reactor thermal power output for Alex's method vs El
+% % Wakil text method
+% for j=1:(length(UA)-1)
+%     [ Q_original(j),Q_withGen(j) ] = ReactorMass(q_reactor(j+1),m_dotlast(j+1),p3,p4,T3(j+1),T4out(j+1),fluid,NucFuel);
+% end
+% 
+% figure(6)
+% plot(q_reactor(2:end)/1000,Q_original/1000,'k')
+% hold on 
+% plot(q_reactor(2:end)/1000,Q_withGen/1000,'--k')
+% ylabel('Thermal Power [kW]','fontsize',18)
+% xlabel('Thermal Power [kW]','fontsize',18)
+% legend({'Original','New'},'fontsize',11,'location','northwest')
+% grid on
+
 
 % 
 % % run with SS

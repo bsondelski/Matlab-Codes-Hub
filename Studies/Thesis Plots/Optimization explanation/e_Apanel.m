@@ -1,7 +1,9 @@
 % run with SS
-A_panel = [40:1:55, 60:5:85];
+% A_panel = [40:1:55, 60:5:85];
+A_panelmin = 77.8001;
+A_panel = [77:1:88 90:5:190];
 for i = 1:length(A_panel)
-[minMass(i),UA(i),UA_min,mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i)] = minRadRecMass( A_panel(i),40000,9000,1100,2,200,'CO2',2,2,1,'UO2','IN' );
+[minMass(i),UA(i),UA_min,mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i)] = minRadRecMass( A_panel(i),40000,9000,900,2,200,'CO2',2,2,1,'UO2','SN' );
 end
 % A_panel = 70;
 % parfor i = 1:length(A_panel)
@@ -17,11 +19,11 @@ box on
 hold on
 [~,I] = min(minMass);
 scatter(A_panel(I),minMass(I),'k','filled')
-scatter(A_panel(21),minMass(21),'k','filled')
-text(A_panel(I)+0.5,minMass(I)-12,'B','fontsize',14)
-text(A_panel(21)+0.8,minMass(21)-10,'A','fontsize',14)
-xlim([40 85])
-ylim([525 800])
+scatter(A_panel(30),minMass(30),'k','filled')
+text(A_panel(I)+1,minMass(I)-25,'B','fontsize',14)
+text(A_panel(30)+1,minMass(30)-20,'A','fontsize',14)
+xlim([77 185])
+ylim([680 1380])
 
 % plot(A_panel,mass_recuperator)
 % hold on 

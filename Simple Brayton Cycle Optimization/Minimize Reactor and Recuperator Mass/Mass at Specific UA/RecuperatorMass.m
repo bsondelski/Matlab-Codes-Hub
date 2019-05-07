@@ -106,7 +106,7 @@ m_dotOriginal = 0.7922;
         massShell = Mass_550C - massTubes;
 %         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T);
 %         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
-        massShellNew = massShell*((Stress_allow_550C + 0.6*ORIGINAL_P5_PSI)/(Stress_allow_T + 0.6*p5_psi))*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot)*m_dotNew/m_dotOriginal;
+        massShellNew = massShell*((Stress_allow_550C + 0.6*ORIGINAL_P5_PSI)/(Stress_allow_T + 0.6*p5_psi))*(p5/ORIGINAL_P5)*(rhoColdDesign/rhoCold)*m_dotNew/m_dotOriginal;
         
         
         mass = massShellNew + massTubesNew;
@@ -163,7 +163,7 @@ m_dotOriginal = 0.7922;
         massShell = Mass_550C - massTubes;
 %         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T);
 %         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
-        massShellNew = massShell*((Stress_allow_550C + 0.6*ORIGINAL_P5_PSI)/(Stress_allow_T + 0.6*p5_psi))*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot)*m_dotNew/m_dotOriginal;
+        massShellNew = massShell*((Stress_allow_550C + 0.6*ORIGINAL_P5_PSI)/(Stress_allow_T + 0.6*p5_psi))*(p5/ORIGINAL_P5)*(rhoColdDesign/rhoCold)*m_dotNew/m_dotOriginal;
         
         
         mass = massShellNew + massTubesNew;
@@ -220,7 +220,7 @@ m_dotOriginal = 0.7922;
         massShell = Mass_550C - massTubes;
 %         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T);
 %         massShellNew = massShell*(Stress_allow_550C/Stress_allow_T)*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot);
-        massShellNew = massShell*((Stress_allow_550C + 0.6*ORIGINAL_P5_PSI)/(Stress_allow_T + 0.6*p5_psi))*(p5/ORIGINAL_P5)*(rhoHotDesign/rhoHot)*m_dotNew/m_dotOriginal;
+        massShellNew = massShell*((Stress_allow_550C + 0.6*ORIGINAL_P5_PSI)/(Stress_allow_T + 0.6*p5_psi))*(p5/ORIGINAL_P5)*(rhoColdDesign/rhoCold)*m_dotNew/m_dotOriginal;
         
         
         mass = massShellNew + massTubesNew;

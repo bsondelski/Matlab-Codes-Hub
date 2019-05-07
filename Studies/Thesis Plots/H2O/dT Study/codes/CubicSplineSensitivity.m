@@ -128,25 +128,28 @@ xvals = [1:10, 12, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100];
 figure(1)
 y = net_power_out/1000;
 plot(xvals,y(3:end),'-x',[xvals(1),xvals(end)],[y(1),y(1)],'-*',[xvals(1),xvals(end)],[y(2),y(2)],'-o');
-xlabel('dT between cubic spline points [K]')
-ylabel('net power output of cycle [kW]')
-legend('cubic spline','FIT','REFPROP','location','northwest')
+xlabel('Cubic Spline Temperature Increments [K]')
+ylabel('Cycle Power Output [kW]')
+legend('Cubic Spline','FIT','REFPROP','location','northwest')
+grid on
 
 
 figure(2)
 y = net_power_deviation;
 plot(xvals,y(3:end),[xvals(1),xvals(end)],[y(1),y(1)],'-*',[xvals(1),xvals(end)],[y(2),y(2)],'-o');
-xlabel('dT between cubic spline points [K]')
+xlabel('Cubic Spline Temperature Increments [K]')
 ylabel('standard deviation of net power output of cycle in 10 runs')
-legend('cubic spline','FIT','REFPROP')
+legend('Cubic Spline','FIT','REFPROP')
+grid on
 
 
 figure(3)
 y = time;
 plot(xvals,y(3:end),[xvals(1),xvals(end)],[y(1),y(1)],'-*',[xvals(1),xvals(end)],[y(2),y(2)],'-o');
-xlabel('dT between cubic spline points [K]')
-ylabel('time to call BraytonCycle 10 instances [sec]')
-legend('cubic spline','FIT','REFPROP','location','east')
+xlabel('Cubic Spline Temperature Increments [K]')
+ylabel('Solving Time for 10 Cycles [sec]')
+legend('Cubic Spline','FIT','REFPROP','location','east')
+grid on
 % ylim([0,6])
 
 % figure

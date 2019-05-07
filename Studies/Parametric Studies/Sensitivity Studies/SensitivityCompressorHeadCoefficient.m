@@ -2,11 +2,11 @@
 % necessary
 
 i = 9
-[ TotalMinMass(i),UA(i),UA_min(i),A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i) ] = minimizeTotalMass( 40000,9000,900,2,200,'CO2',2,'UO2','SS' )
+[ TotalMinMass(i),UA(i),UA_min(i),A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),~,~,~ ] = minimizeTotalMassMixtures( 40000,9000,900,2,200,'CO2',2,'UO2','SN' )
 
 % get values to plot to understand why there is an optimum head coefficient
 
-i = 9;
+i = 6;
     [cyc_pwr(i),efficiency,D_T(i),D_c(i),Ma_T(i),Ma_c(i),Anozzle(i),q_reactor(i),...
     q_rad(i),T1(i),Power_T(i),Power_c(i),HEXeffect(i),energy(i),p1,T2(i),p2,T3(i),p3,~,p4,T5(i),...
     p5,T6(i),p6,~,Vratio(i)] = BraytonCycle(m_dot(i),9000,900,2,UA(i),...
@@ -207,6 +207,7 @@ ylabel('Mass [kg]','fontsize',18)
 xlabel('Compressor Head Coefficient','fontsize',18)
 legend({'m_r_e_a_c_t_o_r','m_r_e_c_u_p_e_r_a_t_o_r','m_r_a_d_i_a_t_o_r'},'fontsize',12,'location','east')
 xlim([0.5,0.65])
+ylim([0 700])
 
 figure(6)
 subplot(3,1,1)
@@ -239,14 +240,16 @@ xlabel('Compressor Head Coefficient','fontsize',18)
 xlim([0.5,0.65])
 
 figure(4)
-plot(psi,n_s,'k')
+s5 = spline(psi,n_s,xq);
+plot(xq,s5,'k')
 grid on
 ylabel('Specific Speed','fontsize',18)
 xlabel('Compressor Head Coefficient','fontsize',18)
 xlim([0.5,0.65])
 
 figure(5)
-plot(psi,d_s,'k')
+s6 = spline(psi,d_s,xq);
+plot(xq,s6,'k')
 grid on
 ylabel('Specific Diameter','fontsize',18)
 xlabel('Compressor Head Coefficient','fontsize',18)

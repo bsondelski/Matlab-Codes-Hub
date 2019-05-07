@@ -33,14 +33,14 @@ for j=1:(length(UA)-1)
         SpecifiedPower2(desiredPower,p1,T4,PR_c,UA(j+1),A_panel,T_amb,fluid,mode,m_dotlast(j),options);
     
     mass_reactor(j) = ReactorMass(q_reactor(j+1),m_dotlast(j+1),p3,p4,T3(j+1),T4out(j+1),fluid,NucFuel);
-    mass_recuperator(j) = RecuperatorMass( p2,T5(j),p5,'SN',UA(j),fluid,mode );
+    mass_recuperator(j) = RecuperatorMass( p2,T5(j),p5,'SN',UA(j),fluid,mode,m_dotlast(j+1) );
 end
 A_panel_i = ones(1,length(mass_reactor))*A_panel;
 mass_radiator = A_panel_i*6.75;
 mass_comb = mass_reactor + mass_recuperator + mass_radiator;
 
 figure(1)
-plot(q_reactor(3:end)/1000,mass_comb(2:end),'k')
+plot(q_reactor(5:end)/1000,mass_comb(4:end),'k')
 hold on
 [~,I] = min(mass_comb);
 scatter(q_reactor(I)/1000,mass_comb(I),'k','filled');
@@ -48,26 +48,26 @@ text(q_reactor(I)/1000 + 1,mass_comb(I) - 1,'A','fontsize',14)
 xlabel('Reactor Heat Output [kW]','fontsize',18)
 ylabel('Combined Mass [kg]','fontsize',18)
 grid on
-ylim([1312 1340])
-xlim([90 240])
+ylim([1305 1337])
+xlim([100 210])
 
-pause
-scatter(q_reactor(10)/1000,mass_comb(9),'k','filled');
+% pause
+scatter(q_reactor(5)/1000,mass_comb(4),'k','filled');
 scatter(q_reactor(end)/1000,mass_comb(end),'k','filled');
-text(q_reactor(10)/1000 + 1,mass_comb(10) + 1.5,'2','fontsize',14)
-text(q_reactor(end)/1000 + 1,mass_comb(end) + 1,'1','fontsize',14)
+text(q_reactor(5)/1000 + 2,mass_comb(4) + 1,'2','fontsize',14)
+text(q_reactor(end)/1000 + 2,mass_comb(end) + 1,'1','fontsize',14)
 
 [~,efficiency,~,~,~,~,~,~,...
     ~,~,~,~,~,~,~,~,~,~,~,~,~,~,...
     ~,~,~,~,~] = BraytonCycle(m_dotlast(end),p1,T4,PR_c,UA(end),...
     A_panel,T_amb,fluid,mode,1)
-ylim([240 925])
+ylim([240 950])
 
 [~,efficiency,~,~,~,~,~,~,...
     ~,~,~,~,~,~,~,~,~,~,~,~,~,~,...
-    ~,~,~,~,~] = BraytonCycle(m_dotlast(30),p1,T4,PR_c,UA(29),...
+    ~,~,~,~,~] = BraytonCycle(m_dotlast(5),p1,T4,PR_c,UA(4),...
     A_panel,T_amb,fluid,mode,1)
-ylim([240 925])
+ylim([240 950])
 
 
 

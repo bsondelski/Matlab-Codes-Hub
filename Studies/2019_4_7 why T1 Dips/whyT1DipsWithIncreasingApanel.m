@@ -1,9 +1,16 @@
 
 figure(1)
-plot(A_panel, T1(1,:))
-xlabel('A_p_a_n_e_l')
-ylabel('T_1 max')
+xq = [A_panel(1):0.005:A_panel(end)];
+s = spline(A_panel,T1(1,:),xq);
+plot(xq, s,'k')
+xlabel('Radiator Panel Area [m^2]')
+ylabel('Temperature [K]')
 grid on
+hold on
+xlim = get(gca,'xlim');
+plot(xlim,[mode(1,end) mode(1,end)],'--k')
+legend('Minimum Cycle Temperature','Dew Point Temperature')
+
 
 figure(2)
 plot(A_panel, UA(1,:)./1000,'k')
@@ -33,10 +40,16 @@ grid on
 
 
 figure(1)
-plot(UA(:,1), T1(:,1))
+xq = linspace(UA(1),UA(end),400);
+s = spline(UA,T1,xq);
+plot(xq./1000, s,'k')
 xlabel('Recuperator Conductance [kW/K]')
-ylabel('T_1')
+ylabel('Temperature [K]')
 grid on
+hold on
+xlim = get(gca,'xlim');
+plot(xlim,[mode(1,end) mode(1,end)],'--k')
+legend('Minimum Cycle Temperature','Dew Point Temperature')
 
 figure(2)
 plot(UA(:,1), mass_total(:,1))

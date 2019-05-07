@@ -2,8 +2,8 @@ ns=xlsread('C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Balje Data\
 ds=xlsread('C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Balje Data\Plotting Efficiencies.xlsx','Sheet1','B6:B64');
 
 FunctionEfficiency=zeros(1,length(ns));
-for i=1:length(ns)
-    FunctionEfficiency(i)=compressorEfficiency(ns(i),ds(i));
+for i=1%:length(ns)
+    FunctionEfficiency(i)=compressorEfficiencyOld(ns(i),ds(i));
 end
 xlswrite('C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Balje Data\Plotting Efficiencies.xlsx',FunctionEfficiency,'Sheet1','F2')
 

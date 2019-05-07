@@ -2,10 +2,10 @@
 % necessary
 
 i = 9
-[ TotalMinMass(i),UA(i),UA_min(i),A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i) ] = minimizeTotalMass( 40000,9000,900,2,200,'CO2',2,'UO2','SS')
+[ TotalMinMass(i),UA(i),UA_min(i),A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),~,~,~ ] = minimizeTotalMassMixtures( 40000,9000,900,2,200,'CO2',2,'UO2','SN')
 
 
-i = 9;
+% i = 9;
     [~,efficiency,D_T(i),D_c(i),Ma_T(i),Ma_c(i),Anozzle(i),q_reactor(i),...
     q_rad(i),T1(i),Power_T(i),Power_c(i),HEXeffect(i),energy(i),p1,T2(i),p2,T3(i),p3,~,p4,T5(i),...
     p5,T6(i),p6,~,Vratio(i)] = BraytonCycle(m_dot(i),9000,900,2,UA(i),...

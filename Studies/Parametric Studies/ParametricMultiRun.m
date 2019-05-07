@@ -23,8 +23,8 @@ Tmin = T4(I);
 
 clearvars -except Tmin
 
-p1 = [1000:500:20000];
-parfor i = 1:length(p1)
+p1 = [1000:500:25000];
+parfor i = 40:length(p1)
     
     p1(i)
     [ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures( 40000,p1(i),900,2,200,'CO2',2,'UO2','SN' );
@@ -52,7 +52,7 @@ save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Stud
 [~,I] = min(TotalMinMass);
 Tmin = T4(I);
 
-p1 = [1000:500:20000];
+p1 = [1000:500:25000];
 parfor i = 1:length(p1)
     
     p1(i)
@@ -100,7 +100,7 @@ save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Stud
 Tmin = T4(I);
 clearvars -except Tmin
 
-p1 = [1000:500:20000];
+p1 = [1000:500:25000];
 parfor i = 1:length(p1)
     
     p1(i)
@@ -127,6 +127,42 @@ save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Stud
 
 
 
+% 
+% % run studies for UW temperature comparison
+% 
+% 
+% clear
+% T4 = 900;
+% parfor i = 1:length(T4)
+%    T4(i)
+% [ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures( 40000,9000,T4(i),2,200,'CO2',2,'UW','SN' );
+% 
+% end
+% save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UW_SSTempNear.mat'
+% 
+% clear
+% T4 = 900;
+% parfor i = 1:length(T4)
+%    T4(i)
+% [ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures( 40000,9000,T4(i),2,200,'CO2',2,'UW','SF' );
+% 
+% end
+% save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UW_SSTempFar.mat'
+% 
+% clear
+% 
+% T4 = [850:10:1150];
+% parfor i = 1:length(T4)
+%     T4(i)
+% [ TotalMinMass(i),UA(i),UA_min,A_panel(i),mass_reactor(i),mass_recuperator(i),mass_radiator(i),m_dot(i),T1(i),ApanelMin(i) ] = minimizeTotalMassMixtures( 40000,9000,T4(i),2,200,'CO2',2,'UW','IN' );
+% 
+% end
+% 
+% save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UW_INTemp.mat'
+% 
+
+
+
 
 
 
@@ -134,6 +170,9 @@ save 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Stud
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % run all studies for stainless steel and UW
 % 
+
+
+
 % clear
 % T4 = [850:10:1150];
 % parfor i = 1:length(T4)

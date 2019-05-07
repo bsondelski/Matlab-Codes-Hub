@@ -91,6 +91,7 @@ else
                 % values (starting with the minimum UA, the total mass
                 % should start large, reach a minimum, and then go up again
                 mass_total(i+1:end) = [];
+                a = 0;
                 break
             elseif i > 1 && T1 < TDewPoint
                 % temperature is below dew point, no need to calculate
@@ -106,13 +107,17 @@ else
         if TBelowDewPoint == 1
             UA_max = UA(length(mass_total));
             UA_min = UA(length(mass_total) - 1);
+            m_dot_max = m_dotcycle_max(length(mass_total) - 1);
             break
         else
-            if inde == length(UA)
+            if a == 0
+                UA_max = UA(length(mass_total));
+                UA_min = UA(1);
+                m_dot_max = m_dot_original;
+                break
+            elseif inde == length(UA)
                 UA_max = UA(length(UA))*2;
                 UA_min = UA(length(UA-1));
-            else
-                a = 0;
             end
             
             if loopcount > 50 && a ==1
@@ -129,7 +134,7 @@ else
     %%%%%%%%%%%%%%%%%%%%%%% end bound find %%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     % find recuperator conductance for cycle with minimum mass
-    m_dot_max = m_dotcycle_max(length(mass_total) - 1);
+    
     
     if tolerance == 1
         % if high tolerance is required, find exact minimum mass or

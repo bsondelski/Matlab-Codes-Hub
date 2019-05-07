@@ -105,10 +105,18 @@ xlim([2 3.3])
 
 
 
+figure(3)
+plot(PR,Power_T./1000,'k')
+hold on
+plot(PR,Power_c./1000,'--k')
+xlabel('Pressure Ratio','fontsize',18)
+ylabel('Power [kW]','fontsize',18)
+legend({'Turbine','Compressor'},'fontsize',11,'location','west')
+grid on
 
-
-
-
-
-
+figure(4)
+plot(PR,Power_c./Power_T,'k')
+xlabel('Pressure Ratio','fontsize',18)
+ylabel('Back Work Ratio','fontsize',18)
+grid on
 

@@ -41,6 +41,13 @@ UA = 35000;
   efficiency_cycle(i) = cyc_efficiency(1);
     
 end
-scatter(H2O(1:14),efficiency_cycle(1:14),'k')
+scatter(H2O(1:14)./100,efficiency_cycle(1:14),'k','filled')
 ylabel('Cycle Efficiency')
-xlabel('Percent H2O')
+xlabel('Mole Fraction H_2O','fontsize',18)
+box on
+xlim([0 1])
+ylim = get(gca,'ylim');
+yLabLoc = ylim(1)-0.14*(ylim(2)-ylim(1));
+text(-0.05,yLabLoc,'(CO_2)','fontsize',12)
+text(0.95,yLabLoc,'(H_2O)','fontsize',12)
+grid on

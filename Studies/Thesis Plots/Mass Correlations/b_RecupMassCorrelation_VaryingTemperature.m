@@ -2,7 +2,7 @@
 % temperature. Results are compared to data points from Creare
 
 set(0,'defaultAxesFontSize',14)
-
+figure
 %%%%%%%%%%%%%%%%%% plot for inconel values %%%%%%%%%%%%%%%%%%%%%%%%%%
 p2 = 18000;
 p5 = 9229.3;

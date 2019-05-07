@@ -1,17 +1,16 @@
 
 % Inconel - good plot
-p1 = 9000:1000:18000;
+p1 = 1000:500:20000;
 T4 = 900:50:1150;
 
 % % Stainless - needs work
 % p1 = 7000:500:10000;
 % T4 = 900:50:1050;
 
-for j = 1:length(p1)
-        p1(j)
-    parfor i = 1:length(T4) 
+for i = 1:length(T4) 
     T4(i)
-        [ TotalMinMass(i,j),UA(i,j),UA_min,A_panel(i,j),mass_reactor(i,j),mass_recuperator(i,j),mass_radiator(i,j),m_dot(i,j) ] = minimizeTotalMass( 40000,p1(j),T4(i),2,200,'CO2',2 );
+    parfor j = 1:length(p1)
+        [ TotalMinMass(i,j),UA(i,j),UA_min,A_panel(i,j),mass_reactor(i,j),mass_recuperator(i,j),mass_radiator(i,j),m_dot(i,j) ] = minimizeTotalMassMixtures( 40000,p1(j),T4(i),2,200,'CO2',2,'UO2','IN' );
         
     end
 end
@@ -28,7 +27,7 @@ end
 % grid on
 
 figure(1)
-for k = 1:length(T4)
+for k = 1:length(T4)-1
     plot(p1/1000,TotalMinMass(k,:))
     hold on
     text(p1(end)/1000+0.2,TotalMinMass(k,end),['T_4 = ',num2str(T4(k)),' K'])
@@ -41,13 +40,13 @@ box on
 grid on
 
 
-for k = 1:length(T4)
+for k = 1:length(T4)-1
     [minMass,I] = min(TotalMinMass(k,:));
     scatter(p1(I)/1000,minMass,'k')
     hold on
 end
 
-xlim([2 12])
+xlim([1 25])
 
 
 

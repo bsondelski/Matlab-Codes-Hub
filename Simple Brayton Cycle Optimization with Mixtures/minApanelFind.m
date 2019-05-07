@@ -17,15 +17,15 @@ if strcmp(fluid,'WATER')
     stepsize = 2;
     stop = 0;
     loopcount = 1;
-% elseif strcmp(fluid,'CO2')
-%     UA = 50000;
-%     A_panel_min = 50;
-%     A_panel_max = 100;
-%     stepsize = 10;
-%     stop = 0;
-%     loopcount = 1;
+elseif mode == 2
+    UA = 50000;
+    A_panel_min = 40;
+    A_panel_max = 100;
+    stepsize = 10;
+    stop = 0;
+    loopcount = 1;
 else
-    UA = 26000; 
+    UA = 35000; 
     A_panel_min = 20; 
     A_panel_max = 40;
     stepsize = 2;
@@ -39,7 +39,7 @@ while stop == 0 % && stepsize > 0.25
     powerDifference = zeros(1,length(A_panel));
     for i=1:length(A_panel)
         [ powerDifference(i) ] = minimumApanelError( A_panel(i),UA,desiredPower,p1,T4,PR_c,...
-            T_amb,fluid,mode,[] );
+            T_amb,fluid,mode,[]); 
         
         if i > 1 && powerDifference(i) > 0
             % if mass is getting larger with larger Apanel, the solution has
@@ -92,7 +92,7 @@ break
     end
     
     % check if stuck in the loop
-    if loopcount > 10 && stop == 0
+    if loopcount > 15 && stop == 0
         fprintf(2, 'PanelBoundFind: unable to find boundaries \n \n');
         A_panel_min = NaN;
         A_panel_max = NaN;

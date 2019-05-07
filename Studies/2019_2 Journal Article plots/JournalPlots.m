@@ -3,7 +3,7 @@ T4=900;
 PR_c=2;
 % UA=10000;
 % A_panel=175;
-A_panel=80.7;
+A_panel=84.41;
 T_amb=200;
 fluid='CO2';
 mode=2;
@@ -30,7 +30,7 @@ for j=1:(length(UA)-1)
         SpecifiedPower2(desiredPower,p1,T4,PR_c,UA(j+1),A_panel,T_amb,fluid,mode,m_dotlast(j),options);
     mass_reactor(j) = ReactorMass(q_reactor(j+1),m_dotlast(j+1),p3,p4,T3(j+1),T4out(j+1),fluid,NucFuel);
 %     mass_recuperator(j) = 0.008565*UA(j); %convert to kW/K
-    mass_recuperator(j) = RecuperatorMass( p2,T5(j),p5,'SN',UA(j),fluid,mode );
+    mass_recuperator(j) = RecuperatorMass( p2,T5(j),p5,'SN',UA(j),fluid,mode,m_dotlast(j+1) );
 end
 A_panel_i = ones(1,length(mass_reactor))*A_panel;
 mass_radiator = A_panel_i*6.75;
@@ -64,7 +64,7 @@ ylabel('Reactor Mass [kg]','fontsize',18)
 xlabel('Thermal Power [kW]','fontsize',18)
 grid on
 ylim([0 200])
-xlim([135 163])
+xlim([125 163])
 
 figure(5)
 plot(UA(1:end-1)/1000,mass_reactor,'k')

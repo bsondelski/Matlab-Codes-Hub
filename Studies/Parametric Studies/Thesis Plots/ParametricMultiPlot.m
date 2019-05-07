@@ -11,19 +11,19 @@
 % % figure 1 - total mass
 % % figure 2 - Turbine Mach numbers
 % % figure 3 - Compressor Mach numbers
-plotPRdependence
+% plotPRdependence
 % 
 % % plot temperature mass dependence along with recuperator inlet temps
 % % for UO2 only
 % % figure 4
 % plotTtinDependence
 
-% plotTtinFarTerm
+plotTtinFarTerm
 
 % plot p1 dependence
 % figure 5
 % load data without pressure dependence, run this
-c1 = plotP1Dependence
+% c1 = plotP1Dependence
 
 % load data with pressure depencence, run this
 % plotP1DependenceInclPressDepend(c1)
@@ -81,7 +81,7 @@ grid on
 scatter(PR(I),minMass,'k')
 % text(PR(end)+0.01,TotalMinMass(end),['T_4 = 900 K'],'fontsize',11)
 text(PR(end)+0.01,TotalMinMass(end)+15,['Stainless Steel'],'fontsize',11)
-text(PR(end)+0.01,TotalMinMass(end)-5,['Near Term'],'fontsize',11)
+text(PR(end)+0.01,TotalMinMass(end)-8,['Near Term'],'fontsize',11)
 
 for i=1:length(TotalMinMass)
     [net_power,~,D_T,D_c,Ma_T(i),Ma_c(i),Anozzle,q_reactor,...
@@ -94,7 +94,7 @@ figure(2)
 plot(PR,Ma_T,'k')
 hold on
 scatter(PR(I),Ma_T(I),'k')
-text(PR(I)+0.02,Ma_T(I)-0.023,['T_4 = 900 K'],'fontsize',11)
+text(PR(I)+0.02,Ma_T(I)-0.023,['Near Term'],'fontsize',11)
 text(PR(I)+0.02,Ma_T(I)-0.008,['Stainless Steel'],'fontsize',11)
 ylabel('Turbine Mach Number','fontsize',18)
 xlabel('Pressure Ratio','fontsize',18)
@@ -105,7 +105,7 @@ figure(3)
 plot(PR,Ma_c,'k')
 hold on
 scatter(PR(I),Ma_c(I),'k')
-text(PR(I)+0.02,Ma_c(I)-0.023,['T_4 = 900 K'],'fontsize',11)
+text(PR(I)+0.02,Ma_c(I)-0.023,['Near Term'],'fontsize',11)
 text(PR(I)+0.02,Ma_c(I)-0.008,['Stainless Steel'],'fontsize',11)
 ylabel('Compressor Mach Number','fontsize',18)
 xlabel('Pressure Ratio','fontsize',18)
@@ -132,7 +132,7 @@ end
 figure(2)
 plot(PR,Ma_T,'k')
 scatter(PR(I),Ma_T(I),'k')
-text(PR(I)+0.02,Ma_T(I)-0.023,['T_4 = ',num2str(Tmin),' K'],'fontsize',11)
+text(PR(I)+0.02,Ma_T(I)-0.023,['Far Term'],'fontsize',11)
 text(PR(I)+0.02,Ma_T(I)-0.008,['Stainless Steel'],'fontsize',11)
 ylabel('Turbine Mach Number','fontsize',18)
 xlabel('Pressure Ratio','fontsize',18)
@@ -143,7 +143,7 @@ plot(PR,Ma_c,'k')
 scatter(PR(I),Ma_c(I),'k')
 % text(PR(I)-0.2,Ma_c(I)+0.015,['T_4 = 980 K'],'fontsize',11)
 % text(PR(I)-0.2,Ma_c(I)+0.03,['Stainless Steel'],'fontsize',11)
-text(PR(I)+0.02,Ma_c(I)-0.03,['T_4 = ',num2str(Tmin),' K'],'fontsize',11)
+text(PR(I)+0.02,Ma_c(I)-0.03,['Far Term'],'fontsize',11)
 text(PR(I)+0.02,Ma_c(I)-0.015,['Stainless Steel'],'fontsize',11)
 ylabel('Compressor Mach Number','fontsize',18)
 xlabel('Pressure Ratio','fontsize',18)
@@ -168,8 +168,8 @@ end
 figure(2)
 plot(PR,Ma_T,'k')
 scatter(PR(I),Ma_T(I),'k')
-text(PR(I)-0.25,Ma_T(I)+0.005,['T_4 = ',num2str(Tmin),' K'],'fontsize',11)
-text(PR(I)-0.22,Ma_T(I)+0.02,['Inconel'],'fontsize',11)
+text(PR(I)-0.28,Ma_T(I)+0.005,['T_4 = ',num2str(Tmin),' K'],'fontsize',11)
+text(PR(I)-0.28,Ma_T(I)+0.02,['Inconel'],'fontsize',11)
 ylabel('Turbine Mach Number','fontsize',18)
 xlabel('Pressure Ratio','fontsize',18)
 grid on
@@ -177,8 +177,8 @@ grid on
 figure(3)
 plot(PR,Ma_c,'k')
 scatter(PR(I),Ma_c(I),'k')
-text(PR(I)-0.25,Ma_c(I)+0.005,['T_4 = ',num2str(Tmin),' K'],'fontsize',11)
-text(PR(I)-0.22,Ma_c(I)+0.02,['Inconel'],'fontsize',11)
+text(PR(I)-0.28,Ma_c(I)+0.005,['T_4 = ',num2str(Tmin),' K'],'fontsize',11)
+text(PR(I)-0.28,Ma_c(I)+0.02,['Inconel'],'fontsize',11)
 ylabel('Compressor Mach Number','fontsize',18)
 xlabel('Pressure Ratio','fontsize',18)
 grid on
@@ -188,10 +188,10 @@ xlim([2 3.35])
 ylim([350 900])
 
 figure(2)
-xlim([1.7 3])
+xlim([2 3])
 
 figure(3)
-xlim([1.7 3])
+xlim([2 3])
 ylim([0.83 1.1])
 end
 
@@ -280,7 +280,7 @@ end
 set(0,'defaultAxesFontSize',16)
 
 plot(T4,TotalMinMass,'k');
-% ylim([100 800])
+ ylim([400 825])
 
 % point 3
 [~,I] = min(TotalMinMass);
@@ -302,7 +302,7 @@ ax2 = axes('Position',ax1_pos,...
 line(T5,TotalMinMass,'Parent',ax2,'Color','k')
 set(gca,'YTickLabel',[])
 xlim([T5(1),T5(end)])
-% ylim([100 800])
+ ylim([400 825])
 xlabel('Recuperator Inlet Temperature [K]','fontsize',22)
 end
 
@@ -411,8 +411,8 @@ scatter(p1(I)/1000,minMass,'k')
 text(p1(end)/1000+0.5,TotalMinMass(end),['T_4 = ',num2str(Tmin),' K'],'fontsize',11)
 text(p1(end)/1000+0.5,TotalMinMass(end)+30,['Inconel'],'fontsize',11)
 
-xlim([0 28])
-ylim([380 950])
+xlim([0 34])
+ylim([380 1000])
 % plot([9 9],[500 850],'--k')
 end
 function [] = plotP1DependenceInclPressDepend(c1)
@@ -689,23 +689,39 @@ function [] = plotTtinDependence_UO2_UW
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plot temperature mass dependence along with recuperator inlet temps
 % plot Stainless Steel 
-load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSTemp.mat'
+
+
+load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSTempNear.mat'
 for i=1:length(TotalMinMass)
     [net_power,~,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor(i),...
     q_rad,T1,Power_T,Power_c,HEXeffect,energy,p1,T2,p2,T3(i),p3(i),~,p4(i),T5(i),...
     p5,T6,p6,~,Vratio] = BraytonCycle(m_dot(i),9000,T4(i),2,UA(i),...
     A_panel(i),200,'CO2',2,0);
 end
-set(0,'defaultAxesFontSize',12)
+set(0,'defaultAxesFontSize',16)
 figure(4)
-set(gcf, 'units','normalized','outerposition',[0 0 0.5 0.8]);
-plot(T4(1:6),TotalMinMass(1:6),'--k','linewidth',1.5)
-hold on
-plot(T4(6:end),TotalMinMass(6:end),':k','linewidth',1.5)
-set(gca,'box','off')
 
-% plot Stainless Steel 
-clear
+% set(gcf, 'units','normalized','outerposition',[0 0 0.36 0.8]);
+set(gcf, 'units','normalized','outerposition',[0 0 0.48 0.9]);
+leg1 = scatter(T4,TotalMinMass,100,'k','filled');
+% text(T4+3,TotalMinMass+15,'B','fontsize',22)
+hold on
+clearvars -except leg1
+
+load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_SSTempFar.mat'
+for i=1:length(TotalMinMass)
+    [net_power,~,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor(i),...
+    q_rad,T1,Power_T,Power_c,HEXeffect,energy,p1,T2,p2,T3(i),p3(i),~,p4(i),T5(i),...
+    p5,T6,p6,~,Vratio] = BraytonCycle(m_dot(i),9000,T4(i),2,UA(i),...
+    A_panel(i),200,'CO2',2,0);
+end
+
+leg2 = scatter(T4,TotalMinMass,100,'k')
+% text(T4+3,TotalMinMass+18,'C','fontsize',22)
+
+clearvars -except leg1 leg2
+
+
 load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UO2_INTemp.mat'
 
 for i=1:length(TotalMinMass)
@@ -714,36 +730,70 @@ for i=1:length(TotalMinMass)
     p5,T6,p6,~,Vratio] = BraytonCycle(m_dot(i),9000,T4(i),2,UA(i),...
     A_panel(i),200,'CO2',2,0);
 end
-set(0,'defaultAxesFontSize',12)
 
-plot(T4,TotalMinMass,'k')
-ylabel('Optimum Cycle Mass [kg]','fontsize',18)
-xlabel('Turbine Inlet Temperature [K]','fontsize',18)
+leg3 = plot(T4,TotalMinMass,'k');
+ ylim([400 825])
 
+% point 3
+[~,I] = min(TotalMinMass);
+% scatter(T4(I),TotalMinMass(I),100,'k');
+% text(T4(I)+3,TotalMinMass(I)+18,'D','fontsize',22)
 
+ylabel('Optimum Cycle Mass [kg]','fontsize',22)
+xlabel('Turbine Inlet Temperature [K]','fontsize',22)
+% legend([leg1,leg2,leg3],{'B - Stainless Steel Near Term','C - Stainless Steel Far Term','D - Inconel'},'fontsize',18,'location','northeast')
+% 
+% 
+% ax1 = gca;
+% ax1_pos = ax1.Position;
+% 
+% ax2 = axes('Position',ax1_pos,...
+%     'XAxisLocation','top',...
+%     'YAxisLocation','right',...
+%     'Color','none');
+% line(T5,TotalMinMass,'Parent',ax2,'Color','k')
+% set(gca,'YTickLabel',[])
+% xlim([T5(1),T5(end)])
+%  ylim([400 825])
+% xlabel('Recuperator Inlet Temperature [K]','fontsize',22)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plot temperature mass dependence along with recuperator inlet temps
 % plot Stainless Steel 
-clear
-load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UW_SSTemp.mat'
+clearvars -except leg1 leg2 leg3
+load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UW_SSTempNear.mat'
 for i=1:length(TotalMinMass)
     [net_power,~,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor(i),...
     q_rad,T1,Power_T,Power_c,HEXeffect,energy,p1,T2,p2,T3(i),p3(i),~,p4(i),T5(i),...
     p5,T6,p6,~,Vratio] = BraytonCycle(m_dot(i),9000,T4(i),2,UA(i),...
     A_panel(i),200,'CO2',2,0);
 end
-set(0,'defaultAxesFontSize',12)
-figure(4)
-set(gcf, 'units','normalized','outerposition',[0 0 0.5 0.8]);
-plot(T4(1:6),TotalMinMass(1:6),'--b','linewidth',1.5)
+
+leg4 = scatter(T4,TotalMinMass,100,'b','filled');
+% text(T4+3,TotalMinMass+15,'B','fontsize',22)
 hold on
-plot(T4(6:end),TotalMinMass(6:end),':b','linewidth',1.5)
-set(gca,'box','off')
+clearvars -except leg1 leg2 leg3 leg4
+
+load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UW_SSTempFar.mat'
+for i=1:length(TotalMinMass)
+    [net_power,~,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor(i),...
+    q_rad,T1,Power_T,Power_c,HEXeffect,energy,p1,T2,p2,T3(i),p3(i),~,p4(i),T5(i),...
+    p5,T6,p6,~,Vratio] = BraytonCycle(m_dot(i),9000,T4(i),2,UA(i),...
+    A_panel(i),200,'CO2',2,0);
+end
+
+leg5 = scatter(T4,TotalMinMass,100,'b')
+% text(T4+3,TotalMinMass+18,'C','fontsize',22)
+
+clearvars -except leg1 leg2 leg3 leg4 leg5
+
+
+
+
 
 % plot Stainless Steel 
-clear
+
 load 'C:\Users\sondelski\OneDrive - UW-Madison\nuclear project\Matlab Codes\Studies\Parametric Studies\Results\UW_INTemp.mat'
 
 for i=1:length(TotalMinMass)
@@ -752,12 +802,19 @@ for i=1:length(TotalMinMass)
     p5,T6,p6,~,Vratio] = BraytonCycle(m_dot(i),9000,T4(i),2,UA(i),...
     A_panel(i),200,'CO2',2,0);
 end
-set(0,'defaultAxesFontSize',12)
+leg6 = plot(T4,TotalMinMass,'b');
+ ylim([400 1100])
 
-plot(T4,TotalMinMass,'b')
-ylabel('Optimum Cycle Mass [kg]','fontsize',18)
-xlabel('Turbine Inlet Temperature [K]','fontsize',18)
-legend({'Stainless Steel Near Term - UO2','Stainless Steel Far Term-UO2','Inconel-UO2','Stainless Steel Near Term-UW','Stainless Steel Far Term-UW','Inconel-UW'},'fontsize',12,'location','north')
+% point 3
+[~,I] = min(TotalMinMass);
+% scatter(T4(I),TotalMinMass(I),100,'b','filled');
+% text(T4(I)+3,TotalMinMass(I)+18,'D','fontsize',22)
+
+ylabel('Optimum Cycle Mass [kg]','fontsize',22)
+xlabel('Turbine Inlet Temperature [K]','fontsize',22)
+
+
+legend([leg1,leg2,leg3,leg4,leg5,leg6], {'UO_2 - Stainless Steel Near Term','UO_2 - Stainless Steel Far Term','UO_2 - Inconel','UW - Stainless Steel Near Term','UW - Stainless Steel Far Term','UW - Inconel'},'fontsize',12,'location','north')
 
 
 
@@ -771,7 +828,7 @@ ax2 = axes('Position',ax1_pos,...
 line(T5,TotalMinMass,'Parent',ax2,'Color','b')
 set(gca,'YTickLabel',[])
 xlim([T5(1),T5(end)])
-ylim([500 1100])
+ylim([400 1100])
 xlabel('Recuperator Inlet Temperature [K]','fontsize',18)
 end
 

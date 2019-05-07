@@ -27,6 +27,13 @@ xlabel('Compressor Inlet Pressure [MPa]','fontsize',18)
 legend({'m_r_e_a_c_t_o_r','m_r_e_c_u_p_e_r_a_t_o_r','m_r_a_d_i_a_t_o_r'},'fontsize',11,'location','west')
 grid on
 
+set(0,'defaultAxesFontSize',12)
+figure(3)
+plot(p1./1000,UA./1000,'k')
+ylabel('Recuperator Conductance [kW/K]','fontsize',18)
+xlabel('Compressor Inlet Pressure [MPa]','fontsize',18)
+box on
+grid on
 
 % load pressure dependent data
 figure(2)
@@ -52,7 +59,8 @@ legend({'Includes Pressure Dependence','No Pressure Dependence'},'fontsize',13,'
 
 
 
-for i=length(TotalMinMass)
+for i=1:length(TotalMinMass)
+    i = 41
     [net_power(i),efficiency,D_T,D_c,Ma_T(i),Ma_c(i),Anozzle,q_reactor(i),...
     q_rad(i),T1(i),Power_T(i),Power_c(i),HEXeffect(i),energy,~,T2(i),p2,T3(i),p3(i),~,p4(i),T5(i),...
     p5,T6(i),p6,~,Vratio] = BraytonCycle(m_dot(i),p1(i),900,2,UA(i),...

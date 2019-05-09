@@ -4,12 +4,12 @@ function [ efficiency, d_s ] = turbineEfficiency( n_s, d_s )
 % inputs:
 % n_s: specific speed [unitless(radians)]
 % d_s: specific diameter [unitless] - inf if looking to stay on center of
-% curve
+%      curve
 %
 % outputs:
 % efficiency: gives efficiency of turbine based on Balje curves
 % d_s: specific diameter resulting from input n_s and staying on peak of
-% curve
+%      curve
 
 % take log base 10 of input specific speed and specific diameter
 logns = log10(n_s);

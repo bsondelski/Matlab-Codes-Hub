@@ -12,7 +12,8 @@ function [T1Error] = simpleCycleError(T1guess,m_dot,p1,T4,UA,A_panel,...
 % A_panel: area of radiator panel [m3]
 % T_amb: ambient temp for radiator [K]
 % fluid: working fluid for the system
-% Mode=1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 % various cycle pressures
 % TFluidMin: minimum temperature available for fluid data [K]
 
@@ -20,7 +21,6 @@ function [T1Error] = simpleCycleError(T1guess,m_dot,p1,T4,UA,A_panel,...
 % T1Error: error between guessed and actual T1 values
 
 % solve for state after compressor
-
 [T2,~,N,~,~] = Compressor(m_dot,T1guess,p1,p2,fluid,mode);
 
 
@@ -30,16 +30,7 @@ function [T1Error] = simpleCycleError(T1guess,m_dot,p1,T4,UA,A_panel,...
 if T2 >= T5
     T1Error=NaN;
 else
-%     T5
-%     T2
-%     p5
-%     p6
-%     p2
-%     p3
-%     m_dot
-%     UA
-%     fluid
-%     mode
+
     % solve for recuperator outlets
     [T6, ~,~,~,~,~,~] = HEX_bettersolve(T5,T2,p5,p6,p2,p3,m_dot,m_dot,UA,fluid,fluid,mode,0);
     

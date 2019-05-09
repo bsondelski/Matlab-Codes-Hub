@@ -12,7 +12,8 @@ function [ Tmin, Tmax ] = boundFind( T_H_in,T_C_in,p_H,p_C,m_dot_H,m_dot_C,UA,fl
 % UA: conductance [W/K]
 % fluidC: cold side fluid
 % fluidH: hot side fluid
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 % N: number of sub heat exchangers
 
 % Outputs:
@@ -60,20 +61,16 @@ while stop == 0
             Tmin = B;
             Tmax = C;
             stop = 1;
-%             a = 5
         elseif isnan(Csign)     % if answer is between B and C but C is NaN
             % set B and C as Tmin and Tmax and restart loop
-%             a = 0
             Tmin = B;
             Tmax = C;
             stop = 0;
         elseif Bsign == Csign        % if no sign change between B and C
             % set A and B as Tmin and Tmax and end loop
-%             fprintf(2, 'HEX_bettersolve boundFind: T_H,out wants to be lower than T_C,in - invalid HEX \n');
             Tmin = NaN;
             Tmax = NaN;
             stop = 1;
-%             a = 6
         end
     elseif I == length(err)       % if minimum value is at end of array, C value will not exist
         % Temp value right of smallest value in error array
@@ -85,10 +82,8 @@ while stop == 0
             Tmin = A;
             Tmax = B;
             stop = 1;
-%             a = 7
         elseif isnan(Asign)     % if answer is between A and B but A is NaN
             % set A and B as Tmin and Tmax and restart loop
-%             a = 1
             Tmin = A;
             Tmax = B;
             stop = 0;
@@ -98,7 +93,6 @@ while stop == 0
             Tmin = NaN;
             Tmax = NaN;
             stop = 1;
-%             a = 8
         end
     else
         % Temp values right and left of smallest value in error array
@@ -117,45 +111,27 @@ while stop == 0
                 Tmin = A;
                 Tmax = B;
                 stop = 1;
-                %             a = 9
             end
         elseif -Bsign == Csign    % if sign change between B and C
             % set B and C as Tmin and Tmax and end loop
             Tmin = B;
             Tmax = C;
             stop = 1;
-%             a = 10
         elseif isnan(Asign) && isnan(Csign) % if both A and C return NaN
             % set A and C as Tmin and Tmax and restart loop
-%             a = 2
             Tmin = A;
             Tmax = C;
             stop = 0;
         elseif isnan(Asign)     % if answer is between A and B but A is NaN
             % set A and B as Tmin and Tmax and restart loop
-%             x = round(A,5);
-%             y = round(B,5);
-%             if x == y
-%                 a = 107
-%                 Tmin = NaN;
-%                 Tmax = NaN;
-%                 stop = 1;
-%             else
-%                 a = 3
                 Tmin = A;
                 Tmax = B;
                 stop = 0;
-%             end
         elseif isnan(Csign)     % if answer is between B and C but C is NaN
             % set B and C as Tmin and Tmax and restart loop
-%             a = 4
             Tmin = B;
             Tmax = C;
             stop = 0;
-%         elseif Asign == Bsign && Bsign == Csign
-%             % find smallest negative number 
-%             tempstep = 2;
-%             stop = 0;
         end
     end
     

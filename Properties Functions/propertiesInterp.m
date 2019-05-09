@@ -1,88 +1,36 @@
 function [ result ] = propertiesInterp( out,in,val,p,mode )
-% read data from tables of refprop data
+% read data from tables of refprop data ---only certain combinations of
+% input and output properties are valid
+
+% Inputs:
+% Out: requested property, options are:
+%   d: density [kg/m^3]
+%   h: enthalpy [J/kg]
+%   T: temperature [K]
+%   s: entropy [J/kg-K]
+%   a: speed of sound [m/s]
+% In: input property, options are: 
+%   T: temperature [K]
+%   s: entropy [J/kg-K]
+%   h: enthalpy [J/kg]
+% val: value of input property
+% p: pressure of state [kPa]
+% mode: data tables
+
+% Outputs:
+% result: desired output property - see above for options and units
 
 
-% % global props18 props9
-% props18 = mode(:,7:12);
-% props9 = mode(:,1:6);
-% 
-% if p == 9000
-%     props = props9;
-% elseif p == 18000
-%     props = props18;
-% end
-% 
-% 
-% if in == 'h'
-%     x = props(:,4);
-% elseif in == 's'
-%     x = props(:,5);
-% elseif in == 'T'
-%     x = props(:,1);
-% end
-% 
-% if out == 'T'
-%     y = props(:,1);
-% elseif out == 'd'
-%     y = props(:,3);
-% elseif out == 'a'
-%     y = props(:,6);
-% elseif out == 's'
-%     y = props (:,5);
-% elseif out == 'h'
-%     y = props (:,4);
-% end
-% 
-% % for i = 1:length(val)
-% %     index = find(x == val);
-% % end
-% result = y(x == val);
-% 
-% if isempty(result)
-% %     for i = 1:length(val)
-% %         preindex(i) = find((val(i) >= x), 1, 'last');
-% %         postindex(i) = find((val(i) <= x), 1, 'first');
-% %     end
-% %     
-% %     slope = (y(postindex) - y(preindex))./(x(postindex) - x(preindex));
-% %     result = slope.*(val' - x(preindex)) + y(preindex);
-% %     
-% %     result = result';
-% 
-% x1 = zeros(1,length(val));
-% x2 = zeros(1,length(val));
-% y1 = zeros(1,length(val));
-% y2 = zeros(1,length(val));
-% 
-%     for i = 1:length(val)
-%         x1vec = x(x < val(i));
-%         x1(i) = x1vec(end);
-%         x2vec = x(x > val(i));
-%         x2(i) = x2vec(1);
-%         y1(i) = y(x == x1(i));
-%         y2(i) = y(x == x2(i));
-%     end
-%     
-%     slope = (y2 - y1)./(x2 - x1);
-%     result = slope.*(val - x1) + y1;
-% else
-% %     result = y(index);
-% end
-% 
-% % result = spline(x,y,val)
-
-% out 
-% in 
-% val
-% p
-
-
+% check if high or low pressure properties should be used
 if p == mode(1,89)          % p_low
     props = mode(:,1:44);
 elseif p == mode(1,90)      % p_high
     props = mode(:,45:88);
+else
+    fprintf(2, 'propertiesInterp: pressure is not available in property tables \n check pressure drops are turned off \n \n');
 end
 
+% get property arrays for desired input and output
 if in == 'T'
     x = props(:,1);
     if out == 'd'
@@ -112,8 +60,11 @@ elseif in == 'h'
     end
 end
 
+% state result if exact value is available
 result = y(x == val,1);
 
+% if exact value is not available, get spline coefficients and calculate
+% approximate output result
 if isempty(result)   
     
     a = zeros(length(val),1);

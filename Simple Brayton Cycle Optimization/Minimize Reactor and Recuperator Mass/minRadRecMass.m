@@ -1,4 +1,4 @@
-function [minMass,UA,UA_min_original,mass_reactor,mass_recuperator,mass_radiator,m_dot] = minRadRecMass( A_panel,desiredPower,p1,T4,PR_c,T_amb,fluid,mode,check,tolerance,NucFuel,RecupMatl )
+function [minMass,UA,UA_min_original,mass_reactor,mass_recuperator,mass_radiator,m_dot] = minRadRecMass( A_panel,desiredPower,p1,T4,PR_c,T_amb,fluid,mode,tolerance,NucFuel,RecupMatl )
 % gives minimum system mass for a cycle with a specified radiator area
 % and power output
 
@@ -12,20 +12,25 @@ A_panel
 % A_panel: area of radiator panel [m2]
 % T_amb: ambient temp for radiator [K]
 % fluid: working fluid for the system
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
-% check: 1 (only provide minMass, UA, UA_min) 2 (provide all outputs)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 % tolerance: 1 (vary accurate tolerance), 2 (less accurate tolerance - for
 % use in bound finding)
 % NucFuel: 'UO2' for uranium oxide (near term), 'UW' for uranium tunsten
 % (exotic)
-% RecupMatl: 'IN' for Inconel, 'SS' for stainless steel,
-%   for recuperator far term exploration, use 'U#' -
-%   uninsulated, # of units, 'I#' -insulated, # of units
-%   (all units are Inconel for these cases)
+% RecupMatl: 'IN' for Inconel, 'SN' for near term stainless steel, 'SF' for
+%            far term stainless steel
 
 % Outputs:2
 % minMass: lowest possible total system mass for system with desired
 % power output and radiator area
+% UA: recuperator conductance for optimum cycle [W/K]
+% UA_min: minimum recuperator conductance for specified radiator panel area
+% [W/K]
+% mass_reactor: reactor mass of optimum cycle [kg]
+% mass_recuperator: recuperator mass of optimum cycle [kg]
+% mass_radiator: radiator mass [kg]
+% m_dot: mass flow rate of optimum cycle [kg/s]
 
 % find minimum UA which gives desired power output
 [ UA_min_original,m_dot_original ] = minimumUA(desiredPower,p1,T4,PR_c,A_panel,...
@@ -47,6 +52,8 @@ elseif modesize(1) > 1
     TDewPoint = mode(1,91);
 end
 
+% set logical check for minimum temperature below dew point to false
+% initially
 TBelowDewPoint = 0;
 
 
@@ -135,7 +142,6 @@ else
     
     % find recuperator conductance for cycle with minimum mass
     
-    
     if tolerance == 1
         % if high tolerance is required, find exact minimum mass or
         % minimum temperature (if Dew Point is reached)
@@ -169,7 +175,6 @@ else
             end
         end
     elseif tolerance == 2
-        %         options2 = optimset('TolX',0.1);
         % if high accuracy in tolerance is not required, use minimum mass
         % and corresponding UA from bound finding
         UA = UA(inde);
@@ -179,28 +184,9 @@ else
         mass_radiator = inf;
         m_dot = inf;
     end
-    
-    
-    
-    
-    
-%     if check == 2
-%         
-%         
-%         
-%     else
-%         mass_reactor = inf;
-%         mass_recuperator = inf;
-%         mass_radiator = inf;
-%         m_dot = inf;
-%     end
+
     
 end
-
-
-
-
-
 
 
     function [T1_error] = UAatTDewPoint (UA_maxValidGuess,desiredPower,p1,T4,PR_c,A_panel,...

@@ -10,12 +10,13 @@ function [Tmin,Tmax] = BraytonCycleBoundFind(m_dot,p1,T4,TLowerBound,UA,A_panel,
 % A_panel: area of radiator panel [m3]
 % T_amb: ambient temp for radiator [K]
 % fluid: working fluid for the system
-% Mode=1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 % all cycle pressures
 
 % Outputs:
 % Tmin & Tmax: a value where the error function is zero lies between these
-% values
+%              values
 
 % set initial max and min temp range
 Tmax = T4;                % T1 must be lower than T4
@@ -75,12 +76,8 @@ while stop == 0
             Tmax = NaN;
             stop = 1;
             else
-                
-            % set A and B as Tmin and Tmax and end loop
-%             fprintf(2, 'This cyc is not supported \n');
-%             Tmin = NaN;
-%             Tmax = NaN;
-%             stop = 1;
+            % increase number of temperature values to check so there is a
+            % smaller increment between them and repeat the loop
             tempstep = tempstep + 5;
             stop = 0;
             end
@@ -100,12 +97,9 @@ while stop == 0
             Tmin = A;
             Tmax = B;
             stop = 0;
-        elseif Bsign == Asign        % if sign change between A and B
-            % set A and B as Tmin and Tmax and end loop
-%             fprintf(2, 'This cyc is not supported \n');
-%             Tmin = NaN;
-%             Tmax = NaN;
-%             stop = 1;
+        elseif Bsign == Asign        % if no sign change between A and B
+            % increase number of temperature values to check so there is a
+            % smaller increment between them and repeat the loop
             tempstep = tempstep + 5;
             stop = 0;
         end
@@ -142,7 +136,8 @@ while stop == 0
             Tmax = C;
             stop = 0;
         elseif Asign == Bsign && Bsign == Csign
-            % find smallest negative number
+            % increase number of temperature values to check so there is a
+            % smaller increment between them and repeat the loop
             tempstep = tempstep + 5;
             stop = 0;
         end

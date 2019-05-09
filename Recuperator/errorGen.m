@@ -13,7 +13,8 @@ function [err,UA_each] = errorGen(T_H_out,T_H_in,T_C_in,p_H,p_C,m_dot_H,m_dot_C,
 % UA: conductance [W/K]
 % fluidC: cold side fluid
 % fluidH: hot side fluid
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 % N: number of sub heat exchangers
 
 % Output:

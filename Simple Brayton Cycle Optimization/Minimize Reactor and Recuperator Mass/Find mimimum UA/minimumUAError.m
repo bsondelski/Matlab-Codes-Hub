@@ -11,7 +11,9 @@ function [ err ] = minimumUAError( UA,desiredPower,p1,T4,PR_c,A_panel,...
 % A_panel: area of radiator panel [m2]
 % T_amb: ambient temp for radiator [K]
 % fluid: working fluid for the system
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
+% options: solving tolerance
 
 % Outputs:
 % err: error between max power of guessed UA and desired power

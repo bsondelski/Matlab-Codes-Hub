@@ -12,7 +12,8 @@ function [err] = specifiedPowerError(m_dot_guess,power,p1,T4,PR_c,UA,...
 % A_panel: area of radiator panel [m2]
 % T_amb: ambient temp for radiator [K]
 % fluid: working fluid for the system
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 
 % Output:
 % err: error between specified power and power from guessed mass flow rate

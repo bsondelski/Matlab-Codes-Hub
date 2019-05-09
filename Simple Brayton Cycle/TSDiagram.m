@@ -5,7 +5,8 @@ function [ s_cycle ] = TSDiagram( Tvector,pvector,fluid,mode,Tmin )
 % Tvector: vector of temperatures around cycle [K]
 % pvector: vector of pressures around cycle [kPa]
 % fluid: working fluid for the system
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 % Tmin: minimum temperature available for fluid data [K]
 
 % Outputs:
@@ -16,17 +17,6 @@ set(0,'defaultAxesFontSize',14)
 % plot isobars
 p = [21000,18000,15000,12000,9000,6000];
 
-% tf = strcmp('CO2',fluid);
-% if tf == 1
-%     Tmin = 240;
-% elseif tf == 0
-%     tf = strcmp('OXYGEN',fluid);
-%     if tf == 1
-%         Tmin = 60;
-%     else
-%     end
-% end
-% Tmin = 240;
 T = linspace(Tmin,1200,1000);
 
 for i = 1:length(p)
@@ -86,11 +76,6 @@ end
 s_qtot = [s_q2, s_q];
 T_qtot = [T_q2,T_q];
 plot(s_qtot,T_qtot)
-
-% text(3,850,'9000 kPa')
-% text(3,900,'12000 kPa')
-% text(3,950,'15000 kPa')
-% text(3,1000,'18000 kPa')
 
 
 % plot cycle

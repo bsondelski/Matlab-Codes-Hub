@@ -9,11 +9,12 @@ function [q_rad,T_out,A_panel] = Radiator(m_dot,A_panel,T_amb,T_in,TFluidMin,p_i
 % TFluidMin: minimum temperature available for fluid data [K]
 % p_in: pressure at inlet of radiator [kPa]
 % p_out: pressure at outlet of radiator [kPa]
-% fluid: fluid in HEX
-% mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% fluid: working fluid for the system
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 
 % output:
-% q_rad: heat transferred from the radiator to space [J/s]
+% q_rad: heat transferred from the radiator to space [W]
 % T_out: temperature of radiator outlet [K]
 % A_panel: area of radiator panel [m^2]
 
@@ -41,7 +42,7 @@ else
     h_out = fzero(@radiatorError,[h_outmin,h_outmax],[],h_in,m_dot,eps,...
         T12_pp,p_out,sigma,A_panel,T_amb,fluid,mode,TFluidMin);
     
-    % heat transfer due to energy change[J/s]
+    % heat transfer due to energy change [W]
     q_rad = m_dot*(h_out-h_in);
     % radiative heat transfer equation
     T_panel = nthroot(-q_rad/(A_panel*eps*sigma)+T_amb^4,4);

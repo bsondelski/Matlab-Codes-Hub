@@ -13,21 +13,25 @@ function [ mass_total,mass_reactor,mass_recuperator,mass_radiator,m_dot ] = tota
 % A_panel: area of radiator panel [m2]
 % T_amb: ambient temp for radiator [K]
 % fluid: working fluid for the system
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 % m_dotcycle_max: maximum mass flow rate possible which will provide the
 % desired power output
 % NucFuel: 'UO2' for uranium oxide (near term), 'UW' for uranium tunsten
 % (exotic)
-% RecupMatl: 'IN' for Inconel, 'SS' for stainless steel, 
-%   for recuperator far term exploration, use 'U#' -
-%   uninsulated, # of units, 'I#' -insulated, # of units
-%   (all units are Inconel for these cases)
+% RecupMatl: 'IN' for Inconel, 'SN' for near term stainless steel, 'SF' for
+%            far term stainless steel
 
 % Outputs: 
 % mass_total: total system mass for system with desired power output and
 % recuperator conductance
+% mass_reactor: reactor mass [kg]
+% mass_recuperator: recuperator mass [kg]
+% mass_radiator: radiator mass [kg]
+% m_dot: mass flow rate [kg/s]
 
-% find heat output for reactor for specified recuperator
+% find mass flow rate required to provide desired power with given
+% recuperator size
 [~,~,~,~,~,~,q_reactor,~,~,m_dot,T3,p3,T4,p4,T5,p5,~,p2,~,~] = SpecifiedPower2(desiredPower,...
     p1,T4,PR_c,UA,A_panel,T_amb,fluid,mode,m_dotcycle_max,options);
 
@@ -40,20 +44,14 @@ if isnan(m_dot)
     m_dot = NaN;
 else
     
-    %%%%% original
-    % mass_reactor = 0.00131*q_reactor+100;
-    % mass_recuperator = 0.0131*UA; %convert to kW/K
-    % mass_radiator = 5.8684*A_panel;
+    % get masses of all components
     
     % call to python
-    % ploss_reactor = 0.0270;   % pressure drop in reactor
-    % p4 = p3-p3*ploss_reactor; % pressure at reactor outlet
     mass_reactor = ReactorMass(q_reactor,m_dot,p3,p4,T3,T4,fluid,NucFuel);
     
     mass_recuperator = RecuperatorMass( p2,T5,p5,RecupMatl,UA,fluid,mode,m_dot );
     
     mass_radiator = 6.75*A_panel;
-% mass_radiator = 1.5*A_panel;
     
     mass_total = mass_reactor+mass_recuperator+mass_radiator;
 end

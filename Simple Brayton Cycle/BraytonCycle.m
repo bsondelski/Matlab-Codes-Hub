@@ -10,27 +10,29 @@ function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,Anozzle,q_reactor,...
 % PR_c: pressure ratio of the compressor 
 % UA: conductance of recuperator [W/K]
 % A_panel: area of radiator panel [m2]
-% T_amb: ambient temp for radiator [K]
+% T_amb: temperature of surrounding space for radiator heat sink [K]
 % fluid: working fluid for the system
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 % plot: 1(on), 0 (off)
 
 % outputs:
-% net_power: net power output from the cycle
-% cyc_efficiency: total cycle efficiency
-% D_T: turbine diameter
-% D_c: compressor diameter
+% net_power: net power output from the cycle [W]
+% cyc_efficiency: total cycle efficiency [1st law efficiency, 2nd law
+%                 efficiency]
+% D_T: turbine diameter [m]
+% D_c: compressor diameter [m]
 % Ma_T: Turbine outlet Mach number
 % Ma_c: compressor outlet Mach number
-% Anozzle: turbine nozzle area
+% Anozzle: turbine nozzle area [m^2]
 % q_reactor: heat input to the reactor [W]
 % q_rad: heat rejected by the radiator [W]
 % T1: the temperatue at the inlet of the compressor
-% Power_T: power output of the turbine
-% Power_c: power intake of the compressor
-% HEXeffect: effectiveness of the heat exchanger
+% Power_T: power output of the turbine [W]
+% Power_c: power intake of the compressor [W]
+% HEXeffect: approximate effectiveness of the heat exchanger
 % energy: check to see if energy is conserved (should be zero) - does not
-% account for pressure drops in heat exchangers
+%         account for pressure drops
 % temperatures and pressures at all state points
 % A_panel: area of radiator panel [m2]
 % Vratio: velocity ratio of turbine
@@ -43,11 +45,9 @@ if tf == 1
     TLowerBound = mode(1);
 else
     names = ["CO2", "HELIUM", "CO", "OXYGEN", "H2S", "AMMONIA", "WATER"];
-    minT = [304.25, 2.18, 68.2, 54.4, 200, 240, mode(1)];
+    minT = [304.25, 2.18, 68.2, 54.4, 200, 240, 280];
     TLowerBound = minT(names == fluid);
 end
-
-%     TLowerBound = refpropm('T','C',0,' ',0,fluid);
     
     % find bounds for fzero
     [Tmin,Tmax] = BraytonCycleBoundFind(m_dot,p1,T4,TLowerBound,UA,A_panel,T_amb,fluid,mode,p2,p3,p4,p6,p5);
@@ -125,20 +125,21 @@ end
             Vratio = NaN;
         else
             
-            % solve for state after reactor
-            
+            % radiator
             [q_rad,~,A_panel] = Radiator(m_dot,A_panel,T_amb,T6,TLowerBound,p6,p1,fluid,mode);
             
+            % solve for state after reactor
             [~,~,h4] = getPropsTP(T4,p4,fluid,mode,1);
             [~,~,h3] = getPropsTP(T3,p3,fluid,mode,1);
             q_reactor = m_dot*(h4-h3);
             
+            % power and efficiency of cycle
             net_power = Power_T-Power_c;
             cyc_efficiency(1) = net_power/q_reactor;
             cyc_efficiency(2) = cyc_efficiency(1)/(1-(T1/T4));
             
-%             HEXeffect = (h3-h2)/(h5-h2);
-            % Heat exchanger effectiveness
+            % Approximate heat exchanger effectiveness - assuming the pinch
+            % point is at one of the endpoints of the HEX
             [~, ~, h_H_min] = getPropsTP(T2,p6,fluid,mode,1);
             q_max_H = m_dot*(h5-h_H_min);
             [~, ~, h_C_max] = getPropsTP(T5,p3,fluid,mode,1);
@@ -146,11 +147,19 @@ end
             q_max = min(q_max_H,q_max_C);
             HEXeffect = m_dot*(h3-h2)/q_max;
             
+            % energy balance to check for conservation
             energy = -Power_T+Power_c+q_reactor+q_rad;
             
             if plot == 1
                 % extra points for reactor and radiator
-                Tminplot = 240;
+                
+                %%%% minimum temperature for CO2 %%%%
+                % change if using a different fluid
+                Tminplot = 240; 
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                
+                % midpoints for reactor and radiator so curve is more
+                % smooth
                 T_reactmid = (T3 + T4)/2;
                 T_radmid = (T6 + T1)/2;
                 p_reactmid = (p3 + p4)/2;
@@ -160,17 +169,7 @@ end
                 pvector = [p1, p2, fliplr(p_C), p3, p_reactmid, p4, p5, p_H, p6, p_radmid, p1];
                 
                 [ ~ ] = TSDiagram( Tvector,pvector,fluid,mode,Tminplot );
-                %         title(['A_p_a_n_e_l = ', num2str(A_panel)])
-                %         title(['UA = ', num2str(UA),' [W/K]'])
-%                 title(['Reactor Heat Output = ', num2str(q_reactor/1000),' [kW]'])
                 ylim([Tminplot, T4+50])
-                
-                %         chan = ddeinit('EES','DDE');
-                %         rc = ddeexec(chan,'[Open EES_MATLab.ees]');
-                %         save MatLabInput.txt T1 T2 T3 T4 T5 T6 p1 p2 p3 p4 p5 p6 -ascii
-                %         %     save MatLabInput.txt Tvector pvector -ascii
-                %         rc = ddeexec(chan,'[Solve]');
-                %         ddeterm(chan)
             else
             end
         end

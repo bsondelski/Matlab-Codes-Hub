@@ -9,23 +9,24 @@ function [ err ] = turbineVdotError( V_dot,N,h_12s,m_dot,h1,p_out,fluid,mode )
 % h1: inlet enthalpy [J/kg]
 % p_out: outlet pressure [kPa]
 % fluid: working fluid for the system
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 
 % Outputs:
 % error: difference between input volumetric flow rate and calculated
-% volumetric flow rate
+%        volumetric flow rate
 
 
 n_s = N*sqrt(V_dot)/h_12s^(3/4);      % specific speed
 % efficiency and specific diameter
 [n_T,~] = turbineEfficiency(n_s,inf);
 
-Power = m_dot*h_12s*n_T;  % calculate power from isentropic efficiency[W]
-h2a = h1-Power/m_dot;     % calculate actual outlet enthalpy
+Power = m_dot*h_12s*n_T;  % calculate power from isentropic efficiency [W]
+h2a = h1-Power/m_dot;     % calculate actual outlet enthalpy [J/kg]
 
 % solve for turbine diameter
 [~,~,rho2] = getPropsPH(p_out,h2a,fluid,mode,3);   % calculate temp at outlet of turbine[K]
-V_new = m_dot/rho2;       % calculate volumetric flow rate from mass flow rate and density
+V_new = m_dot/rho2;       % calculate volumetric flow rate from mass flow rate and density [m^3/s]
 err = V_new-V_dot;        % error between guessed vol flow rate and calculated one
 
 end

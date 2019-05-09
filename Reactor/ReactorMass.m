@@ -8,7 +8,9 @@ function [ mass ] = ReactorMass( power_thermal,m_dot,p_in,p_out,T_in,T_out,fluid
 % p_out: Outlet pressure [kPa]
 % T_in: Inlet Temperature [K]
 % T_out: Outlet Temperature [K]
-% fluid: working fluid - "WATER" or "CO2"
+% fluid: working fluid - "WATER", "CO2", or a mixture -> mixtures should
+%        have the format of {'CO2','WATER','50','50'} for 50% water and 
+%        50% CO2
 % NucFuel: type of nuclear fuel - "UO2" or "UW"
 
 % Output:
@@ -22,11 +24,15 @@ if strcmp(mycomputer,'SEL-24') == 1
 end
 
 if p_in == p_out
+    % reactor mass code will not solve if there is zero pressure drop, so a
+    % 2.7% pressure drop is assumed for the mass calculation when pressure
+    % drops are neglected
     ploss_reactor = 0.0270;   % pressure drop in reactor
     p_out = p_in-p_in*ploss_reactor; % pressure at reactor outlet
 end
 
 
+% put fluid type into proper format
 tf = iscell(fluid(1));
 if tf == 1
     if strcmp(fluid{1},'WATER') == 1
@@ -36,7 +42,6 @@ if tf == 1
         comp1 = string(fluid(3));
         comp2 = string(fluid(4));
     end
-%     fluidin = py.dict(pyargs(fluid{1},comp(1),fluid{2},comp(2)));
     fluidin = strcat('CO2H2O',comp1,comp2);
 elseif strcmp(fluid,'WATER') == 1
     fluidin = 'H2O';
@@ -44,18 +49,8 @@ elseif strcmp(fluid,'CO2') == 1
     fluidin = 'CO2';
 end
 
-% fluidin = 'CO2';
 p_in = p_in*1000;   % convert to Pa
 p_out = p_out*1000; % convert to Pa
-
-% NucFuel
-% fluidin
-% power_thermal
-% m_dot
-% T_in
-% T_out
-% p_in
-% p_out
 
 rxtr = py.reactor_mass.reactor_mass(NucFuel, fluidin, power_thermal, m_dot, [T_in, T_out], [p_in, p_out]);
 mass = rxtr.mass;

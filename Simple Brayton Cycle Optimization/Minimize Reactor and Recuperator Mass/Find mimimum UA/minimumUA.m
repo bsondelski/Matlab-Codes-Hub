@@ -11,18 +11,21 @@ function [ UA,m_dot ] = minimumUA(desiredPower,p1,T4,PR_c,A_panel,...
 % A_panel: area of radiator panel [m2]
 % T_amb: ambient temp for radiator [K]
 % fluid: working fluid for the system
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 
 % Outputs:
 % UA: conductance [W/K] that gives the max power equivalent to the desired
-% power
+%     power
 % m_dot: mass flow rate at ideal power [kg/s]
 
-[UA_min,UA_max] = minimumUABoundFind( desiredPower,p1,T4,PR_c,A_panel,T_amb,fluid,mode );
 
-    
+[UA_min,UA_max] = minimumUABoundFind( desiredPower,p1,T4,PR_c,A_panel,T_amb,fluid,mode );
+   
 
 if UA_max > 60000 || UA_min < 5
+    % arbitrarily set bounds - if the recuperator is too large or
+    % too small, cycle problems will be encountered
     UA = NaN;
     m_dot = NaN;
 elseif isnan(UA_min)

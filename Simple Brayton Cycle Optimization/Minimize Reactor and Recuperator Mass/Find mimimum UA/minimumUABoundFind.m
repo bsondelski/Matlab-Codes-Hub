@@ -10,7 +10,8 @@ function [ UA_min,UA_max ] = minimumUABoundFind( desiredPower,p1,T4,PR_c,...
 % A_panel: area of radiator panel [m2]
 % T_amb: ambient temp for radiator [K]
 % fluid: working fluid for the system
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 
 % Outputs:
 % UA_min,UA_max: range of conductances [W/K] where solution with max power at desired
@@ -21,9 +22,6 @@ UA_min = 100;
 UA_max = 20000;
 steps = 10;
 
-% low tolerance because rough estimate
-% options = optimset('TolX',0.1);
-% options = [];
 
 a = 1;
 j = 0;  % counter
@@ -31,13 +29,7 @@ j = 0;  % counter
 while a == 1 %|| j < 3
     UA_testvals = linspace(UA_min,UA_max,steps);
     
-%     if j ==1
-%         options = optimset('TolX',1);
-%     elseif j == 2
-%         options = optimset('TolX',0.01);
-%     else
-        options = [];
-%     end
+    options = [];
     
     % preallocate space
     err = zeros(1,steps);
@@ -112,9 +104,6 @@ while a == 1 %|| j < 3
     end
     
 end
-
-
-% UA_guess = UA_testvals(inde);
 
 
 end

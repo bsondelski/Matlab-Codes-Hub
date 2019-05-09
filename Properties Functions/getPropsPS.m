@@ -2,23 +2,23 @@ function [h,T] = getPropsPS(s,p,substance,mode,check)
 % find properties from entropy and pressure
 %
 % Inputs:
-% s: entropy[J/kg-K]
-% p: pressure[kPa]
-% substance: fluid in HEX
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP), or
-% array of properties from REFPROP
+% s: entropy [J/kg-K]
+% p: pressure [kPa]
+% substance: working fluid for the system
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP),
+%       or property tables for interpolation
 % check: 1(only find enthalpy), 2 (only find temperature)
 %
 % Output array:
-% h: enthalpy[J/kg]
-% T: temperature[K]
+% h: enthalpy [J/kg]
+% T: temperature [K]
 
 modesize = size(mode);
 
 if check == 1
     % find enthalpy
     
-    if mode == 1          
+    if mode == 1
         c_p = 1000;         % cp value estimation [J/kg-K]
         Tref = 273.15;      % Reference Temperature [K]
         R = 188.9;          % specific gas constant for CO2 [J/kg-K]
@@ -32,8 +32,10 @@ if check == 1
     elseif mode == 3        % use of REFPROP
         tf = iscell(substance(1));
         if tf == 1
+            % mixture
             h = refpropm('H','P',p,'S',s,substance{1},substance{2},substance{3}); % returns enthalpy [J/kg]
         else
+            % pure fluid
             h = refpropm('H','P',p,'S',s,substance); % returns enthalpy [J/kg]
         end
     elseif modesize(1) > 1
@@ -51,19 +53,17 @@ elseif check ==2
         T = zeros(1,length(s));
         tf = iscell(substance(1));
         if tf == 1
+            % mixture
             for i = 1:length(s)
                 T(i) = refpropm('T','P',p(i),'S',s(i),substance{1},substance{2},substance{3});
             end
         else
+            % pure fluid
             for i = 1:length(s)
                 T(i) = refpropm('T','P',p(i),'S',s(i),substance);
             end
         end
     elseif modesize(1) > 1
-%         T = zeros(1,length(s));
-%         for i = 1:length(s)
-%             T(i) = propertiesInterp('T','s',s(i),p(i));
-%         end
         T = propertiesInterp('T','s',s,p,mode);
     end
     h=inf;

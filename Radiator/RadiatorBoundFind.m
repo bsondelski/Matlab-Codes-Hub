@@ -5,13 +5,14 @@ function [h_outmin,h_outmax] = RadiatorBoundFind(m_dot,A_panel,T_amb,fluid,mode,
 % m_dot: mass flow through radiator
 % A_panel: area of the radiator panel that is transferring heat
 % T_amb: temperature of surrounding space
-% fluid: fluid in HEX
-% mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% fluid: working fluid for the system
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 % eps: emissivity
 % T12_pp: change in temp at the pinch point
 % sigma: Stefan-Boltzmann constant
-% h_in: inlet enthalpy to radiator
-% p_out: pressure at radiator outlet
+% h_in: inlet enthalpy to radiator [J/kg]
+% p_out: pressure at radiator outlet [kPa]
 
 % output:
 % h_outmin & h_outmax: the range where h_out is between

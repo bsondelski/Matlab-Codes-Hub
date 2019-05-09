@@ -1,15 +1,15 @@
 function [ efficiency, parameter ] = compressorEfficiencyOld( n_s, d_s )
 % find compressor efficiency given specific speed and specific diameter
-%
+
 % inputs:
 % n_s: specific speed [unitless(radians)]
 % d_s: specific diameter [unitless] - input inf if only giving n_s and
-% wishing to stay at peak of curve
-%
+%      wishing to stay at peak of curve
+
 % outputs:
 % efficiency: gives efficiency of compressor based on Balje curves
 % parameter: gives d_s if n_s input and it is desired to stay on peak of
-% curve
+%            curve
 
 % take log base 10 of input specific speed and specific diameter
 logns = log10(n_s);
@@ -63,6 +63,6 @@ else
     efficiency = efficiency/eff_balj_max*eff_new_max;
     parameter = inf;                % no output parameter
 end
-% end
+
 end
 

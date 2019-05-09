@@ -8,8 +8,9 @@ function [p_out,T_out,D,Power,Ma,Anozzle,h2a,Vratio] = Turbine(m_dot,T_in,p_in,p
 % p_in: flow pressure at inlet of the turbine [kPa]
 % P_out: outlet pressure of the turbine [kPa]
 % fluid: working fluid for the system
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 % N: shaft speed [rad/s]
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
 
 % Outputs:
 % p_out: flow pressure at outlet of the turbine [kPa]
@@ -18,12 +19,12 @@ function [p_out,T_out,D,Power,Ma,Anozzle,h2a,Vratio] = Turbine(m_dot,T_in,p_in,p
 % Power: the power supplied by the turbine [W]
 % Ma: the mach number of the turbine outlet
 % Anozzle: the effective nozzle area [m^2]
-% h2a: actual outlet enthalpy
-% Vradio: velocity ratio [J/kg]
+% h2a: actual outlet enthalpy [J/kg]
+% Vratio: velocity ratio
 
 % find properties at turbine inlet
 [s1, rho1, h1] = getPropsTP(T_in,p_in,fluid,mode,2);
-% returns entropy [J/kg-K], enthalpy [J/kg]
+% returns entropy [J/kg-K], density [kg/m^3] enthalpy [J/kg]
 
 % find the isentropic outlet entropy
 [h2s,~] = getPropsPS(s1,p_out,fluid,mode,1);
@@ -39,8 +40,8 @@ n_s = N*sqrt(V_dot)/h_12s^(3/4);      % specific speed
 % efficiency and specific diameter
 [n_T,d_s] = turbineEfficiency(n_s,inf);
 
-Power = m_dot*h_12s*n_T;  % calculate power from isentropic efficiency[W]
-h2a = h1-Power/m_dot;     % calculate actual outlet enthalpy
+Power = m_dot*h_12s*n_T;  % calculate power from isentropic efficiency [W]
+h2a = h1-Power/m_dot;     % calculate actual outlet enthalpy [J/kg]
 
 % solve for turbine diameter
 [T_out,a,rho2] = getPropsPH(p_out,h2a,fluid,mode,3);   

@@ -14,7 +14,8 @@ function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,q_reactor,...
 % A_panel: area of radiator panel [m2]
 % T_amb: ambient temp for radiator [K]
 % fluid: working fluid for the system
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
 % m_dot_last: maximum m_dot used to search - found from smaller UA's
 % options: tolerance on search for matching desired output power
 
@@ -34,13 +35,14 @@ function [net_power,cyc_efficiency,D_T,D_c,Ma_T,Ma_c,q_reactor,...
 % HEXeffect: effectiveness of the heat exchanger
 % energy: check to see if energy is conserved (should be zero)
 % m_dot: the mass flow in the cycle [kg/s]
-% T3, p3, T4, p4: temperatures and pressures around the reactor [K] and
-% [kPa]
+% T3,p3,T4,p4,T5,p5,T2,p2,T6,p6: temperatures and pressures around the 
+%       reactor and recuperator [K] and [kPa]
 
 
 % First (and maximum possible) mass flow rate is equivalent to last
 % input mass flow rate. Since last mass flow rate is from lower UA,
-% next mass flow rate will be lower.
+% next mass flow rate will be lower -see Thesis "figure 29: power output 
+% vs. reactor heat output rate for several conductances".
 a = 1;
 i = 1;
 m_dot(i) = m_dotlast;

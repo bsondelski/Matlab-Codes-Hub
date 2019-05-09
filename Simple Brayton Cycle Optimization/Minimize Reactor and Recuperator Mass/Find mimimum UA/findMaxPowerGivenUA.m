@@ -10,11 +10,13 @@ function [max_power,m_dot] = findMaxPowerGivenUA(p1,T4,PR_c,UA,A_panel,T_amb,flu
 % A_panel: area of radiator panel [m2]
 % T_amb: ambient temp for radiator [K]
 % fluid: working fluid for the system
-% Mode: 1(constant property model),2(use of FIT),3(use of REFPROP)
+% Mode: 1(constant property model), 2(use of FIT),3(use of REFPROP), 
+%       or property tables for interpolation
+% options: optimization tolerance 
 
 % Outputs:
 % max_power: maximum output power from a given cycle found by varying m_dot
-% [W]
+%            [W]
 % m_dot: the mass flow in the cycle with the max power [kg/s]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%% bound finding %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

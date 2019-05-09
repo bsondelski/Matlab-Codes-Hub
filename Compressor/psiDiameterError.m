@@ -1,4 +1,6 @@
 function [ err,d_s,n_s ] = psiDiameterError( d_s_guess,psi )
+% calculates error between guessed specific diameter and actual specific
+% diameter for a given head coefficient
 
 % Inputs:
 % d_s: value for specific diameter
